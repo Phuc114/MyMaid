@@ -1,8 +1,18 @@
 // Home.jsx
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // nếu em dùng react-router-dom
+import { Link } from 'react-router-dom';
 import './Home.css';
 
 const Home = () => {
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // mặc định là chưa login
+  const navigate = useNavigate();
+
+  const handleLoginClick = () => {
+    navigate('/login'); // dẫn tới trang đăng nhập
+  };
+
   return (
     <div className="homepage">
       {/* Top Info Bar */}
@@ -19,9 +29,9 @@ const Home = () => {
           <span>MyMaid</span>
         </div>
         <ul className="nav-links">
-          <li><a href="#">Trang chủ</a></li>
+        <li><Link to="/">Trang chủ</Link></li>
           <li className="dropdown">
-            <a href="#">Dịch Vụ ▾</a>
+          <Link to="/service">Dịch vụ</Link>
             <ul className="dropdown-menu">
               <li><a href="#">Dọn dẹp nhà</a></li>
               <li><a href="#">Dọn dẹp văn phòng</a></li>
@@ -30,14 +40,22 @@ const Home = () => {
             </ul>
           </li>
           <li><a href="#">Pages</a></li>
-          <li><a href="#">Giới thiệu</a></li>
+          <li><Link to="/about">Giới thiệu</Link></li>
           <li><a href="#">Liên hệ</a></li>
         </ul>
         <div className="nav-icons">
-          <span>🔍</span>
-          <span>|</span>
+        <span>🔍</span>
+        <span>|</span>
+        {isLoggedIn ? (
           <span>👤</span>
-        </div>
+        ) : (
+          <>
+            <a className="nav-auth" href="#" onClick={handleLoginClick}>Đăng nhập</a>
+            <span>|</span>
+            <a className="nav-auth" href="#">Đăng ký</a>
+          </>
+        )}
+      </div>
       </nav>
 
       {/* Hero Section */}

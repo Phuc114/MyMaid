@@ -220,3 +220,16 @@
 .dropdown-menu li a:hover {
   color: #2563eb;
 }
+
+.nav-auth {
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+  margin: 0 5px;
+  transition: color 0.2s ease;
+}
+
+.nav-auth:hover {
+  color: #2563eb;
+  cursor: pointer;
+}

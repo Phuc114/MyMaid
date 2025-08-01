@@ -1,0 +1,164 @@
+.about-page {
+  font-family: sans-serif;
+  color: #333;
+}
+
+/* Banner */
+.about-banner {
+  background: #3b82f6;
+  color: white;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.about-banner h1 {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.about-banner p {
+  font-size: 14px;
+}
+
+/* Info section */
+.about-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px;
+  gap: 30px;
+  background: #fff;
+}
+
+.info-text {
+  max-width: 50%;
+}
+
+.info-text h2 {
+  font-size: 26px;
+  margin-bottom: 15px;
+}
+
+.info-text p {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.info-text .btn-primary {
+  padding: 10px 20px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.info-image img {
+  max-width: 350px;
+}
+
+/* Popular Services */
+.popular-services {
+  padding: 60px 30px;
+  background: #f3f4f6;
+  text-align: center;
+}
+
+.popular-services h2 {
+  margin-bottom: 30px;
+}
+
+.service-cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.service-cards .card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 280px;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+/* Review section */
+.review {
+  text-align: center;
+  padding: 50px 20px;
+  background: #fff;
+}
+
+.review .avatar {
+  width: 80px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+
+.review blockquote {
+  font-style: italic;
+  margin: 0 auto 10px;
+  max-width: 500px;
+  line-height: 1.6;
+}
+
+.review .user {
+  font-weight: bold;
+  color: #1d4ed8;
+}
+
+/* Subscribe */
+.subscribe {
+  background: #eff6ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px 40px;
+  flex-wrap: wrap;
+}
+
+.subscribe-content {
+  max-width: 500px;
+}
+
+.subscribe h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+.subscribe-form {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.subscribe-form input {
+  padding: 10px;
+  flex: 1;
+  min-width: 220px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.subscribe-form button {
+  padding: 10px 20px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+
+.subscribe-img {
+  max-width: 300px;
+}
+
+/* Footer */
+.footer {
+  background: #1e3a8a;
+  color: white;
+  padding: 20px;
+  text-align: center;
+}

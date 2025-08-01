@@ -1,0 +1,384 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+html, body, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+.login-page {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    /*font-family: 'Segoe UI', sans-serif;*/
+    background-color: #fff;
+    color: #222;
+  }
+  
+  .topbar {
+    background-color: #3b82f6;
+    color: white;
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .topbar .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: bold;
+  }
+  
+  .topbar nav {
+    margin-top: 10px;
+    display: flex;
+    gap: 20px;
+  }
+  
+  .topbar .contact {
+    margin-top: 5px;
+    font-size: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .login-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* đẩy lên trên */
+    padding: 30px 30px 60px 30px; /* giảm top, giữ bottom */
+    gap: 40px;
+    margin-top: 40px; /* đẩy lên gần header */
+  }
+   
+  .login-form {
+    max-width: 380px;
+    width: 100%;
+    flex-shrink: 0;
+  }  
+  
+  .login-form h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 10px;
+  }  
+  
+  .login-form p {
+    margin-bottom: 20px;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+  .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+  }
+  
+  .btn-login {
+    width: 100%;
+    padding: 12px;
+    background-color: #4977E5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    margin: 15px 0;
+    font-size: 16px;
+    transition: background-color 0.2s;
+  }
+  
+  .btn-login:hover {
+    background-color: #3d68cc;
+  }  
+  
+  .or {
+    text-align: center;
+    margin: 10px 0;
+  }
+  
+  .btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    width: 100%;
+    background-color: white;
+  }
+  
+  .login-image img {
+    max-width: 520px;
+    width: 100%;
+    height: auto;
+  }  
+  
+  .footer {
+    background-color: #1e3a8a;
+    color: white;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .top-info-bar {
+    background-color: #f3f4f6;
+    padding: 5px 20px;
+    font-size: 13px;
+    color: #555;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  
+  .navbar {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #1d4ed8;
+  }
+  
+  .logo img {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+  }
+  
+  .nav-links li a {
+    text-decoration: none;
+    color: #111;
+    font-weight: 500;
+    position: relative;
+    cursor: pointer;
+  }
+  
+  .nav-links li a:hover {
+    color: #2563eb;
+  }
+  
+  .nav-icons {
+    display: flex;
+    gap: 10px;
+    color: #444;
+  }
+  
+  .dropdown {
+    position: relative;
+  }
+  
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    display: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    list-style: none;
+    padding: 10px 0;
+    min-width: 180px;
+    z-index: 99;
+  }
+  
+  .dropdown-menu li {
+    padding: 8px 16px;
+    white-space: nowrap;
+  }
+  
+  .dropdown-menu li a {
+    color: #111;
+    text-decoration: none;
+  }
+  
+  .dropdown:hover .dropdown-menu {
+    display: block;
+  }
+  
+  .dropdown-menu li a:hover {
+    color: #2563eb;
+  }
+  
+  input[type="checkbox"]:checked {
+    accent-color: #4977E5;
+  }
+  
+  .options a {
+    color: #4977E5;
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .options a:hover {
+    text-decoration: underline;
+  }
+  
+  .login-form a {
+    color: #4977E5;
+    text-decoration: none;
+  }
+  
+  .login-form a:hover {
+    text-decoration: underline;
+  }
+  
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+  }
+  
+  .form-group label {
+    margin-bottom: 5px;
+    font-weight: 1000;   /* ✅ Đổi từ 500 thành 700 để đậm hơn */
+    font-size: 20px;
+    color: #0f172a;
+  }
+  
+  .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .remember-line {
+    display: flex;
+    align-items: center; /* Căn giữa checkbox và chữ */
+    gap: 8px;
+    font-size: 14px;
+    color: #222;
+    white-space: nowrap; /* Không xuống dòng */
+  }  
+  
+  .remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    transform: translateY(6px); /* 👉 tăng số lên để kéo xuống, âm để kéo lên */
+  }
+  
+  .password-group {
+    position: relative;
+  }
+  
+  .password-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;                
+    transform: translateY(-65%);
+    cursor: pointer;
+    color: #888;
+    font-size: 16px;
+  }
+  
+  .password-input {
+    padding-right: 40px; /* để dành chỗ cho icon */
+  }
+
+  .input-common {
+    width: 100%;
+    max-width: 360px;
+    padding: 10px;
+    padding-right: 40px; /* Để đồng bộ với ô password có icon */
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+  }
+  
+    /* Text màu xám nhạt cho đoạn mô tả, placeholder, v.v */
+    .login-form p,
+    .input-common::placeholder,
+    .or,
+    .login-form a:not(.options a) {
+    color: #838B95;
+    }
+
+    /* Placeholder không bị mờ thêm */
+    .input-common::placeholder {
+    opacity: 1;
+    }
+
+    /* Tiêu đề Email và Mật khẩu */
+    .form-group label {
+    font-weight: 500;
+    font-size: 14px;
+    color: #0f172a;
+    }
+
+    /* Font Montserrat toàn trang đã OK nhờ import ở đầu file */
+
+    .login-form p a {
+        color: #4977E5;        /* ✅ Màu đúng như yêu cầu */
+        font-weight: 500;      /* Đậm vừa phải như ảnh */
+        text-decoration: none;
+      }
+      
+      .login-form p a:hover {
+        text-decoration: underline;
+      }
+
+      .create-link {
+        color: #4977E5 !important;
+        font-weight: 500;
+      }
+
+      
