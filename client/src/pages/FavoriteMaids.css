@@ -1,0 +1,70 @@
+.fav-maid-page {
+  font-family: Arial, sans-serif;
+  padding: 20px 40px;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  color: #666;
+  margin-top: 20px;
+}
+
+h1 {
+  margin-top: 10px;
+}
+
+.maid-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.maid-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.maid-info {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.maid-avatar {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ccc;
+}
+
+.stars span {
+  font-size: 18px;
+  color: #ddd;
+}
+
+.stars .filled {
+  color: #ffc107;
+}
+
+.maid-note,
+.maid-date {
+  margin: 4px 0;
+  font-size: 14px;
+}
+
+.chat-btn {
+  background-color: #d4f4d1;
+  color: #007a2f;
+  padding: 10px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}

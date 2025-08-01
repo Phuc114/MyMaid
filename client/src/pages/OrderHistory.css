@@ -1,0 +1,78 @@
+.order-history-page {
+  font-family: Arial, sans-serif;
+  padding: 20px 40px;
+}
+
+.breadcrumb {
+  font-size: 14px;
+  color: #666;
+  margin-top: 20px;
+}
+
+.order-history-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.order-history-header h1 {
+  margin: 0;
+}
+
+.new-service-btn {
+  background-color: #0079f2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.order-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.order-card {
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.order-card h3 {
+  margin: 0 0 8px;
+}
+
+.status {
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.status-Đang\\ chờ {
+  color: orange;
+}
+
+.status-Hoàn\\ thành {
+  color: green;
+}
+
+.status-Đã\\ huỷ {
+  color: red;
+}
+
+.order-actions button {
+  background-color: #0079f2;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  height: fit-content;
+}
