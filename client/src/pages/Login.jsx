@@ -1,100 +1,100 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import './Login.css';
+import { useAuth } from '../context/AuthContext'; // 👈 Lấy hàm login
 
 const Login = () => {
-  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [matKhau, setMatKhau] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { login } = useAuth(); // 👈 Context login
+
+  const togglePassword = () => setShowPassword(!showPassword);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      await login(email, matKhau);     // Gọi login từ context
+      navigate('/');                  // 👈 Điều hướng sau khi đăng nhập
+    } catch (err) {
+      setError(err.message || 'Email hoặc mật khẩu không đúng!');
+    }
+  };
 
   return (
     <div className="login-page">
-      {/* Top Info Bar */}
-      <div className="top-info-bar">
-        <span>Hotline: 1900 1234</span>
-        <span>Email: cskh@mymaid.vn</span>
-        <span>Địa chỉ: 123 Trần Hưng Đạo, Quận 1, TP.HCM</span>
-      </div>
-
-      {/* Navigation Bar */}
-      <nav className="navbar">
-        <div className="logo">
-          <img src="/images/logo.png" alt="MyMaid Logo" />
-          <span>MyMaid</span>
-        </div>
-        <ul className="nav-links">
-          <li><a onClick={() => navigate('/')}>Trang chủ</a></li>
-          <li className="dropdown">
-            <a href="#">Dịch vụ </a>
-            <ul className="dropdown-menu">
-              <li><a href="#">Dọn dẹp nhà</a></li>
-              <li><a href="#">Dọn dẹp văn phòng</a></li>
-              <li><a href="#">Vệ sinh sofa, rèm nệm</a></li>
-              <li><a href="#">Giặt ủi</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Pages</a></li>
-          <li><a href="#">Giới thiệu</a></li>
-          <li><a href="#">Liên hệ</a></li>
-        </ul>
-      </nav>
-
-      {/* Login content */}
-      <main className="login-container">
+      <Header />
+      <div className="login-container">
         <div className="login-form">
-          <h2>Đăng nhập tài khoản</h2>
-          <p>Tiếp tục trải nghiệm MyMaid và quản lý dịch vụ dọn dẹp dễ dàng!</p>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+          <h1>Đăng nhập tài khoản</h1>
+          <p className="sub-title">
+            Tiếp tục trải nghiệm MyMaid và quản lý dịch vụ dọn dẹp dễ dàng!
+          </p>
+
+          <form onSubmit={handleSubmit}>
+            <label>Email</label>
             <input
-                type="email"
-                id="email"
-                className="input-common"
-                placeholder="Nhập địa chỉ email của bạn"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Nhập địa chỉ email của bạn"
+              required
             />
+
+            <label>Mật khẩu</label>
+            <div className="password-wrapper">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={matKhau}
+                onChange={(e) => setMatKhau(e.target.value)}
+                placeholder="Tối thiểu 8 ký tự"
+                className="password-input"
+                required
+              />
+              <span className="password-toggle-icon" onClick={togglePassword}>
+                {showPassword ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
+              </span>
             </div>
 
-            <div className="form-group password-group">
-                <label htmlFor="password">Mật khẩu</label>
-                <div className="password-wrapper">
-                <input
-                    type={showPassword ? "text" : "password"}
-                    id="password"
-                    className="input-common"
-                    placeholder="Tối thiểu 8 ký tự"
-                />
-                    <span
-                    className="toggle-password"
-                    onClick={() => setShowPassword(!showPassword)}
-                    >
-                    {showPassword ? <FaEye /> : <FaEyeSlash />}
-                    </span>
-                </div>
+            {error && <p className="error-message">{error}</p>}
+
+            <div className="options-row">
+              <label className="checkbox-label">
+                <input type="checkbox" />
+                Lưu mật khẩu
+              </label>
+              <Link to="/forgot-password" className="forgot-link">
+                Quên mật khẩu?
+              </Link>
             </div>
-            <div className="options">
-                <label className="remember-line">
-                    <input type="checkbox" />
-                    <span>Lưu mật khẩu</span>
-                </label>
-                <a href="#">Quên mật khẩu?</a>
-            </div>
-          <button className="btn-login">Đăng nhập</button>
-          <p>Bạn chưa có tài khoản? <a className="create-link" href="#">Tạo tài khoản mới</a></p>
-          <div className="or">Hoặc đăng nhập bằng</div>
-          <button className="btn-google">
-            <img src="/images/LOgoGG.png" alt="Google" />
+
+            <button type="submit" className="login-button">Đăng nhập</button>
+          </form>
+
+          <p className="register-link">
+            Bạn chưa có tài khoản? <Link to="/register">Tạo tài khoản mới</Link>
+          </p>
+
+          <div className="divider">Hoặc đăng nhập bằng</div>
+
+          <button className="google-button">
+            <img src="/images/LogoGG.png" alt="Google" />
             Đăng nhập bằng Google
           </button>
         </div>
 
-        <div className="login-image">
-          <img src="/images/vacum.png" alt="Đăng nhập minh họa" />
+        <div className="login-illustration">
+          <img src="/images/vacum.png" alt="Login illustration" />
         </div>
-      </main>
-
-      <footer className="footer">
-        © 2025 MyMaid. All rights reserved.
-      </footer>
+      </div>
+      <Footer />
     </div>
   );
 };

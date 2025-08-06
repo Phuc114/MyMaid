@@ -1,69 +1,26 @@
-// Home.jsx
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // nếu em dùng react-router-dom
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import './Home.css';
 
 const Home = () => {
-
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // mặc định là chưa login
   const navigate = useNavigate();
 
-  const handleLoginClick = () => {
-    navigate('/login'); // dẫn tới trang đăng nhập
+  const handleContact = () => {
+    navigate('/contact');
   };
 
   return (
     <div className="homepage">
-      {/* Top Info Bar */}
-      <div className="top-info-bar">
-        <span>Hotline: 1900 1234</span>
-        <span>Email: cskh@mymaid.vn</span>
-        <span>Địa chỉ: 123 Trần Hưng Đạo, Quận 1, TP.HCM</span>
-      </div>
-
-      {/* Navigation Bar */}
-      <nav className="navbar">
-        <div className="logo">
-          <img src="/images/logo.png" alt="MyMaid Logo" />
-          <span>MyMaid</span>
-        </div>
-        <ul className="nav-links">
-        <li><Link to="/">Trang chủ</Link></li>
-          <li className="dropdown">
-          <Link to="/service">Dịch vụ</Link>
-            <ul className="dropdown-menu">
-              <li><a href="#">Dọn dẹp nhà</a></li>
-              <li><a href="#">Dọn dẹp văn phòng</a></li>
-              <li><a href="#">Vệ sinh sofa, rèm nệm</a></li>
-              <li><a href="#">Giặt ủi</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Pages</a></li>
-          <li><Link to="/about">Giới thiệu</Link></li>
-          <li><a href="#">Liên hệ</a></li>
-        </ul>
-        <div className="nav-icons">
-        <span>🔍</span>
-        <span>|</span>
-        {isLoggedIn ? (
-          <span>👤</span>
-        ) : (
-          <>
-            <a className="nav-auth" href="#" onClick={handleLoginClick}>Đăng nhập</a>
-            <span>|</span>
-            <a className="nav-auth" href="#">Đăng ký</a>
-          </>
-        )}
-      </div>
-      </nav>
+      <Header />
 
       {/* Hero Section */}
       <section className="hero">
         <div className="hero-content">
           <h1>Nhà Sạch Thì Mát</h1>
           <p>Giúp bạn tận hưởng không gian sạch sẽ mỗi ngày</p>
-          <button className="btn-primary">Khám phá dịch vụ</button>
+          <button className="btn-primary" onClick={() => navigate('/service')}>Khám phá dịch vụ</button>
         </div>
         <div className="hero-image">
           <img src="/images/hero-vacuum.png" alt="Vacuum" />
@@ -99,7 +56,7 @@ const Home = () => {
         <div className="stat">600+ Dịch vụ hoàn thành</div>
       </section>
 
-      {/* Meet Our Team */}
+      {/* Team Section */}
       <section className="team">
         <h2>Gặp gỡ đội ngũ chúng tôi</h2>
         <div className="team-cards">
@@ -109,23 +66,23 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Contact Form */}
+      {/* Contact Section */}
       <section className="contact">
         <div className="contact-img">
           <img src="/images/contact-cleaner.png" alt="Contact" />
         </div>
-        <form className="contact-form">
+        <form className="contact-form" onSubmit={e => { e.preventDefault(); handleContact(); }}>
           <h3>Nếu bạn có thắc mắc?</h3>
-          <input type="text" placeholder="Họ và tên" />
-          <input type="email" placeholder="Email" />
-          <input type="text" placeholder="Số điện thoại" />
+          <input type="text" placeholder="Họ và tên" required />
+          <input type="email" placeholder="Email" required />
+          <input type="text" placeholder="Số điện thoại" required />
           <button type="submit">Liên hệ ngay</button>
         </form>
       </section>
 
-      {/* Latest News */}
+      {/* News Section */}
       <section className="news">
-        <h2>Our Latest News</h2>
+        <h2>Tin tức mới</h2>
         <div className="news-items">
           <div className="news-card">Tips dọn nhà nhanh 15 phút mỗi ngày</div>
           <div className="news-card">Vì sao bạn nên vệ sinh máy lạnh thường xuyên</div>
@@ -133,12 +90,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <p>© 2025 MyMaid. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

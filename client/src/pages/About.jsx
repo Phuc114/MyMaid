@@ -1,115 +1,77 @@
-// About.jsx
+// src/pages/About.jsx
 import React from 'react';
 import './About.css';
-import './Home.css';
-import { Link, useNavigate } from 'react-router-dom';
-
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import PageBanner from '../components/PageBanner';
 
 const About = () => {
-  const navigate = useNavigate();
-
-
   return (
     <div className="about-page">
-      {/* Top Info Bar */}
-      <div className="top-info-bar">
-        <span>Hotline: 1900 1234</span>
-        <span>Email: cskh@mymaid.vn</span>
-        <span>Địa chỉ: 123 Trần Hưng Đạo, Quận 1, TP.HCM</span>
-      </div>
+      <Header />
+      <PageBanner 
+        title="Giới thiệu" 
+        current="Giới thiệu" 
+        image="/images/about-banner.png" 
+      />
 
-      {/* Navigation Bar */}
-      <nav className="navbar">
-        <div className="logo">
-          <img src="/images/logo.png" alt="MyMaid Logo" />
-          <span>MyMaid</span>
-        </div>
-        <ul className="nav-links">
-        <li><Link to="/">Trang chủ</Link></li>
-          <li className="dropdown">
-          <Link to="/service">Dịch vụ</Link>
-            <ul className="dropdown-menu">
-              <li><a href="#">Dọn dẹp nhà</a></li>
-              <li><a href="#">Dọn dẹp văn phòng</a></li>
-              <li><a href="#">Vệ sinh sofa, rèm nệm</a></li>
-              <li><a href="#">Giặt ủi</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Pages</a></li>
-          <li><Link to="/about">Giới thiệu</Link></li>
-          <li><a href="#">Liên hệ</a></li>
-        </ul>
-        <div className="nav-icons">
-          <span>🔍</span>
-          <span>|</span>
-          <span>👤</span>
-        </div>
-      </nav>
-
-      {/* Company Info */}
-      <section className="about-info">
-        <div className="info-text">
+      {/* Intro Section */}
+      <section className="about-intro">
+        <div className="intro-text">
           <h2>Chúng tôi cung cấp dịch vụ dọn dẹp chất lượng hàng đầu</h2>
           <p>
-            Đội ngũ nhân viên chuyên nghiệp, tận tâm cùng trang thiết bị hiện đại giúp bạn tiết kiệm thời gian và công sức.
+            MyMaid là nền tảng kết nối giữa khách hàng và đội ngũ nhân viên vệ sinh chuyên nghiệp.
+            Chúng tôi mang đến trải nghiệm sạch sẽ, tiện lợi và an tâm cho mọi gia đình và doanh nghiệp.
           </p>
-          <p>
-            Dù bạn là hộ gia đình, văn phòng, hay cửa hàng – MyMaid luôn sẵn sàng phục vụ bạn.
-          </p>
-          <button className="btn-primary">Reach Us Online</button>
+          <ul>
+            <li>Dịch vụ dọn dẹp tại TPHCM, Đà Nẵng, Hà Nội</li>
+            <li>Dịch vụ vệ sinh văn phòng và công ty</li>
+          </ul>
+          <button className="btn-book">Đặt dịch vụ ngay</button>
         </div>
-        <div className="info-image">
-          <img src="/images/about-maid.png" alt="Maid Cleaning" />
+        <div className="intro-image">
+          <img src="/images/cleaning.png" alt="Cleaner" />
         </div>
       </section>
 
-      {/* Popular Services */}
-      <section className="popular-services">
+      {/* Popular Services Section */}
+      <section className="about-services">
         <h2>Hãy thử những dịch vụ thịnh hành của chúng tôi</h2>
+        <p>
+          Chúng tôi luôn nỗ lực nâng cao chất lượng dịch vụ, đảm bảo sự hài lòng và tiện nghi cho khách hàng trong từng lần trải nghiệm.
+        </p>
         <div className="service-cards">
-          <div className="card">
-            <h4>🧽 Dọn dẹp văn phòng</h4>
-            <p>Giữ môi trường làm việc luôn gọn gàng và sạch sẽ mỗi ngày.</p>
+          <div className="service-card active">
+            <h4>Dọn dẹp văn phòng</h4>
+            <p>Dịch vụ dọn dẹp, vệ sinh văn phòng chuyên nghiệp với quy trình đặc biệt.</p>
           </div>
-          <div className="card">
-            <h4>🏡 Dọn dẹp nhà ở</h4>
-            <p>Nhà cửa thơm tho, không gian thoáng mát – giúp bạn thư giãn hơn.</p>
+          <div className="service-card">
+            <h4>Dọn dẹp nhà vệ sinh</h4>
+            <p>Kiểm tra các thiết bị rò rỉ, hư hỏng. Chà rửa bồn rửa mặt, bồn tắm, bồn cầu...</p>
           </div>
-          <div className="card">
-            <h4>👕 Giặt ủi & quần áo</h4>
-            <p>Dịch vụ giặt ủi tiện lợi, nhanh chóng, trả đồ đúng hẹn.</p>
+          <div className="service-card">
+            <h4>Giặt ủi quần áo</h4>
+            <p>Dịch vụ giặt ủi tiện lợi, là ủi, đóng gói phù hợp cho mọi nhu cầu sinh hoạt.</p>
           </div>
         </div>
       </section>
 
-      {/* Review Section */}
-      <section className="review">
-        <img className="avatar" src="/images/avatar.png" alt="User" />
-        <blockquote>
-          “Tôi rất hài lòng với dịch vụ của MyMaid. Nhân viên cực kỳ dễ thương và làm sạch rất kỹ!”
-        </blockquote>
-        <p className="user">— Ánh Bùi 🌟🌟🌟🌟🌟</p>
+      {/* Testimonial */}
+      <section className="testimonial">
+        <p>
+          “Dịch vụ dọn dẹp của MyMaid mang đến trải nghiệm tuyệt vời, giúp tôi tiết kiệm thời gian mà vẫn giữ nhà cửa sạch sẽ.
+          Nhân viên thân thiện, làm việc nhanh và rất chuyên nghiệp. Tôi hoàn toàn yên tâm khi sử dụng dịch vụ!”
+        </p>
+        <div className="testimonial-info">
+          <img src="/images/avatar.png" alt="Avatar" />
+          <div>
+            <strong>Alexa Bliss</strong>
+            <div className="stars">★★★★★</div>
+          </div>
+        </div>
       </section>
 
-      {/* CTA - Register Offer */}
-      <section className="subscribe">
-        <div className="subscribe-content">
-          <h3>Đăng ký nhận ưu đãi & thông tin mới nhất từ MyMaid!</h3>
-          <p>Chúng tôi sẽ gửi bạn những mã giảm giá, ưu đãi và mẹo dọn nhà hay ho!</p>
-          <form className="subscribe-form">
-            <input type="email" placeholder="Nhập email của bạn" />
-            <button type="submit">Đăng ký</button>
-          </form>
-        </div>
-        <img src="/images/about-subscribe.png" alt="Subscribe Maid" className="subscribe-img" />
-      </section>
-
-      {/* Footer (giống trang chủ) */}
-      <footer className="footer">
-        <div className="footer-content">
-          <p>© 2025 MyMaid. All rights reserved.</p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

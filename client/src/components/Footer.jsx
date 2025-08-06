@@ -3,13 +3,11 @@ import './HeaderFooter.css';
 
 
 const Footer = () => {
-  return (
-    <footer className="footer">
-      <div className="footer-content">
+    return (
+      <footer className="footer">
         <p>© 2025 MyMaid. All rights reserved.</p>
-      </div>
-    </footer>
-  );
-};
+      </footer>
+    );
+  };  
 
 export default Footer;

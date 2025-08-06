@@ -64,35 +64,41 @@ const Service = () => {
 
       {/* FAQ */}
       <section className="faq-section">
-        <h2>Câu hỏi thường gặp từ khách hàng</h2>
-
-        <div className="faq">
-          <details open>
-            <summary>Tôi có thể đặt lịch dọn ở đâu?</summary>
-            <p>Bạn có thể đặt lịch trực tiếp trên trang web hoặc gọi đến tổng đài MyMaid để được hỗ trợ.</p>
-          </details>
-          <details>
-            <summary>MyMaid có làm việc vào cuối tuần không?</summary>
-            <p>Có. Chúng tôi làm việc tất cả các ngày trong tuần, bao gồm cả cuối tuần và ngày lễ.</p>
-          </details>
-          <details>
-            <summary>Tôi có thể huỷ lịch đã đặt không?</summary>
-            <p>Hoàn toàn có thể, chỉ cần huỷ trước 2 giờ trước khi bắt đầu dịch vụ.</p>
-          </details>
-          <details>
-            <summary>Nhân viên đến nhà có được kiểm tra lý lịch không?</summary>
-            <p>Tất cả nhân viên của MyMaid đều đã được kiểm tra lý lịch và đào tạo bài bản.</p>
-          </details>
-          <details>
-            <summary>Tôi muốn đặt lịch cố định mỗi tuần, có được không?</summary>
-            <p>Có, bạn có thể chọn dịch vụ định kỳ theo tuần hoặc theo tháng.</p>
-          </details>
-          <details>
-            <summary>Có thể chọn nhân viên quen thuộc cho lần dọn tiếp theo không?</summary>
-            <p>Chúng tôi hỗ trợ bạn chọn lại nhân viên từng phục vụ nếu lịch làm việc của họ phù hợp.</p>
-          </details>
-        </div>
-      </section>
+    <h2>Câu hỏi thường gặp từ khách hàng</h2>
+    <div className="faq-list">
+        {[
+        {
+            question: 'Tôi có thể đặt lịch dọn ở đâu?',
+            answer: 'Bạn có thể đặt lịch trực tiếp trên trang web hoặc gọi đến tổng đài MyMaid để được hỗ trợ.'
+        },
+        {
+            question: 'MyMaid có làm việc vào cuối tuần không?',
+            answer: 'Có. Chúng tôi làm việc tất cả các ngày trong tuần, bao gồm cả cuối tuần và ngày lễ.'
+        },
+        {
+            question: 'Tôi có thể huỷ lịch đã đặt không?',
+            answer: 'Hoàn toàn có thể, chỉ cần huỷ trước 2 giờ trước khi bắt đầu dịch vụ.'
+        },
+        {
+            question: 'Nhân viên đến nhà có được kiểm tra lý lịch không?',
+            answer: 'Tất cả nhân viên của MyMaid đều đã được kiểm tra lý lịch và đào tạo bài bản.'
+        },
+        {
+            question: 'Tôi muốn đặt lịch cố định mỗi tuần, có được không?',
+            answer: 'Có, bạn có thể chọn dịch vụ định kỳ theo tuần hoặc theo tháng.'
+        },
+        {
+            question: 'Có thể chọn nhân viên quen thuộc cho lần dọn tiếp theo không?',
+            answer: 'Chúng tôi hỗ trợ bạn chọn lại nhân viên từng phục vụ nếu lịch làm việc của họ phù hợp.'
+        }
+        ].map((item, index) => (
+        <details key={index} className="faq-item">
+            <summary>{item.question}</summary>
+            <p>{item.answer}</p>
+        </details>
+        ))}
+    </div>
+    </section>
     </div>
       <Footer />
     </div>

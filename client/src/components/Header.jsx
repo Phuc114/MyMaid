@@ -1,33 +1,56 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect, useRef } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './HeaderFooter.css';
-
+import { useAuth } from '../context/AuthContext';
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+  const { user, logout } = useAuth();
+  const isLoggedIn = !!user;
 
-  const handleLoginClick = () => {
-    navigate('/login');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  const handleLogout = () => {
+    logout();
+    setMenuOpen(false);
+    navigate('/');
   };
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <>
+      {/* Top Bar */}
       <div className="top-info-bar">
         <span>Hotline: 1900 1234</span>
         <span>Email: cskh@mymaid.vn</span>
         <span>Địa chỉ: 123 Trần Hưng Đạo, Quận 1, TP.HCM</span>
       </div>
 
+      {/* Navbar */}
       <nav className="navbar">
+        {/* Logo */}
         <div className="logo">
           <img src="/images/logo.png" alt="MyMaid Logo" />
           <span>MyMaid</span>
         </div>
+
+        {/* Navigation Links */}
         <ul className="nav-links">
-          <li><Link to="/">Trang chủ</Link></li>
+          <li><NavLink to="/" end>Trang chủ</NavLink></li>
           <li className="dropdown">
-            <Link to="/service">Dịch vụ</Link>
+            <NavLink to="/service">Dịch vụ</NavLink>
             <ul className="dropdown-menu">
               <li><a href="#">Dọn dẹp nhà</a></li>
               <li><a href="#">Dọn dẹp văn phòng</a></li>
@@ -36,20 +59,40 @@ const Header = () => {
             </ul>
           </li>
           <li><a href="#">Pages</a></li>
-          <li><Link to="/about">Giới thiệu</Link></li>
-          <li><a href="#">Liên hệ</a></li>
+          <li><NavLink to="/about">Giới thiệu</NavLink></li>
+          <li><NavLink to="/contact">Liên hệ</NavLink></li>
         </ul>
+
+        {/* Right Icons */}
         <div className="nav-icons">
-          <span>🔍</span>
-          <span>|</span>
+          <img src="/images/search.png" alt="Search" className="search-icon" />
+
           {isLoggedIn ? (
-            <span>👤</span>
+            <div className="avatar-dropdown" ref={dropdownRef}>
+              <img
+                src="/images/maid.png"
+                alt="User"
+                className="user-avatar"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleMenu();
+                }}
+              />
+              {menuOpen && (
+                <div className="dropdown-menu-avatar">
+                  <div onClick={() => { navigate('/profile'); setMenuOpen(false); }}>Chỉnh sửa hồ sơ</div>
+                  <div onClick={() => { navigate('/change-password'); setMenuOpen(false); }}>Đổi mật khẩu</div>
+                  <div onClick={() => { navigate('/become-maid'); setMenuOpen(false); }}>Trở thành maid</div>
+                  <div onClick={handleLogout}>Đăng xuất</div>
+                </div>
+              )}
+            </div>
           ) : (
-            <>
-              <a className="nav-auth" href="#" onClick={handleLoginClick}>Đăng nhập</a>
+            <div className="auth-buttons">
+              <button className="nav-auth" onClick={() => navigate('/login')}>Đăng nhập</button>
               <span>|</span>
-              <a className="nav-auth" href="#">Đăng ký</a>
-            </>
+              <button className="nav-auth" onClick={() => navigate('/register')}>Đăng ký</button>
+            </div>
           )}
         </div>
       </nav>

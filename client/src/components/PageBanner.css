@@ -1,0 +1,40 @@
+.page-banner {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  height: 200px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Lớp phủ mờ màu xanh */
+.page-banner .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(64, 106, 207, 0.6); /* #406ACF với opacity 60% */
+  z-index: 1;
+}
+
+.page-banner-content {
+  position: relative;
+  z-index: 2;
+}
+
+.page-banner-content h1 {
+  font-size: 32px;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.page-banner-content p {
+  font-size: 14px;
+  margin: 0;
+  color: #fff;
+}

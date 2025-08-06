@@ -1,0 +1,96 @@
+.register-page {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #fff;
+  }
+  
+  .register-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 40px;
+    gap: 40px; /* Thay vì khoảng cách lớn */
+    flex-wrap: wrap;
+  }
+  
+  .register-form {
+    flex: 1;
+    max-width: 420px;
+  }
+  
+  .register-form h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .sub-title {
+    color: #666;
+    margin-bottom: 30px;
+  }
+  
+  .register-form form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .register-form label {
+    margin-bottom: 5px;
+    font-weight: 500;
+  }
+  
+  .register-form input {
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 999px;
+    font-size: 14px;
+  }
+  
+  .register-button {
+    padding: 12px;
+    background-color: #467eea;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 10px;
+    transition: background 0.2s ease;
+  }
+  
+  .register-button:hover {
+    background-color: #3569d6;
+  }
+  
+  .login-link {
+    margin-top: 12px;       /* giảm khoảng cách */
+    font-size: 14px;
+    color: #333;
+    text-align: center;      /* căn giữa theo form */
+  }
+  
+  .login-link a {
+    color: #1e4fd5;
+    font-weight: 500;
+    text-decoration: none;
+  }
+  
+  .register-illustration {
+    flex: 1;
+    max-width: 460px;
+  }
+  
+  .register-illustration img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .input-error {
+  color: red;
+  font-size: 13px;
+  margin-top: -12px;
+  margin-bottom: 12px;
+}

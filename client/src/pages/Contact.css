@@ -1,0 +1,135 @@
+.contact-page {
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  .contact-banner {
+    height: 250px;
+    color: white;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  
+  .contact-banner h1 {
+    font-size: 40px;
+    margin: 0;
+  }
+  
+  .contact-banner p {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  
+  .contact-content {
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 10%;
+    flex-wrap: wrap;
+    gap: 40px;
+    background: #fff;
+  }
+  
+  .contact-left {
+    flex: 1;
+    min-width: 300px;
+  }
+  
+  .contact-left h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #111;
+  }
+  
+  .contact-left p {
+    color: #555;
+    margin: 10px 0 30px;
+  }
+  
+  .contact-form .form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .contact-form textarea {
+    resize: vertical;
+  }
+  
+  .contact-form button {
+    margin-top: 15px;
+    padding: 12px 24px;
+    background: #4977E5;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .contact-form button:hover {
+    background: #375fc4;
+  }
+  
+  .contact-right {
+    flex: 1;
+    min-width: 250px;
+  }
+  
+  .contact-right h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #111;
+  }
+  
+  .contact-right p {
+    margin: 8px 0;
+    color: #444;
+  }
+  
+  .contact-right strong {
+    font-size: 16px;
+    color: #111;
+  }
+  
+  .social-icons {
+    margin-top: 15px;
+  }
+  
+  .social-icons i {
+    margin-right: 12px;
+    font-size: 18px;
+    color: #4977E5;
+    cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    .contact-content {
+      flex-direction: column;
+      padding: 40px 20px;
+    }
+  
+    .contact-form .form-row {
+      flex-direction: column;
+    }
+  }
+  
