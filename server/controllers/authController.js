@@ -1,6 +1,5 @@
 const pool = require('../config/db');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken'); // ✅ Thêm dòng này
+const jwt = require('jsonwebtoken');
 
 exports.login = async (req, res) => {
   const { email, mat_khau } = req.body;
@@ -12,14 +11,15 @@ exports.login = async (req, res) => {
       const result = await pool.query(`SELECT * FROM ${table} WHERE email = $1`, [email]);
       if (result.rows.length > 0) {
         const user = result.rows[0];
-        const match = await bcrypt.compare(mat_khau, user.mat_khau);
-        if (match) {
-          const idField = table === 'khach_hang' ? 'id_khach_hang'
-                        : table === 'maid' ? 'id_maid'
-                        : 'id_admin';
+
+        // So sánh mật khẩu
+        if (mat_khau === user.mat_khau) {
+          const idField =
+            table === 'khach_hang' ? 'id_khach_hang' :
+            table === 'maid' ? 'id_maid' : 'id_admin';
 
           const token = jwt.sign(
-            { id: user[idField], role: table },
+            { id: user[idField], role: table, email: user.email },
             process.env.JWT_SECRET,
             { expiresIn: '2h' }
           );
@@ -34,6 +34,7 @@ exports.login = async (req, res) => {
       }
     }
 
+    // Nếu không khớp
     res.status(401).json({ success: false, message: 'Email hoặc mật khẩu không đúng.' });
 
   } catch (err) {

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import './HeaderFooter.css';
-import { useAuth } from '../context/AuthContext';
+import { useLogin } from '../context/LoginContext';
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout } = useLogin();
   const isLoggedIn = !!user;
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -31,42 +31,31 @@ const Header = () => {
 
   return (
     <>
-      {/* Top Bar */}
       <div className="top-info-bar">
         <span>Hotline: 1900 1234</span>
         <span>Email: cskh@mymaid.vn</span>
         <span>Địa chỉ: 123 Trần Hưng Đạo, Quận 1, TP.HCM</span>
       </div>
 
-      {/* Navbar */}
-      <nav className="navbar">
-        {/* Logo */}
-        <div className="logo">
-          <img src="/images/logo.png" alt="MyMaid Logo" />
-          <span>MyMaid</span>
+      <nav className="navbar new-layout">
+        <div className="navbar-left">
+          <div className="logo">
+            <img src="/images/logo.png" alt="MyMaid Logo" />
+            <span>MyMaid</span>
+          </div>
         </div>
 
-        {/* Navigation Links */}
-        <ul className="nav-links">
-          <li><NavLink to="/" end>Trang chủ</NavLink></li>
-          <li className="dropdown">
-            <NavLink to="/service">Dịch vụ</NavLink>
-            <ul className="dropdown-menu">
-              <li><a href="#">Dọn dẹp nhà</a></li>
-              <li><a href="#">Dọn dẹp văn phòng</a></li>
-              <li><a href="#">Vệ sinh sofa, rèm nệm</a></li>
-              <li><a href="#">Giặt ủi</a></li>
-            </ul>
-          </li>
-          <li><a href="#">Pages</a></li>
-          <li><NavLink to="/about">Giới thiệu</NavLink></li>
-          <li><NavLink to="/contact">Liên hệ</NavLink></li>
-        </ul>
+        <div className="navbar-center">
+          <ul className="nav-links">
+            <li><NavLink to="/" end>Trang chủ</NavLink></li>
+            <li><NavLink to="/service">Dịch vụ</NavLink></li>
+            <li><NavLink to="/about">Giới thiệu</NavLink></li>
+            <li><NavLink to="/tuyen-dung">Tuyển dụng</NavLink></li>
+            <li><NavLink to="/contact">Liên hệ</NavLink></li>
+          </ul>
+        </div>
 
-        {/* Right Icons */}
-        <div className="nav-icons">
-          <img src="/images/search.png" alt="Search" className="search-icon" />
-
+        <div className="navbar-right">
           {isLoggedIn ? (
             <div className="avatar-dropdown" ref={dropdownRef}>
               <img
@@ -88,10 +77,9 @@ const Header = () => {
               )}
             </div>
           ) : (
-            <div className="auth-buttons">
-              <button className="nav-auth" onClick={() => navigate('/login')}>Đăng nhập</button>
-              <span>|</span>
-              <button className="nav-auth" onClick={() => navigate('/register')}>Đăng ký</button>
+            <div className="auth-buttons-custom">
+              <button className="login-button" onClick={() => navigate('/login')}>Đăng nhập</button>
+              <button className="signup-button" onClick={() => navigate('/register')}>Đăng ký</button>
             </div>
           )}
         </div>

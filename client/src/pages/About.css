@@ -1,222 +1,159 @@
-.about-page {
-  font-family: 'Montserrat', sans-serif;
-  color: #1f2937;
-  padding-bottom: 60px;
+.about-section {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 40px 20px;
 }
 
-/* ========== INTRO SECTION ========== */
 .about-intro {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 40px 60px;
-  gap: 40px;
+  gap: 60px;
   flex-wrap: wrap;
-  background-color: #fff;
+  margin-bottom: 60px;
 }
 
-.intro-text {
-  flex: 1;
-  min-width: 300px;
-  max-width: 500px;
+.about-left {
+  max-width: 540px;
 }
 
-.intro-text h2 {
-  font-size: 36px;
-  margin-bottom: 20px;
-  color: #111827;
-}
-
-.intro-text p {
-  font-size: 19px;
-  margin-bottom: 20px;
-  color: #4b5563;
-}
-
-.intro-text ul {
-  font-size: 18px;
-  list-style: disc;
-  margin-left: 20px;
-  color: #374151;
-  margin-bottom: 20px;
-}
-
-.btn-book {
-  padding: 12px 24px;
-  background-color: #2563eb;
-  color: white;
-  border: none;
-  border-radius: 6px;
+.about-left h2 {
+  font-size: 28px;
   font-weight: bold;
-  cursor: pointer;
+  margin-bottom: 16px;
 }
 
-.intro-image {
-  flex: 1;
-  min-width: 250px;
-  max-width: 400px;
-  position: relative;
-  text-align: center;
+.desc {
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.6;
 }
 
-.intro-image img {
-  width: 100%;
-  max-width: 380px;
+.features {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.badge {
-  position: absolute;
-  background-color: white;
-  color: #111827;
-  padding: 10px 16px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 14px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.experience {
-  top: 10px;
-  left: -20px;
-}
-
-.customers {
-  bottom: 10px;
-  right: -20px;
-}
-
-/* ========== POPULAR SERVICES ========== */
-.about-services {
-  text-align: center;
-  padding: 60px 30px;
-  background-color: #f9fafb;
-}
-
-.about-services h2 {
-  font-size: 26px;
-  margin-bottom: 10px;
-  color: #111827;
-}
-
-.about-services p {
-  max-width: 600px;
-  margin: 0 auto 40px;
-  color: #6b7280;
-}
-
-.service-cards {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-.service-card {
-  background: white;
-  border: 1px solid #e5e7eb;
-  padding: 25px;
-  border-radius: 12px;
-  width: 260px;
-  text-align: left;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.service-card img {
-  width: 48px;
-  height: 48px;
-  margin-bottom: 12px;
-  transition: filter 0.3s;
-}
-
-.service-card h4 {
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #1e40af;
-  transition: color 0.3s;
-}
-
-.service-card p {
-  font-size: 14px;
-  color: #374151;
-  transition: color 0.3s;
-}
-
-.service-card:hover {
+.about-button {
   background-color: #3b82f6;
-  border-color: #3b82f6;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  color: #fff;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  transition: 0.3s;
 }
 
-.service-card:hover h4,
-.service-card:hover p {
-  color: white;
+.about-button:hover {
+  background-color: #2563eb;
 }
 
-.service-card:hover img {
-  filter: brightness(0) invert(1);
+.about-right {
+  position: relative;
+  max-width: 400px;
 }
 
-/* ========== TESTIMONIAL ========== */
-.testimonial {
-  text-align: center;
-  padding: 50px 30px;
-  background: white;
+.main-img {
+  width: 100%;
+  border-radius: 20px;
 }
 
-.testimonial p {
-  font-size: 16px;
-  color: #374151;
-  font-style: italic;
-  max-width: 700px;
-  margin: 0 auto 20px;
+.stat-box {
+  position: absolute;
+  background-color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  font-size: 13px;
+  color: #333;
+  width: 180px;
 }
 
-.testimonial-info {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
-
-.testimonial-info img {
-  width: 50px;
-  border-radius: 50%;
-}
-
-.stars {
-  color: #fbbf24;
+.stat-box span {
   font-size: 18px;
+  font-weight: bold;
+  display: block;
+  color: #1e40af;
+  margin-bottom: 4px;
 }
 
-/* ========== RESPONSIVE ========== */
-@media (max-width: 768px) {
-  .intro-text h2 {
-    font-size: 28px;
-  }
-
-  .intro-text p,
-  .intro-text ul {
-    font-size: 16px;
-  }
-
-  .service-card {
-    width: 90%;
-  }
+.stat-box.top-left {
+  top: 10%;
+  left: -40px;
 }
 
-html, body {
-  height: 100%;
-  margin: 0;
+.stat-box.bottom-right {
+  bottom: 8%;
+  right: -30px;
 }
 
-.about-page {
+/* ====== Dịch vụ ====== */
+.service-intro {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.service-intro h3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.sub-desc {
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  font-size: 15px;
+}
+
+.service-grid {
   display: flex;
-  flex-direction: column;
-  min-height: 100vh;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
-.about-main {
-  flex: 1;
+.service-box {
+  background-color: #fff;
+  padding: 30px 24px;
+  border-radius: 16px;
+  width: 280px;
+  text-align: left;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.service-box img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.service-box h3 {
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.service-box p {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Hover effect */
+.service-box:hover {
+  background-color: #e6edff;
+  border: 2px solid #3b82f6;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+}
+
+.service-box:hover img {
+  transform: translateY(-5px);
 }

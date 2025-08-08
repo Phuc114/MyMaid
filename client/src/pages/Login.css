@@ -110,7 +110,8 @@
   font-weight: 500;
 }
 
-.login-button {
+/* Nút đăng nhập trong form */
+.form-login-button {
   margin-top: 20px;
   width: 100%;
   background-color: #4977e5;
@@ -123,9 +124,10 @@
   cursor: pointer;
 }
 
-.login-button:hover {
+.form-login-button:hover {
   background-color: #3a65c9;
 }
+
 
 .register-link {
   text-align: center;

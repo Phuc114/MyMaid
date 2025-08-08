@@ -12,6 +12,7 @@ import FavoriteMaids from './pages/FavoriteMaids';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Profile from './pages/Profile';
+import ChangePassword from './pages/ChangePassword';
 import './pages/Service.css'; 
 
 
@@ -29,6 +30,7 @@ function App() {
       <Route path="/order-history" element={<OrderHistory />} />
       <Route path="/favorite-maids" element={<FavoriteMaids />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/profile" element={<Profile />} />
     </Routes>
   );

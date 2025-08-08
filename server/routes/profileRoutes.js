@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const verifyToken = require('../middleware/authMiddleware');
-const profileController = require('../controllers/profileController');
+const { getProfile, updateProfile } = require('../controllers/profileController');
 
-router.get('/', verifyToken, profileController.getProfile);
-router.put('/', verifyToken, profileController.updateProfile);
+router.post('/', getProfile);             // lấy thông tin
+router.put('/update', updateProfile);     // cập nhật thông tin
 
 module.exports = router;

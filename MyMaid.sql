@@ -155,17 +155,17 @@ DROP TABLE IF EXISTS danh_muc_dich_vu;
 
 -- Insert data into khach_hang (customers)
 INSERT INTO khach_hang (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh) VALUES
-('Nguyễn Văn A', 'a.nguyen@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0911111111', '1980-01-15'),
-('Trần Thị B', 'b.tran@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0922222222', '1985-05-20'),
-('Lê Văn C', 'c.le@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0933333333', '1990-08-10'),
-('Phạm Thị D', 'd.pham@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0944444444', '1992-03-25'),
-('Hoàng Văn E', 'e.hoang@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0955555555', '1988-11-05'),
-('Vũ Thị F', 'f.vu@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0966666666', '1995-07-15'),
-('Đặng Văn G', 'g.dang@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0977777777', '1983-09-30'),
-('Bùi Thị H', 'h.bui@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0988888888', '1991-12-12'),
-('Lý Văn I', 'i.ly@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0999999999', '1987-04-18'),
-('Trương Thị K', 'k.truong@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0900000000', '1993-06-22'),
-('Ngô Văn L', 'l.ngo@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0912345678', '1989-10-08');
+('Nguyễn Văn A', 'a.nguyen@example.com', '123456abcda', '0911111111', '1980-01-15'),
+('Trần Thị B', 'b.tran@example.com', '123456abcdb', '0922222222', '1985-05-20'),
+('Lê Văn C', 'c.le@example.com', '123456abcdc', '0933333333', '1990-08-10'),
+('Phạm Thị D', 'd.pham@example.com', '123456abcdd', '0944444444', '1992-03-25'),
+('Hoàng Văn E', 'e.hoang@example.com', '123456abcde', '0955555555', '1988-11-05'),
+('Vũ Thị F', 'f.vu@example.com', '123456abcdf', '0966666666', '1995-07-15'),
+('Đặng Văn G', 'g.dang@example.com', '123456abcdg', '0977777777', '1983-09-30'),
+('Bùi Thị H', 'h.bui@example.com', '123456abcdh', '0988888888', '1991-12-12'),
+('Lý Văn I', 'i.ly@example.com', '123456abcdi', '0999999999', '1987-04-18'),
+('Trương Thị K', 'k.truong@example.com', '123456abcdk', '0900000000', '1993-06-22'),
+('Ngô Văn L', 'l.ngo@example.com', '123456abcdl', '0912345678', '1989-10-08');
 
 
 
@@ -191,17 +191,17 @@ INSERT INTO dia_chi_da_luu (id_khach_hang, ten_goi_nho, dia_chi_day_du) VALUES
 
 -- Insert data into maid (maids)
 INSERT INTO maid (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh, vai_tro, trang_thai, tieu_su, diem_danh_gia_tb, anh_ho_so_url) VALUES
-('Nguyễn Thị Hoa', 'hoa.nguyen@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0912345678', '1990-05-15', 'maid', 'active', '5 năm kinh nghiệm dọn dẹp nhà cửa', 4.8, '/uploads/ava1.jpg'),
-('Trần Văn Minh', 'minh.tran@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0923456789', '1985-08-20', 'maid', 'active', 'Chuyên nghiệp về giặt ủi và là quần áo', 4.9, '/uploads/ava4.jpg'),
-('Lê Thị Lan', 'lan.le@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0934567890', '1992-03-10', 'maid', 'active', 'Nấu ăn ngon, đa dạng món', 4.7, '/uploads/ava2.jpg '),
-('Phạm Văn Tuấn', 'tuan.pham@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0945678901', '1988-11-25', 'maid', 'active', 'Kinh nghiệm chăm sóc trẻ em 7 năm', 4.6, '/uploads/ava5.jpg'),
-('Hoàng Thị Mai', 'mai.hoang@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0956789012', '1993-07-05', 'maid', 'active', 'Chuyên chăm sóc người già và bệnh nhân', 4.5, '/uploads/ava3.jpg'),
-('Vũ Đức Anh', 'anh.vu@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0967890123', '1987-09-12', 'maid', 'active', 'Yêu thú cưng, có thể chăm sóc mọi loại vật nuôi', 4.9, '/uploads/ava4.jpg'),
-('Đặng Thị Hương', 'huong.dang@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0978901234', '1991-12-30', 'maid', 'active', 'Chuyên tổng vệ sinh nhà cửa, văn phòng', 4.7, '/uploads/ava1.jpg'),
-('Ngô Văn Hùng', 'hung.ngo@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0989012345', '1986-06-18', 'maid', 'active', 'Thợ sửa chữa đồ gia dụng nhỏ', 4.4, '/uploads/ava5.jpg'),
-('Bùi Thị Ngọc', 'ngoc.bui@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0990123456', '1994-02-22', 'maid', 'active', 'Chuyên dọn dẹp sau tiệc, sự kiện', 4.8, '/uploads/ava2.jpg'),
-('Lý Văn Cường', 'cuong.ly@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0901234567', '1989-10-08', 'maid', 'active', 'Kinh nghiệm làm vườn, chăm sóc cây cảnh', 4.3, '/uploads/ava4.jpg'),
-('Trương Thị Thu', 'thu.truong@example.com', '$2a$10$FB/BOAVhpuLvpOREQVmvmezD4ED/.JBIDRh70tGevYzYzQgFId2u.', '0913456789', '1995-04-17', 'maid', 'active', 'Chuyên vệ sinh cửa kính cao tầng', 4.6, '/uploads/ava3.jpg');
+('Nguyễn Thị Hoa', 'hoa.nguyen@example.com', '123456abcdh', '0912345678', '1990-05-15', 'maid', 'active', '5 năm kinh nghiệm dọn dẹp nhà cửa', 4.8, '/uploads/ava1.jpg'),
+('Trần Văn Minh', 'minh.tran@example.com', '123456abcdm', '0923456789', '1985-08-20', 'maid', 'active', 'Chuyên nghiệp về giặt ủi và là quần áo', 4.9, '/uploads/ava4.jpg'),
+('Lê Thị Lan', 'lan.le@example.com', '123456abcdl', '0934567890', '1992-03-10', 'maid', 'active', 'Nấu ăn ngon, đa dạng món', 4.7, '/uploads/ava2.jpg '),
+('Phạm Văn Tuấn', 'tuan.pham@example.com', '123456abcdt', '0945678901', '1988-11-25', 'maid', 'active', 'Kinh nghiệm chăm sóc trẻ em 7 năm', 4.6, '/uploads/ava5.jpg'),
+('Hoàng Thị Mai', 'mai.hoang@example.com', '123456abcdm', '0956789012', '1993-07-05', 'maid', 'active', 'Chuyên chăm sóc người già và bệnh nhân', 4.5, '/uploads/ava3.jpg'),
+('Vũ Đức Anh', 'anh.vu@example.com', '123456abcda', '0967890123', '1987-09-12', 'maid', 'active', 'Yêu thú cưng, có thể chăm sóc mọi loại vật nuôi', 4.9, '/uploads/ava4.jpg'),
+('Đặng Thị Hương', 'huong.dang@example.com', '123456abcdh', '0978901234', '1991-12-30', 'maid', 'active', 'Chuyên tổng vệ sinh nhà cửa, văn phòng', 4.7, '/uploads/ava1.jpg'),
+('Ngô Văn Hùng', 'hung.ngo@example.com', '123456abcdh', '0989012345', '1986-06-18', 'maid', 'active', 'Thợ sửa chữa đồ gia dụng nhỏ', 4.4, '/uploads/ava5.jpg'),
+('Bùi Thị Ngọc', 'ngoc.bui@example.com', '123456abcdn', '0990123456', '1994-02-22', 'maid', 'active', 'Chuyên dọn dẹp sau tiệc, sự kiện', 4.8, '/uploads/ava2.jpg'),
+('Lý Văn Cường', 'cuong.ly@example.com', '123456abcdc', '0901234567', '1989-10-08', 'maid', 'active', 'Kinh nghiệm làm vườn, chăm sóc cây cảnh', 4.3, '/uploads/ava4.jpg'),
+('Trương Thị Thu', 'thu.truong@example.com', '123456abcdt', '0913456789', '1995-04-17', 'maid', 'active', 'Chuyên vệ sinh cửa kính cao tầng', 4.6, '/uploads/ava3.jpg');
 
 
 -- Insert data into lich_lam_viec (maid work schedules)
@@ -444,6 +444,17 @@ INSERT INTO danh_gia (id_lich_dat, id_khach_hang, id_maid, so_sao, binh_luan, ng
 (8, 8, 8, 5, 'Nhà sạch bong sau khi dọn', CURRENT_TIMESTAMP - INTERVAL '2 days'),
 (9, 9, 9, 4, 'Dọn dẹp sau tiệc rất kỹ', CURRENT_TIMESTAMP - INTERVAL '1 day'),
 (10, 10, 10, 3, 'Cửa kính sạch nhưng hơi lâu', CURRENT_TIMESTAMP);
+
+
+
+
+
+
+SELECT * FROM khach_hang WHERE id_khach_hang = 1;
+
+
+
+
 
 
 

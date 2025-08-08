@@ -1,10 +1,11 @@
+// Login.jsx
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { AiOutlineEye, AiOutlineEyeInvisible } from 'react-icons/ai';
 import './Login.css';
-import { useAuth } from '../context/AuthContext'; // 👈 Lấy hàm login
+import { useLogin } from '../context/LoginContext';
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -12,7 +13,7 @@ const Login = () => {
   const [matKhau, setMatKhau] = useState('');
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth(); // 👈 Context login
+  const { login } = useLogin();
 
   const togglePassword = () => setShowPassword(!showPassword);
 
@@ -21,10 +22,10 @@ const Login = () => {
     setError('');
 
     try {
-      await login(email, matKhau);     // Gọi login từ context
-      navigate('/');                  // 👈 Điều hướng sau khi đăng nhập
+      await login(email, matKhau); 
+      navigate('/');
     } catch (err) {
-      setError(err.message || 'Email hoặc mật khẩu không đúng!');
+      setError(err.message || 'Lỗi đăng nhập!');
     }
   };
 
@@ -75,7 +76,7 @@ const Login = () => {
               </Link>
             </div>
 
-            <button type="submit" className="login-button">Đăng nhập</button>
+            <button type="submit" className="form-login-button">Đăng nhập</button>
           </form>
 
           <p className="register-link">

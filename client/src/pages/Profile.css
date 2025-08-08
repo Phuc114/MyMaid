@@ -1,60 +1,279 @@
 .profile-page {
-  padding: 40px 20px;
-  background: #fff;
+  display: flex;
+  justify-content: flex-start; 
+  align-items: flex-start;
+  padding: 40px 550px;
+  column-gap: 100px; /* khoảng cách giữa 2 cột */
   font-family: 'Segoe UI', sans-serif;
 }
 
-.profile-container {
-  max-width: 1100px;
-  margin: auto;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+.profile-left {
+  flex: 2;
+  max-width: 700px;
 }
 
-.profile-form {
-  flex: 1 1 60%;
+.profile-left h2 {
+  font-size: 32px; /* giống h1 ở Register */
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.profile-form h2 {
-  font-size: 28px;
+.subtitle {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 30px;
 }
 
-.profile-form p {
-  color: #555;
+.form-group {
   margin-bottom: 20px;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
 }
 
-.form-grid input {
-  padding: 10px;
-  border-radius: 8px;
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;         /* giống Register */
+  font-size: 14px;
   border: 1px solid #ccc;
-  font-size: 15px;
+  border-radius: 999px;       /* bo tròn như trang đăng ký */
+  background-color: #fff;
 }
 
-.profile-form button {
-  margin-top: 20px;
-  background-color: #457bff;
+.profile-right {
+  flex: 1;
+  max-width: 280px;
+  padding-top: 40px;
+}
+
+.profile-right h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.profile-right p {
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.social-icons {
+  margin-top: 15px;
+}
+
+.social-icons i {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.social-icons i:hover {
+  color: #3b82f6;
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.update-btn {
+  padding: 12px;
+  background-color: #467eea;  /* giống trang đăng ký */
   color: white;
+  font-weight: bold;
   border: none;
-  padding: 10px 30px;
-  border-radius: 8px;
+  border-radius: 999px;
+  cursor: pointer;
   font-size: 16px;
+  transition: background 0.2s ease;
+}
+
+.update-btn:hover {
+  background-color: #3569d6;
+}
+
+.back-btn {
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #cfcfcf;
+}
+
+.error-text {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.popup-title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cancel-btn {
+  background: #ccc;
+}
+
+.confirm-btn {
+  background: #007bff;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 60px 40px;
+    column-gap: 80px;
+    font-family: 'Segoe UI', sans-serif;
+    flex-wrap: wrap;
+  }
+  
+  .profile-left,
+  .profile-right {
+    flex: 1;
+    max-width: 460px;
+    padding-top: 60px;
+  }  
+
+  .btn-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .update-btn,
+  .back-btn {
+    width: 100%;
+  }
+}
+
+.social-icons .blue-icon {
+  color: #3b82f6; /* Xanh dương */
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+/* Popup Notification */
+.popup-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 350px;
+  max-width: 90vw;
+  padding: 20px 25px;
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  color: #333;
+  background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.popup-notification.success {
+  background-color: #e6f9ec;
+  border: 2px solid #28a745;
+}
+
+.popup-notification.error {
+  background-color: #fbeaea;
+  border: 2px solid #dc3545;
+}
+
+.popup-icon {
+  font-size: 24px;
+}
+
+.popup-content p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.popup-close {
+  margin-left: auto;
+  font-size: 18px;
   cursor: pointer;
 }
 
-.contact-info {
-  flex: 1 1 35%;
-  padding-left: 40px;
+/* Social icons - blue version */
+.social-icons.blue i {
+  color: #337ab7;
+  font-size: 20px;
+  margin-right: 10px;
 }
 
-.contact-info .phone {
-  font-weight: bold;
-  font-size: 18px;
+.popup-icon img,
+.popup-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
 }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+

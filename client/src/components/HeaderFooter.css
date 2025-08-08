@@ -1,205 +1,264 @@
+/* ==== Top Info Bar ==== */
 .top-info-bar {
-    background-color: #f3f4f6;
-    padding: 5px 20px;
-    font-size: 13px;
-    color: #555;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background-color: #fff;
-    border-bottom: 1px solid #e5e7eb;
-    position: sticky;
-    top: 0;
-    z-index: 10;
-  }
-  
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 22px;
-    font-weight: bold;
-    color: #1d4ed8;
-  }
-  
-  .logo img {
-    width: 35px;
-    height: 35px;
-  }
-  
-  .nav-links {
-    list-style: none;
-    display: flex;
-    gap: 25px;
-  }
-  
-  .nav-links li a {
-    text-decoration: none;
-    color: #111;
-    font-weight: 500;
-    position: relative;
-    transition: color 0.2s ease;
-  }
-  
-  .nav-links li a:hover {
-    color: #2563eb;
-  }
-  
-  /* ✅ Active link styling */
-  .nav-links li a.active {
-    color: #2563eb;
-    font-weight: 600;
-  }
-  
-  /* Optional underline effect for active link */
-  .nav-links li a.active::after {
-    content: '';
-    display: block;
-    width: 100%;
-    height: 2px;
-    background-color: #2563eb;
-    margin-top: 4px;
-    border-radius: 1px;
-  }
-  
-  .nav-icons {
-    display: flex;
-    gap: 10px;
-    color: #444;
-  }
-  
-  .nav-auth {
-    text-decoration: none;
-    color: #111;
-    font-weight: 500;
-    margin: 0 5px;
-    transition: color 0.2s ease;
-  }
-  
-  .nav-auth:hover {
-    color: #2563eb;
-    cursor: pointer;
-  }
-  
-  .dropdown {
-    position: relative;
-  }
-  
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    display: none;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    list-style: none;
-    padding: 10px 0;
-    min-width: 180px;
-    z-index: 99;
-  }
-  
-  .dropdown-menu li {
-    padding: 8px 16px;
-    white-space: nowrap;
-  }
-  
-  .dropdown-menu li a {
-    color: #111;
-    text-decoration: none;
-  }
-  
-  .dropdown:hover .dropdown-menu {
-    display: block;
-  }
-  
-  .dropdown-menu li a:hover {
-    color: #2563eb;
-  }
-  
-  .footer {
-    background-color: #1e3a8a;
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    font-size: 14px;
-  }
-  
-  .user-avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    object-fit: cover;
-    cursor: pointer;
-    /* 👇 Thêm margin để điều chỉnh vị trí */
-    margin-top: -5px;
-    margin-right: 6px;
-  }
-  
-  
-  .search-icon {
-    width: 25px;
-    height: 25px;
-    margin-right: 8px;
-    cursor: pointer;
-  }
-  
-  .user-info {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .logout-button {
-    background: none;
-    border: none;
-    color: #007bff;
-    cursor: pointer;
-    font-weight: 500;
-  }
-  
-  .logout-button:hover {
-    text-decoration: underline;
-  }
-  
-  .avatar-dropdown {
-    position: relative;
-    display: inline-block;
-  }
-  
-  .dropdown-menu-avatar {
-    position: absolute;
-    top: 50px;
-    right: 0;
-    width: 220px;
-    background: white;
-    border-radius: 20px;
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
-    z-index: 999;
-    padding: 12px 0;
-    overflow: hidden;
-  }
-  
-  .dropdown-menu-avatar div {
-    padding: 14px 24px;
-    font-size: 15px;
-    color: #444;
-    cursor: pointer;
-    transition: 0.2s;
-    border-radius: 12px;
-    margin: 4px 12px;
-  }
-  
-  /* Hiệu ứng hover hoặc mục đang chọn */
-  .dropdown-menu-avatar div:hover {
-    background-color: #eaf1ff;  /* ✅ Nền nhẹ */
-    color: #1a5edb;
-    font-weight: 600;
-  }
-  
+  background-color: #f3f4f6;
+  padding: 5px 20px;
+  font-size: 13px;
+  color: #555;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* ==== Navbar Container ==== */
+.navbar.new-layout {
+  display: flex;
+  align-items: center;
+  padding: 12px 40px;
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* ==== Logo ==== */
+.navbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #1d4ed8;
+}
+
+.logo img {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+}
+
+.logo span {
+  font-size: 20px;
+  font-weight: bold;
+  color: #111;
+}
+
+/* ==== Center Nav Links ==== */
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-center .nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li a {
+  text-decoration: none;
+  font-size: 15px;
+  color: #111;
+  position: relative;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.nav-links li a:hover {
+  color: #2563eb;
+}
+
+.nav-links li a.active {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.nav-links li a.active::after {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 2px;
+  background-color: #2563eb;
+  margin-top: 4px;
+  border-radius: 1px;
+}
+
+/* ==== Right-side Buttons ==== */
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.auth-buttons-custom {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+}
+
+/* ==== Nút Đăng nhập ==== */
+.login-button {
+  background: transparent;
+  border: none;
+  color: #111;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 22px;
+  height: 42px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+  line-height: 1;
+  box-shadow: none;
+  outline: none;
+  z-index: 2;
+}
+
+/* Hover vào login → đổi màu login, tắt hover của signup */
+.auth-buttons-custom {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+}
+
+/* ==== Đăng nhập ==== */
+.login-button {
+  background: transparent;
+  border: none;
+  color: #111;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 22px;
+  height: 42px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+  line-height: 1;
+  box-shadow: none;
+  outline: none;
+  z-index: 2;
+}
+
+/* Hover vào login → login nổi + đổi màu */
+.auth-buttons-custom:hover .login-button:hover {
+  background-color: #3b82f6;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Hover login → signup mất nền */
+.auth-buttons-custom:hover .login-button:hover ~ .signup-button {
+  background-color: transparent;
+  color: #111;
+  box-shadow: none;
+  transform: none;
+  transition: none;
+}
+
+/* ==== Đăng ký ==== */
+.signup-button {
+  background-color: #3b82f6;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 10px 22px;
+  height: 42px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease, color 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-sizing: border-box;
+  line-height: 1;
+}
+
+/* Hover vào signup → nhô lên */
+.signup-button:hover {
+  transform: translateY(-2px);
+}
+
+/* Khi đang hover login thì không cho hover signup */
+.auth-buttons-custom:hover .login-button:hover ~ .signup-button:hover {
+  transform: none;
+}
+
+/* ==== Avatar Dropdown ==== */
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  margin-top: -5px;
+  margin-right: 6px;
+}
+
+.avatar-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu-avatar {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 220px;
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.1);
+  z-index: 999;
+  padding: 12px 0;
+  overflow: hidden;
+}
+
+.dropdown-menu-avatar div {
+  padding: 14px 24px;
+  font-size: 15px;
+  color: #444;
+  cursor: pointer;
+  transition: 0.2s;
+  border-radius: 12px;
+  margin: 4px 12px;
+}
+
+.dropdown-menu-avatar div:hover {
+  background-color: #eaf1ff;
+  color: #1a5edb;
+  font-weight: 600;
+}
+
+/* ==== Footer ==== */
+.footer {
+  background-color: #1e3a8a;
+  color: white;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 14px;
+}

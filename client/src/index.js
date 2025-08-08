@@ -1,3 +1,4 @@
+// index.js
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -6,18 +7,24 @@ import { BrowserRouter } from 'react-router-dom';
 import reportWebVitals from './reportWebVitals';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-import { AuthProvider } from './context/AuthContext';        // 💡 Context đăng nhập
-import { ProfileProvider } from './context/ProfileContext';  // ✅ Context hồ sơ mới thêm
+// Context
+import { LoginProvider } from './context/LoginContext';
+import { ProfileProvider } from './context/ProfileContext';
+import { ChangePasswordProvider } from './context/ChangePasswordContext';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <AuthProvider>
-        <ProfileProvider>       {/* 💙 Bọc App bằng ProfileProvider giống AuthProvider */}
-          <App />
+      <LoginProvider>
+        <ProfileProvider>
+          <ChangePasswordProvider>  {/* <- Thêm dòng này */}
+            <App />
+          </ChangePasswordProvider>
         </ProfileProvider>
-      </AuthProvider>
+      </LoginProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
