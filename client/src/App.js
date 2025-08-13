@@ -32,12 +32,11 @@ function App() {
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/favorite-maids" element={<FavoriteMaids />} />
+      <Route path="/checkout" element={<Checkout />} />
+      <Route path="/orderhistory" element={<OrderHistory />} />
     </Routes>
   );
 }
 
 export default App;
-
-//<Route path="/" element={<FavoriteMaids />} />
-//<Route path="/" element={<Checkout />} />
-//<Route path="/" element={<OrderHistory />} />

@@ -29,6 +29,22 @@ const Header = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Các link hiển thị theo trạng thái đăng nhập
+  const navLinks = isLoggedIn
+    ? [
+        { to: '/', label: 'Trang chủ', end: true },
+        { to: '/service', label: 'Dịch vụ' },
+        { to: '/order-history', label: 'Lịch sử đơn hàng' }, // <- thêm khi đã đăng nhập
+        { to: '/about', label: 'Giới thiệu' },
+        { to: '/contact', label: 'Liên hệ' },
+      ]
+    : [
+        { to: '/', label: 'Trang chủ', end: true },
+        { to: '/service', label: 'Dịch vụ' },
+        { to: '/about', label: 'Giới thiệu' },
+        { to: '/contact', label: 'Liên hệ' },
+      ];
+
   return (
     <>
       <div className="top-info-bar">
@@ -39,7 +55,7 @@ const Header = () => {
 
       <nav className="navbar new-layout">
         <div className="navbar-left">
-          <div className="logo">
+          <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
             <img src="/images/logo.png" alt="MyMaid Logo" />
             <span>MyMaid</span>
           </div>
@@ -47,11 +63,13 @@ const Header = () => {
 
         <div className="navbar-center">
           <ul className="nav-links">
-            <li><NavLink to="/" end>Trang chủ</NavLink></li>
-            <li><NavLink to="/service">Dịch vụ</NavLink></li>
-            <li><NavLink to="/about">Giới thiệu</NavLink></li>
-            <li><NavLink to="/tuyen-dung">Tuyển dụng</NavLink></li>
-            <li><NavLink to="/contact">Liên hệ</NavLink></li>
+            {navLinks.map((link) => (
+              <li key={link.to}>
+                <NavLink to={link.to} end={link.end}>
+                  {link.label}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </div>
 

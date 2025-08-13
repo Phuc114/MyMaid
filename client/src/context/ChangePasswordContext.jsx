@@ -1,26 +1,41 @@
 // src/context/ChangePasswordContext.jsx
-import { createContext, useContext } from 'react';
-import axios from 'axios';
+import { createContext, useContext } from "react";
+import axios from "axios";
 
-export const ChangePasswordContext = createContext();
+export const ChangePasswordContext = createContext(null);
+
+// Tạo 1 instance axios có sẵn baseURL (đỡ phụ thuộc vào proxy)
+const api = axios.create({
+  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000",
+  // withCredentials: true, // nếu bạn dùng cookie thì bật
+});
 
 export const ChangePasswordProvider = ({ children }) => {
   const changePassword = async (oldPassword, newPassword) => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await axios.put('/api/change-password', {
-        oldPassword,
-        newPassword
-      }, {
-        headers: { Authorization: `Bearer ${token}` }
-      });      
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return { success: false, message: "Bạn chưa đăng nhập." };
+      }
 
-      return { success: true, message: res.data.message };
-    } catch (error) {
+      const res = await api.put(
+        "/api/change-password",
+        { oldPassword, newPassword },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      // backend của bạn trả { success, message } -> mình trả nguyên dạng
       return {
-        success: false,
-        message: error.response?.data?.message || 'Đổi mật khẩu thất bại'
+        success: Boolean(res.data?.success),
+        message: res.data?.message || "Đổi mật khẩu thành công",
       };
+    } catch (err) {
+      // Kéo message hợp lệ về cho UI
+      const message =
+        err?.response?.data?.message ||
+        err?.message ||
+        "Đổi mật khẩu thất bại";
+      return { success: false, message };
     }
   };
 

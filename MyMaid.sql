@@ -5,6 +5,7 @@ CREATE TABLE khach_hang (
     mat_khau VARCHAR(255) NOT NULL,
     so_dien_thoai VARCHAR(15),
     ngay_sinh DATE,
+    anh_ho_so_url VARCHAR(255),
     ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -131,6 +132,14 @@ CREATE TABLE danh_gia (
     ngay_danh_gia TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Bảng lưu maid yêu thích của khách hàng
+CREATE TABLE maid_yeu_thich (
+    id_khach_hang INTEGER NOT NULL REFERENCES khach_hang(id_khach_hang) ON DELETE CASCADE,
+    id_maid INTEGER NOT NULL REFERENCES maid(id_maid) ON DELETE CASCADE,
+    PRIMARY KEY (id_khach_hang, id_maid)
+);
+
+
 
 
 DROP TABLE IF EXISTS danh_gia;
@@ -147,6 +156,7 @@ DROP TABLE IF EXISTS maid;
 DROP TABLE IF EXISTS admin;
 DROP TABLE IF EXISTS dich_vu;
 DROP TABLE IF EXISTS danh_muc_dich_vu;
+DROP TABLE IF EXISTS maid_yeu_thich;
 
 
 
@@ -154,18 +164,18 @@ DROP TABLE IF EXISTS danh_muc_dich_vu;
 
 
 -- Insert data into khach_hang (customers)
-INSERT INTO khach_hang (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh) VALUES
-('Nguyễn Văn A', 'a.nguyen@example.com', '123456abcda', '0911111111', '1980-01-15'),
-('Trần Thị B', 'b.tran@example.com', '123456abcdb', '0922222222', '1985-05-20'),
-('Lê Văn C', 'c.le@example.com', '123456abcdc', '0933333333', '1990-08-10'),
-('Phạm Thị D', 'd.pham@example.com', '123456abcdd', '0944444444', '1992-03-25'),
-('Hoàng Văn E', 'e.hoang@example.com', '123456abcde', '0955555555', '1988-11-05'),
-('Vũ Thị F', 'f.vu@example.com', '123456abcdf', '0966666666', '1995-07-15'),
-('Đặng Văn G', 'g.dang@example.com', '123456abcdg', '0977777777', '1983-09-30'),
-('Bùi Thị H', 'h.bui@example.com', '123456abcdh', '0988888888', '1991-12-12'),
-('Lý Văn I', 'i.ly@example.com', '123456abcdi', '0999999999', '1987-04-18'),
-('Trương Thị K', 'k.truong@example.com', '123456abcdk', '0900000000', '1993-06-22'),
-('Ngô Văn L', 'l.ngo@example.com', '123456abcdl', '0912345678', '1989-10-08');
+INSERT INTO khach_hang (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh, anh_ho_so_url) VALUES
+('Nguyễn Văn A', 'a.nguyen@example.com', '123456abcda', '0911111111', '1980-01-15', '/uploads/ava1.jpg'),
+('Trần Thị B', 'b.tran@example.com', '123456abcdb', '0922222222', '1985-05-20', '/uploads/ava2.jpg'),
+('Lê Văn C', 'c.le@example.com', '123456abcdc', '0933333333', '1990-08-10', '/uploads/ava3.jpg'),
+('Phạm Thị D', 'd.pham@example.com', '123456abcdd', '0944444444', '1992-03-25', '/uploads/ava4.jpg'),
+('Hoàng Văn E', 'e.hoang@example.com', '123456abcde', '0955555555', '1988-11-05', '/uploads/ava5.jpg'),
+('Vũ Thị F', 'f.vu@example.com', '123456abcdf', '0966666666', '1995-07-15', '/uploads/ava1.jpg'),
+('Đặng Văn G', 'g.dang@example.com', '123456abcdg', '0977777777', '1983-09-30', '/uploads/ava2.jpg'),
+('Bùi Thị H', 'h.bui@example.com', '123456abcdh', '0988888888', '1991-12-12', '/uploads/ava3.jpg'),
+('Lý Văn I', 'i.ly@example.com', '123456abcdi', '0999999999', '1987-04-18', '/uploads/ava4.jpg'),
+('Trương Thị K', 'k.truong@example.com', '123456abcdk', '0900000000', '1993-06-22', '/uploads/ava5.jpg'),
+('Ngô Văn L', 'l.ngo@example.com', '123456abcdl', '0912345678', '1989-10-08', '/uploads/ava1.jpg');
 
 
 
@@ -447,6 +457,24 @@ INSERT INTO danh_gia (id_lich_dat, id_khach_hang, id_maid, so_sao, binh_luan, ng
 
 
 
+-- Dữ liệu mẫu maid yêu thích
+INSERT INTO maid_yeu_thich (id_khach_hang, id_maid) VALUES
+(1, 2), -- Khách 1 thích Maid 2
+(1, 3), -- Khách 1 thích Maid 3
+(2, 1), -- Khách 2 thích Maid 1
+(2, 4), -- Khách 2 thích Maid 4
+(3, 5), -- Khách 3 thích Maid 5
+(3, 2), -- Khách 3 thích Maid 2
+(3, 6); -- Khách 3 thích Maid 6
+
+
+-- Insert data into admin (administrators)
+INSERT INTO admin (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh, vai_tro, trang_thai, anh_ho_so_url) VALUES
+('Trần Quản Trị', 'admin1@example.com', '123456abcdt', '0911111111', '1985-01-15', 'admin', 'active', '/uploads/ava1.jpg'),
+('Nguyễn Quản Lý', 'admin2@example.com', '123456abcdl', '0922222222', '1990-05-20', 'admin', 'active', '/uploads/ava2.jpg'),
+('Lê Hệ Thống', 'admin3@example.com', '123456abcdt', '0933333333', '1988-08-10', 'admin', 'active', '/uploads/ava3.jpg'),
+('Phạm Điều Hành', 'admin4@example.com', '123456abcdh', '0944444444', '1992-03-25', 'admin', 'inactive', '/uploads/ava4.jpg'),
+('Hoàng Siêu Cấp', 'superadmin@example.com', '123456abcdc', '0955555555', '1980-11-05', 'admin', 'active', '/uploads/ava5.jpg');
 
 
 
