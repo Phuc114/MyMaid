@@ -1,25 +1,14 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import PageBanner from '../components/PageBanner';
 import './Contact.css';
 
 const Contact = () => {
   return (
     <div className="contact-page">
       <Header />
-
-      {/* Banner */}
-      <section
-        className="contact-banner"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('/images/service-banner.png')",
-        }}
-      >
-        <h1>Liên hệ</h1>
-        <p>Trang chủ &gt; Liên hệ</p>
-      </section>
-
+      <PageBanner title="Liên hệ" />
       {/* Form + Info */}
       <section className="contact-content">
         <div className="contact-left">

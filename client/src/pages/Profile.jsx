@@ -7,7 +7,7 @@ import PageBanner from '../components/PageBanner';
 import { useProfile } from '../context/ProfileContext';
 
 const Profile = () => {
-  const { profile, updateProfile } = useProfile();
+  const { profile, saveProfile, fetchAvatarUrl } = useProfile();
 
   const [formData, setFormData] = useState({
     ho_ten: '',
@@ -19,6 +19,11 @@ const Profile = () => {
   const [emailError, setEmailError] = useState('');
   const [notification, setNotification] = useState(null);
 
+  // Avatar UI state
+  const [avatarFile, setAvatarFile] = useState(null);
+  const [avatarUrl, setAvatarUrl] = useState(''); // preview & hiển thị
+
+  // Đổ dữ liệu profile có sẵn
   useEffect(() => {
     if (profile) {
       const formatted = {
@@ -30,50 +35,63 @@ const Profile = () => {
     }
   }, [profile]);
 
-  const validateEmail = (email) => {
-    const regex = /^\S+@\S+\.\S+$/;
-    return regex.test(email);
-  };
+  // Load avatar theo email từ context (backend)
+  useEffect(() => {
+    const load = async () => {
+      if (!formData.email) return;
+      const url = await fetchAvatarUrl(formData.email);
+      setAvatarUrl(url || '');
+    };
+    load();
+  }, [formData.email, fetchAvatarUrl]);
+
+  const validateEmail = (email) => /^\S+@\S+\.\S+$/.test(email);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    if (name === 'email') {
-      setEmailError(validateEmail(value) ? '' : 'Email không hợp lệ');
-    }
+    if (name === 'email') setEmailError(validateEmail(value) ? '' : 'Email không hợp lệ');
   };
 
   const isModified = useCallback(() => {
-    return JSON.stringify(formData) !== JSON.stringify(initialData);
-  }, [formData, initialData]);
+    return JSON.stringify(formData) !== JSON.stringify(initialData) || !!avatarFile;
+  }, [formData, initialData, avatarFile]);
 
+  // Chọn ảnh (preview tạm)
+  const onChooseAvatar = (e) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    setAvatarFile(f);
+    setAvatarUrl(URL.createObjectURL(f));
+  };
+
+  // Bấm cập nhật → giao cho context xử lý toàn bộ
   const handleUpdate = async () => {
     if (!validateEmail(formData.email)) {
       setEmailError('Email không hợp lệ');
       return;
     }
 
-    const updatedData = {
-      ...formData,
-      oldEmail: initialData.email,
-    };
+    // thêm oldEmail để server biết record cũ
+    const payload = { ...formData, oldEmail: initialData?.email };
 
-    const result = await updateProfile(updatedData);
+    const result = await saveProfile(payload, avatarFile);
     if (result.success) {
+      if (result.avatarUrl) setAvatarUrl(result.avatarUrl);
+      setAvatarFile(null);
+      setInitialData({ ...payload });
       setNotification({
         type: 'success',
         title: 'Cập nhật thành công!',
         message: 'Thông tin của bạn đã được lưu.',
       });
-      setInitialData(updatedData);
     } else {
       setNotification({
         type: 'error',
         title: 'Cập nhật thất bại!',
-        message: 'Vui lòng thử lại sau.',
+        message: result.message || 'Vui lòng thử lại sau.',
       });
     }
-
     setTimeout(() => setNotification(null), 1200);
   };
 
@@ -82,7 +100,8 @@ const Profile = () => {
       <Header />
       <PageBanner title="Hồ sơ cá nhân" />
 
-      <div className="profile-page">
+      <div className="profile-page grid-2cols">
+        {/* LEFT: Form thông tin */}
         <div className="profile-left">
           <h2>Thông tin cá nhân của bạn</h2>
           <p className="subtitle">
@@ -111,21 +130,59 @@ const Profile = () => {
           </div>
 
           <div className="btn-group">
-            <button className="update-btn" onClick={handleUpdate}>Cập nhật</button>
+            <button className="update-btn" onClick={handleUpdate} disabled={!isModified()}>
+              Cập nhật
+            </button>
           </div>
         </div>
 
+        {/* RIGHT: Avatar + Upload + Contact */}
         <div className="profile-right">
-          <h3>Thông tin liên hệ</h3>
-          <p>785 Đường 15, Văn phòng 4.8<br />Quận Tân Bình, TP.HCM</p>
-          <p>support@mymaid.vn</p>
-          <p><strong>+84 912 345 765</strong></p>
+          {/* Avatar block */}
+          <div className="avatar-card">
+            <img className="avatar-lg" src={avatarUrl || '/default-avatar.png'} alt="avatar" />
 
-          <div className="social-icons blue">
-            <i className="fab fa-facebook"></i>
-            <i className="fab fa-twitter"></i>
-            <i className="fab fa-instagram"></i>
-            <i className="fab fa-google"></i>
+            {/* Hidden input + nút “Tải ảnh” */}
+            <input
+              id="avatar-input"
+              type="file"
+              accept="image/*"
+              onChange={onChooseAvatar}
+              style={{ display: 'none' }}
+            />
+            <button
+              type="button"
+              className="update-btn outline"
+              onClick={() => document.getElementById('avatar-input').click()}
+            >
+              Tải ảnh
+            </button>
+
+            <p className="upload-note">
+              Dung lượng tối đa <strong>2MB</strong>.<br />
+              Định dạng hỗ trợ: <strong>JPG, PNG, WEBP</strong>.
+            </p>
+          </div>
+
+          {/* Contact block */}
+          <div className="contact-card">
+            <h3>Thông tin liên hệ</h3>
+            <p>
+              785 Đường 15, Văn phòng 4.8
+              <br />
+              Quận Tân Bình, TP.HCM
+            </p>
+            <p>support@mymaid.vn</p>
+            <p>
+              <strong>+84 912 345 765</strong>
+            </p>
+
+            <div className="social-icons blue">
+              <i className="fab fa-facebook" />
+              <i className="fab fa-twitter" />
+              <i className="fab fa-instagram" />
+              <i className="fab fa-google" />
+            </div>
           </div>
         </div>
       </div>
@@ -140,11 +197,13 @@ const Profile = () => {
             />
           </div>
 
-          <div className="popup-content">
+        <div className="popup-content">
             <strong>{notification.title}</strong>
             <p>{notification.message}</p>
           </div>
-          <div className="popup-close" onClick={() => setNotification(null)}>×</div>
+          <div className="popup-close" onClick={() => setNotification(null)}>
+            ×
+          </div>
         </div>
       )}
 

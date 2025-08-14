@@ -5,7 +5,7 @@ CREATE TABLE khach_hang (
     mat_khau VARCHAR(255) NOT NULL,
     so_dien_thoai VARCHAR(15),
     ngay_sinh DATE,
-    anh_ho_so_url VARCHAR(255),
+    anh_ho_so_url TEXT,
     ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -25,7 +25,7 @@ CREATE TABLE admin (
     ngay_sinh DATE,
     vai_tro VARCHAR(10) NOT NULL CHECK (vai_tro IN ('maid', 'admin')),
     trang_thai VARCHAR(20) DEFAULT 'active' CHECK (trang_thai IN ('active', 'inactive')),
-    anh_ho_so_url VARCHAR(255),
+    anh_ho_so_url TEXT,
     ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -40,7 +40,7 @@ CREATE TABLE maid (
     trang_thai VARCHAR(20) DEFAULT 'active' CHECK (trang_thai IN ('active', 'inactive')),
     tieu_su TEXT,
     diem_danh_gia_tb NUMERIC(3,2) DEFAULT 5.00,
-    anh_ho_so_url VARCHAR(255),
+    anh_ho_so_url TEXT,
     ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -165,17 +165,17 @@ DROP TABLE IF EXISTS maid_yeu_thich;
 
 -- Insert data into khach_hang (customers)
 INSERT INTO khach_hang (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh, anh_ho_so_url) VALUES
-('Nguyễn Văn A', 'a.nguyen@example.com', '123456abcda', '0911111111', '1980-01-15', '/uploads/ava1.jpg'),
-('Trần Thị B', 'b.tran@example.com', '123456abcdb', '0922222222', '1985-05-20', '/uploads/ava2.jpg'),
-('Lê Văn C', 'c.le@example.com', '123456abcdc', '0933333333', '1990-08-10', '/uploads/ava3.jpg'),
-('Phạm Thị D', 'd.pham@example.com', '123456abcdd', '0944444444', '1992-03-25', '/uploads/ava4.jpg'),
-('Hoàng Văn E', 'e.hoang@example.com', '123456abcde', '0955555555', '1988-11-05', '/uploads/ava5.jpg'),
-('Vũ Thị F', 'f.vu@example.com', '123456abcdf', '0966666666', '1995-07-15', '/uploads/ava1.jpg'),
-('Đặng Văn G', 'g.dang@example.com', '123456abcdg', '0977777777', '1983-09-30', '/uploads/ava2.jpg'),
-('Bùi Thị H', 'h.bui@example.com', '123456abcdh', '0988888888', '1991-12-12', '/uploads/ava3.jpg'),
-('Lý Văn I', 'i.ly@example.com', '123456abcdi', '0999999999', '1987-04-18', '/uploads/ava4.jpg'),
-('Trương Thị K', 'k.truong@example.com', '123456abcdk', '0900000000', '1993-06-22', '/uploads/ava5.jpg'),
-('Ngô Văn L', 'l.ngo@example.com', '123456abcdl', '0912345678', '1989-10-08', '/uploads/ava1.jpg');
+('Nguyễn Văn A', 'a.nguyen@example.com', '123456abcda', '0911111111', '1980-01-15', NULL),
+('Trần Thị B', 'b.tran@example.com', '123456abcdb', '0922222222', '1985-05-20', NULL),
+('Lê Văn C', 'c.le@example.com', '123456abcdc', '0933333333', '1990-08-10', NULL),
+('Phạm Thị D', 'd.pham@example.com', '123456abcdd', '0944444444', '1992-03-25', NULL),
+('Hoàng Văn E', 'e.hoang@example.com', '123456abcde', '0955555555', '1988-11-05', NULL),
+('Vũ Thị F', 'f.vu@example.com', '123456abcdf', '0966666666', '1995-07-15', NULL),
+('Đặng Văn G', 'g.dang@example.com', '123456abcdg', '0977777777', '1983-09-30', NULL),
+('Bùi Thị H', 'h.bui@example.com', '123456abcdh', '0988888888', '1991-12-12', NULL),
+('Lý Văn I', 'i.ly@example.com', '123456abcdi', '0999999999', '1987-04-18', NULL),
+('Trương Thị K', 'k.truong@example.com', '123456abcdk', '0900000000', '1993-06-22', NULL),
+('Ngô Văn L', 'l.ngo@example.com', '123456abcdl', '0912345678', '1989-10-08', NULL);
 
 
 
@@ -201,17 +201,17 @@ INSERT INTO dia_chi_da_luu (id_khach_hang, ten_goi_nho, dia_chi_day_du) VALUES
 
 -- Insert data into maid (maids)
 INSERT INTO maid (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh, vai_tro, trang_thai, tieu_su, diem_danh_gia_tb, anh_ho_so_url) VALUES
-('Nguyễn Thị Hoa', 'hoa.nguyen@example.com', '123456abcdh', '0912345678', '1990-05-15', 'maid', 'active', '5 năm kinh nghiệm dọn dẹp nhà cửa', 4.8, '/uploads/ava1.jpg'),
-('Trần Văn Minh', 'minh.tran@example.com', '123456abcdm', '0923456789', '1985-08-20', 'maid', 'active', 'Chuyên nghiệp về giặt ủi và là quần áo', 4.9, '/uploads/ava4.jpg'),
-('Lê Thị Lan', 'lan.le@example.com', '123456abcdl', '0934567890', '1992-03-10', 'maid', 'active', 'Nấu ăn ngon, đa dạng món', 4.7, '/uploads/ava2.jpg '),
-('Phạm Văn Tuấn', 'tuan.pham@example.com', '123456abcdt', '0945678901', '1988-11-25', 'maid', 'active', 'Kinh nghiệm chăm sóc trẻ em 7 năm', 4.6, '/uploads/ava5.jpg'),
-('Hoàng Thị Mai', 'mai.hoang@example.com', '123456abcdm', '0956789012', '1993-07-05', 'maid', 'active', 'Chuyên chăm sóc người già và bệnh nhân', 4.5, '/uploads/ava3.jpg'),
-('Vũ Đức Anh', 'anh.vu@example.com', '123456abcda', '0967890123', '1987-09-12', 'maid', 'active', 'Yêu thú cưng, có thể chăm sóc mọi loại vật nuôi', 4.9, '/uploads/ava4.jpg'),
-('Đặng Thị Hương', 'huong.dang@example.com', '123456abcdh', '0978901234', '1991-12-30', 'maid', 'active', 'Chuyên tổng vệ sinh nhà cửa, văn phòng', 4.7, '/uploads/ava1.jpg'),
-('Ngô Văn Hùng', 'hung.ngo@example.com', '123456abcdh', '0989012345', '1986-06-18', 'maid', 'active', 'Thợ sửa chữa đồ gia dụng nhỏ', 4.4, '/uploads/ava5.jpg'),
-('Bùi Thị Ngọc', 'ngoc.bui@example.com', '123456abcdn', '0990123456', '1994-02-22', 'maid', 'active', 'Chuyên dọn dẹp sau tiệc, sự kiện', 4.8, '/uploads/ava2.jpg'),
-('Lý Văn Cường', 'cuong.ly@example.com', '123456abcdc', '0901234567', '1989-10-08', 'maid', 'active', 'Kinh nghiệm làm vườn, chăm sóc cây cảnh', 4.3, '/uploads/ava4.jpg'),
-('Trương Thị Thu', 'thu.truong@example.com', '123456abcdt', '0913456789', '1995-04-17', 'maid', 'active', 'Chuyên vệ sinh cửa kính cao tầng', 4.6, '/uploads/ava3.jpg');
+('Nguyễn Thị Hoa', 'hoa.nguyen@example.com', '123456abcdh', '0912345678', '1990-05-15', 'maid', 'active', '5 năm kinh nghiệm dọn dẹp nhà cửa', 4.8, NULL),
+('Trần Văn Minh', 'minh.tran@example.com', '123456abcdm', '0923456789', '1985-08-20', 'maid', 'active', 'Chuyên nghiệp về giặt ủi và là quần áo', 4.9, NULL),
+('Lê Thị Lan', 'lan.le@example.com', '123456abcdl', '0934567890', '1992-03-10', 'maid', 'active', 'Nấu ăn ngon, đa dạng món', 4.7, NULL),
+('Phạm Văn Tuấn', 'tuan.pham@example.com', '123456abcdt', '0945678901', '1988-11-25', 'maid', 'active', 'Kinh nghiệm chăm sóc trẻ em 7 năm', 4.6, NULL),
+('Hoàng Thị Mai', 'mai.hoang@example.com', '123456abcdm', '0956789012', '1993-07-05', 'maid', 'active', 'Chuyên chăm sóc người già và bệnh nhân', 4.5, NULL),
+('Vũ Đức Anh', 'anh.vu@example.com', '123456abcda', '0967890123', '1987-09-12', 'maid', 'active', 'Yêu thú cưng, có thể chăm sóc mọi loại vật nuôi', 4.9, NULL),
+('Đặng Thị Hương', 'huong.dang@example.com', '123456abcdh', '0978901234', '1991-12-30', 'maid', 'active', 'Chuyên tổng vệ sinh nhà cửa, văn phòng', 4.7, NULL),
+('Ngô Văn Hùng', 'hung.ngo@example.com', '123456abcdh', '0989012345', '1986-06-18', 'maid', 'active', 'Thợ sửa chữa đồ gia dụng nhỏ', 4.4, NULL),
+('Bùi Thị Ngọc', 'ngoc.bui@example.com', '123456abcdn', '0990123456', '1994-02-22', 'maid', 'active', 'Chuyên dọn dẹp sau tiệc, sự kiện', 4.8, NULL),
+('Lý Văn Cường', 'cuong.ly@example.com', '123456abcdc', '0901234567', '1989-10-08', 'maid', 'active', 'Kinh nghiệm làm vườn, chăm sóc cây cảnh', 4.3, NULL),
+('Trương Thị Thu', 'thu.truong@example.com', '123456abcdt', '0913456789', '1995-04-17', 'maid', 'active', 'Chuyên vệ sinh cửa kính cao tầng', 4.6, NULL);
 
 
 -- Insert data into lich_lam_viec (maid work schedules)
@@ -470,11 +470,11 @@ INSERT INTO maid_yeu_thich (id_khach_hang, id_maid) VALUES
 
 -- Insert data into admin (administrators)
 INSERT INTO admin (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh, vai_tro, trang_thai, anh_ho_so_url) VALUES
-('Trần Quản Trị', 'admin1@example.com', '123456abcdt', '0911111111', '1985-01-15', 'admin', 'active', '/uploads/ava1.jpg'),
-('Nguyễn Quản Lý', 'admin2@example.com', '123456abcdl', '0922222222', '1990-05-20', 'admin', 'active', '/uploads/ava2.jpg'),
-('Lê Hệ Thống', 'admin3@example.com', '123456abcdt', '0933333333', '1988-08-10', 'admin', 'active', '/uploads/ava3.jpg'),
-('Phạm Điều Hành', 'admin4@example.com', '123456abcdh', '0944444444', '1992-03-25', 'admin', 'inactive', '/uploads/ava4.jpg'),
-('Hoàng Siêu Cấp', 'superadmin@example.com', '123456abcdc', '0955555555', '1980-11-05', 'admin', 'active', '/uploads/ava5.jpg');
+('Trần Quản Trị', 'admin1@example.com', '123456abcdt', '0911111111', '1985-01-15', 'admin', 'active', NULL),
+('Nguyễn Quản Lý', 'admin2@example.com', '123456abcdl', '0922222222', '1990-05-20', 'admin', 'active', NULL),
+('Lê Hệ Thống', 'admin3@example.com', '123456abcdt', '0933333333', '1988-08-10', 'admin', 'active', NULL),
+('Phạm Điều Hành', 'admin4@example.com', '123456abcdh', '0944444444', '1992-03-25', 'admin', 'inactive', NULL),
+('Hoàng Siêu Cấp', 'superadmin@example.com', '123456abcdc', '0955555555', '1980-11-05', 'admin', 'active', NULL);
 
 
 
