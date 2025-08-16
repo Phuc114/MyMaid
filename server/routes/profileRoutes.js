@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
+
 const {
   getProfile,
   updateProfile,
-  updateProfileWithAvatar,   // NEW
-  getAvatarUrl               // NEW (tiện cho FE lấy avatar)
+  updateProfileWithAvatar,
+  getAvatarUrl,
 } = require('../controllers/profileController');
 
-// ===== Avatar + update profile (NEW) =====
+// Multer để nhận file avatar (buffer upload lên Supabase)
 const multer = require('multer');
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -16,17 +17,27 @@ const upload = multer({
     if (!file) return cb(null, true);
     const ok = ['image/jpeg', 'image/png', 'image/webp', 'image/jpg'].includes(file.mimetype);
     cb(ok ? null : new Error('Chỉ hỗ trợ jpg/png/webp'), ok);
-  }
+  },
 });
 
-// Lấy URL avatar theo email (public/signed) — dùng để render khi load trang
-router.get('/avatar', getAvatarUrl);
+// LẤY AVATAR (public/signed URL)
+if (typeof getAvatarUrl === 'function') {
+  router.get('/avatar', getAvatarUrl);
+}
 
-// Cập nhật thông tin + (tùy chọn) avatar
-router.put('/update-with-avatar', upload.single('avatar'), updateProfileWithAvatar);
+// CẬP NHẬT THÔNG TIN + (tùy chọn) AVATAR
+if (typeof updateProfileWithAvatar === 'function') {
+  router.put('/update-with-avatar', upload.single('avatar'), updateProfileWithAvatar);
+}
 
-// ===== Route cũ giữ nguyên =====
-router.post('/', getProfile);             // lấy thông tin
-router.put('/update', updateProfile);     // cập nhật thông tin (không kèm file)
+// LẤY PROFILE (không kèm file)
+if (typeof getProfile === 'function') {
+  router.post('/', getProfile);
+}
+
+// CẬP NHẬT PROFILE (không kèm file)
+if (typeof updateProfile === 'function') {
+  router.put('/update', updateProfile);
+}
 
 module.exports = router;

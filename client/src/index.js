@@ -11,7 +11,10 @@ import '@fortawesome/fontawesome-free/css/all.min.css';
 import { LoginProvider } from './context/LoginContext';
 import { ProfileProvider } from './context/ProfileContext';
 import { ChangePasswordProvider } from './context/ChangePasswordContext';
-import { OrderHistoryProvider } from './context/OrderHistoryContext'; // <- THÊM
+import { OrderHistoryProvider } from './context/OrderHistoryContext';
+import { VerifyEmailProvider } from './context/VerifyEmailContext'; // <- THÊM
+import { RegisterProvider } from './context/RegisterContext';
+import { OnboardingProvider } from './context/OnboardingContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -21,8 +24,14 @@ root.render(
       <LoginProvider>
         <ProfileProvider>
           <ChangePasswordProvider>
-            <OrderHistoryProvider>       {/* <- BỌC APP BẰNG CONTEXT LỊCH SỬ */}
-              <App />
+            <OrderHistoryProvider>
+              <VerifyEmailProvider>
+                <RegisterProvider>
+                  <OnboardingProvider>
+                      <App />
+                  </OnboardingProvider>
+               </RegisterProvider>
+              </VerifyEmailProvider>
             </OrderHistoryProvider>
           </ChangePasswordProvider>
         </ProfileProvider>

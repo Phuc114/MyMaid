@@ -140,6 +140,10 @@ CREATE TABLE maid_yeu_thich (
 );
 
 
+ALTER TABLE khach_hang
+  ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT false,
+  ADD COLUMN IF NOT EXISTS otp_code VARCHAR(10),
+  ADD COLUMN IF NOT EXISTS otp_expires TIMESTAMP;
 
 
 DROP TABLE IF EXISTS danh_gia;
@@ -475,6 +479,26 @@ INSERT INTO admin (ho_ten, email, mat_khau, so_dien_thoai, ngay_sinh, vai_tro, t
 ('Lê Hệ Thống', 'admin3@example.com', '123456abcdt', '0933333333', '1988-08-10', 'admin', 'active', NULL),
 ('Phạm Điều Hành', 'admin4@example.com', '123456abcdh', '0944444444', '1992-03-25', 'admin', 'inactive', NULL),
 ('Hoàng Siêu Cấp', 'superadmin@example.com', '123456abcdc', '0955555555', '1980-11-05', 'admin', 'active', NULL);
+
+
+
+UPDATE khach_hang
+SET email_verified = true,
+    otp_code = NULL,
+    otp_expires = NULL
+WHERE email IN (
+    'a.nguyen@example.com',
+    'b.tran@example.com',
+    'c.le@example.com',
+    'd.pham@example.com',
+    'e.hoang@example.com',
+    'f.vu@example.com',
+    'g.dang@example.com',
+    'h.bui@example.com',
+    'i.ly@example.com',
+    'k.truong@example.com',
+    'l.ngo@example.com'
+);
 
 
 

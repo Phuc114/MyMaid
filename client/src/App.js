@@ -13,6 +13,8 @@ import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import Profile from './pages/Profile';
 import ChangePassword from './pages/ChangePassword';
+import VerifyEmail from './pages/VerifyEmail';
+import CompleteProfile from "./pages/CompleteProfile";
 import './pages/Service.css'; 
 
 
@@ -35,6 +37,8 @@ function App() {
       <Route path="/favorite-maids" element={<FavoriteMaids />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/orderhistory" element={<OrderHistory />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
+      <Route path="/complete-profile" element={<CompleteProfile />} />
     </Routes>
   );
 }
