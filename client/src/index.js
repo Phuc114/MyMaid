@@ -12,9 +12,12 @@ import { LoginProvider } from './context/LoginContext';
 import { ProfileProvider } from './context/ProfileContext';
 import { ChangePasswordProvider } from './context/ChangePasswordContext';
 import { OrderHistoryProvider } from './context/OrderHistoryContext';
-import { VerifyEmailProvider } from './context/VerifyEmailContext'; // <- THÊM
+import { VerifyEmailProvider } from './context/VerifyEmailContext';
 import { RegisterProvider } from './context/RegisterContext';
 import { OnboardingProvider } from './context/OnboardingContext';
+
+// NEW: Forgot password context
+import { ForgotPasswordProvider } from './context/ForgotPasswordContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -28,9 +31,12 @@ root.render(
               <VerifyEmailProvider>
                 <RegisterProvider>
                   <OnboardingProvider>
+                    {/* NEW: wrap App with ForgotPasswordProvider */}
+                    <ForgotPasswordProvider>
                       <App />
+                    </ForgotPasswordProvider>
                   </OnboardingProvider>
-               </RegisterProvider>
+                </RegisterProvider>
               </VerifyEmailProvider>
             </OrderHistoryProvider>
           </ChangePasswordProvider>

@@ -500,13 +500,47 @@ WHERE email IN (
     'l.ngo@example.com'
 );
 
+ALTER TABLE admin
+  ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT false,
+  ADD COLUMN IF NOT EXISTS otp_code VARCHAR(10),
+  ADD COLUMN IF NOT EXISTS otp_expires TIMESTAMP;
 
 
-SELECT * FROM khach_hang WHERE id_khach_hang = 1;
+UPDATE admin
+SET email_verified = true,
+    otp_code = NULL,
+    otp_expires = NULL
+WHERE email IN (
+    'admin1@example.com',
+    'admin2@example.com',
+    'admin3@example.com',
+    'admin4@example.com',
+    'superadmin@example.com'
+);
+-- Bắt buộc email không null
+ALTER TABLE khach_hang
+  ALTER COLUMN email SET NOT NULL;
 
+-- Xoá unique partial index (nếu có), trả lại unique constraint chuẩn
+DROP INDEX IF EXISTS uq_khach_hang_email_notnull;
+ALTER TABLE khach_hang
+  ADD CONSTRAINT khach_hang_email_key UNIQUE (email);
 
+-- Nếu đã tạo unique index có điều kiện cho phone thì bỏ (không còn dùng cho OTP)
+DROP INDEX IF EXISTS uq_khach_hang_phone_notnull;
 
+-- Xoá các cột phụ trợ cho SMS nếu đã thêm trước đó (tùy bạn có thêm hay không)
+ALTER TABLE khach_hang
+  DROP COLUMN IF EXISTS email_otp_code,
+  DROP COLUMN IF EXISTS email_otp_expires;
 
-
-
-
+ALTER TABLE khach_hang
+  ADD COLUMN IF NOT EXISTS otp_code       VARCHAR(10),
+  ADD COLUMN IF NOT EXISTS otp_expires    TIMESTAMPTZ;  -- hoặc TIMESTAMP cũng được
+  
+  
+  
+  
+  
+  
+  

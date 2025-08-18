@@ -9,6 +9,7 @@ const profileRoutes = require('./routes/profileRoutes');
 const serviceRoutes = require('./routes/serviceRoutes');
 const changePasswordRoutes = require('./routes/ChangePasswordRoutes');
 const orderRoutes = require('./routes/orderRoutes');
+const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
 
 const app = express();
 
@@ -54,6 +55,8 @@ app.use((err, req, res, next) => {
   }
   next(err);
 });
+
+app.use('/api/auth/forgot', forgotPasswordRoutes);
 
 // Phòng khi có lỗi chưa bắt khiến process thoát mà không có log
 process.on('unhandledRejection', (e) => console.error('UNHANDLED REJECTION:', e));

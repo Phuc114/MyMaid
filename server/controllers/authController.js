@@ -7,7 +7,7 @@ const sendEmail = require('../utils/sendEmail'); // đảm bảo tồn tại uti
 
 // ===== helpers =====
 const genOTP = () => (Math.floor(1000 + Math.random() * 9000)).toString(); // 4 số
-const OTP_TTL_MIN = 10; // OTP hết hạn sau 10 phút
+const OTP_TTL_MIN = 5; // OTP hết hạn sau 5 phút
 
 // ===== Đăng ký: tạo user (nếu chưa có), sinh OTP, gửi qua email =====
 exports.register = async (req, res) => {

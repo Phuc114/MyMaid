@@ -91,3 +91,5 @@
   .code-boxes{ justify-content:center; }
   .actions{ justify-content:center; }
 }
+
+.link-btn { background: transparent; border: none; text-decoration: underline; cursor: pointer; }
