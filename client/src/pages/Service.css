@@ -51,7 +51,7 @@
   color: #666;
 }
 
-/* Grid */
+/* Grid mặc định (dùng cho DANH MỤC CON) */
 .service-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -59,6 +59,12 @@
   padding: 30px 20px;
   max-width: 1100px;
   margin: auto;
+}
+
+/* Grid riêng cho MÀN PHÂN LOẠI: 1 hàng 4 mục */
+.service-grid.categories {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1300px;
 }
 
 /* Card */
@@ -193,13 +199,38 @@
 
 /* Responsive */
 @media (max-width: 768px) {
-  .service-grid {
+  .service-grid,
+  .service-grid.categories {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 480px) {
-  .service-grid {
+  .service-grid,
+  .service-grid.categories {
     grid-template-columns: 1fr;
   }
+}
+
+/* Căn giữa phần header khi hiển thị danh mục */
+.category-header {
+  text-align: center;
+  margin: 20px auto 30px auto;
+}
+
+.category-header .back-button {
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.category-header .category-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.category-header .category-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-top: 6px;
 }

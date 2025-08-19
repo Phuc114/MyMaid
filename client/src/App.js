@@ -17,6 +17,8 @@ import Profile from './pages/Profile';
 import ChangePassword from './pages/ChangePassword';
 import VerifyEmail from './pages/VerifyEmail';
 import CompleteProfile from "./pages/CompleteProfile";
+import ServiceCategory from './pages/ServiceCategory';
+import ServiceDetail from './pages/ServiceDetail';
 
 // NEW: pages for forgot-password flow
 import ForgotVerifyOtp from './pages/ForgotVerifyOtp';
@@ -31,6 +33,9 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/service" element={<Service />} />
+      <Route path="/service" element={<Service />} />
+      <Route path="/service/:category" element={<ServiceCategory />} />
+      <Route path="/service/:category/:service" element={<ServiceDetail />} />
       <Route path="/contact" element={<Contact />} />
 
       {/* Auth */}

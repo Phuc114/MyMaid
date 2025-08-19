@@ -12,6 +12,7 @@ const orderRoutes = require('./routes/orderRoutes');
 const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
 const userRoutes = require('./routes/userRoutes');
 
+
 const app = express();
 
 /**
@@ -39,7 +40,7 @@ app.use(express.json());
 // Mount routes (KHÔNG dùng pattern '*' hay '(.*)' ở đâu nữa)
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
-app.use('/api', serviceRoutes);
+app.use('/api/services', serviceRoutes);
 app.use('/api', changePasswordRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/user', userRoutes);

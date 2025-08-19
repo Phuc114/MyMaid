@@ -140,6 +140,16 @@ CREATE TABLE maid_yeu_thich (
 );
 
 
+CREATE TABLE phan_loai_dich_vu (
+    id_phan_loai SERIAL PRIMARY KEY,
+    ten_phan_loai VARCHAR(255) NOT NULL UNIQUE,
+    anh_minh_hoa TEXT,
+    mo_ta TEXT
+);
+
+
+
+
 ALTER TABLE khach_hang
   ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT false,
   ADD COLUMN IF NOT EXISTS otp_code VARCHAR(10),
@@ -539,6 +549,77 @@ ALTER TABLE khach_hang
   ADD COLUMN IF NOT EXISTS otp_expires    TIMESTAMPTZ;  -- hoặc TIMESTAMP cũng được
   
   
+ALTER TABLE danh_muc_dich_vu
+ADD COLUMN phan_loai VARCHAR(50);
+
+-- 1. Vệ sinh tổng quát
+UPDATE danh_muc_dich_vu
+SET phan_loai = 'Vệ sinh tổng quát'
+WHERE id_danh_muc IN (1, 2);
+
+-- 2. Vệ sinh nội thất
+UPDATE danh_muc_dich_vu
+SET phan_loai = 'Vệ sinh nội thất'
+WHERE id_danh_muc IN (3, 4, 5, 6);
+
+-- 3. Vệ sinh thiết bị & bề mặt
+UPDATE danh_muc_dich_vu
+SET phan_loai = 'Vệ sinh thiết bị & bề mặt'
+WHERE id_danh_muc IN (7, 8);
+
+-- 4. Dịch vụ chuyên sâu
+UPDATE danh_muc_dich_vu
+SET phan_loai = 'Dịch vụ chuyên sâu'
+WHERE id_danh_muc IN (9, 10);
+ 
+  
+-- Thêm 2 cột mới
+ALTER TABLE danh_muc_dich_vu
+ADD COLUMN anh_minh_hoa TEXT,     -- URL ảnh (Supabase)
+ADD COLUMN mo_ta TEXT;            -- Mô tả ngắn
+
+-- Gán mô tả cho 10 danh mục (có thể chỉnh câu chữ tuỳ ý)
+UPDATE danh_muc_dich_vu SET mo_ta = 'Làm sạch toàn bộ không gian sống - từ trần đến sàn, từ phòng khách đến phòng ngủ.' WHERE id_danh_muc = 1;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Giữ ngôi nhà luôn gọn gàng, sạch sẽ với các gói định kỳ linh hoạt.' WHERE id_danh_muc = 2;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Khôi phục vẻ đẹp & sự sạch sẽ cho bộ sofa yêu quý của bạn.' WHERE id_danh_muc = 3;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Vệ sinh kỹ lưỡng ghế văn phòng – đảm bảo thẩm mỹ và sức khỏe.' WHERE id_danh_muc = 4;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Loại bỏ bụi bẩn, vi khuẩn và mùi hôi từ nệm của bạn.' WHERE id_danh_muc = 5;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Thảm sạch như mới với công nghệ giặt chuyên sâu.' WHERE id_danh_muc = 6;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Vệ sinh máy lạnh, quạt, tủ lạnh, máy giặt… đảm bảo hiệu năng và tuổi thọ.' WHERE id_danh_muc = 7;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Kính sáng bóng, không vệt bẩn – không gian tràn ngập ánh sáng.' WHERE id_danh_muc = 8;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Khử trùng toàn diện, an toàn cho gia đình & môi trường sống.' WHERE id_danh_muc = 9;
+UPDATE danh_muc_dich_vu SET mo_ta = 'Hỗ trợ các công việc nội trợ thường ngày, linh hoạt theo nhu cầu.' WHERE id_danh_muc = 10;
+
+
+INSERT INTO phan_loai_dich_vu (ten_phan_loai, anh_minh_hoa, mo_ta)
+VALUES
+  ('Vệ sinh tổng quát', 'https://edktkciruhfltbdugwte.supabase.co/storage/v1/object/public/avatars/danh_muc_dich_vu/phan_loai/tongvesinh.png', 'Làm sạch toàn diện không gian sống, từ trần nhà đến sàn.'),
+  ('Vệ sinh nội thất', 'https://edktkciruhfltbdugwte.supabase.co/storage/v1/object/public/avatars/danh_muc_dich_vu/phan_loai/giatsofa.png', 'Đảm bảo nội thất luôn sạch đẹp & bền lâu.'),
+  ('Vệ sinh thiết bị & bề mặt', 'https://edktkciruhfltbdugwte.supabase.co/storage/v1/object/public/avatars/danh_muc_dich_vu/phan_loai/vesinhthietbi.png', 'Giữ gìn các thiết bị và bề mặt trong gia đình sáng bóng, không bám bẩn.'),
+  ('Dịch vụ chuyên sâu', 'https://edktkciruhfltbdugwte.supabase.co/storage/v1/object/public/avatars/danh_muc_dich_vu/phan_loai/giupviecnha.png', 'Các dịch vụ nâng cao như khử trùng, giặt nệm, sofa…');
+
+  
+ALTER TABLE danh_muc_dich_vu
+ADD COLUMN IF NOT EXISTS id_phan_loai INT;
+
+
+
+UPDATE danh_muc_dich_vu d
+SET id_phan_loai = p.id_phan_loai
+FROM phan_loai_dich_vu p
+WHERE d.phan_loai = p.ten_phan_loai
+  AND d.id_phan_loai IS NULL;
+
+ALTER TABLE danh_muc_dich_vu
+  ALTER COLUMN id_phan_loai SET NOT NULL;
+
+ALTER TABLE danh_muc_dich_vu
+  ADD CONSTRAINT fk_dmdv_phan_loai
+  FOREIGN KEY (id_phan_loai)
+  REFERENCES phan_loai_dich_vu(id_phan_loai)
+  ON DELETE CASCADE;
+
+
   
   
   
