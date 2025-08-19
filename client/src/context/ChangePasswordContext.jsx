@@ -24,13 +24,11 @@ export const ChangePasswordProvider = ({ children }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // backend của bạn trả { success, message } -> mình trả nguyên dạng
       return {
         success: Boolean(res.data?.success),
         message: res.data?.message || "Đổi mật khẩu thành công",
       };
     } catch (err) {
-      // Kéo message hợp lệ về cho UI
       const message =
         err?.response?.data?.message ||
         err?.message ||

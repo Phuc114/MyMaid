@@ -1,108 +1,128 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import './HeaderFooter.css';
-import { useLogin } from '../context/LoginContext';
+// components/Header.jsx
+import React, { useEffect, useRef, useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import "./HeaderFooter.css";
+import { useLogin } from "../context/LoginContext";
+import { useUser } from "../context/UserContext";
 
 const Header = () => {
   const navigate = useNavigate();
-  const { user, logout } = useLogin();
-  const isLoggedIn = !!user;
+  const { logout } = useLogin();
+  const { user } = useUser(); // lấy tên + avatar từ context
 
   const [menuOpen, setMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
 
-  const toggleMenu = () => setMenuOpen(!menuOpen);
+  const toggleMenu = () => setMenuOpen((v) => !v);
+  const closeMenu = () => setMenuOpen(false);
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (!dropdownRef.current?.contains(e.target)) closeMenu();
+    };
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, []);
 
   const handleLogout = () => {
     logout();
-    setMenuOpen(false);
-    navigate('/');
+    closeMenu();
+    navigate("/");
   };
 
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-        setMenuOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const isLoggedIn = !!user;
 
-  // Các link hiển thị theo trạng thái đăng nhập
-  const navLinks = isLoggedIn
-    ? [
-        { to: '/', label: 'Trang chủ', end: true },
-        { to: '/service', label: 'Dịch vụ' },
-        { to: '/order-history', label: 'Lịch sử đơn hàng' }, // <- thêm khi đã đăng nhập
-        { to: '/about', label: 'Giới thiệu' },
-        { to: '/contact', label: 'Liên hệ' },
-      ]
-    : [
-        { to: '/', label: 'Trang chủ', end: true },
-        { to: '/service', label: 'Dịch vụ' },
-        { to: '/about', label: 'Giới thiệu' },
-        { to: '/contact', label: 'Liên hệ' },
-      ];
+  // Menu theo trạng thái đăng nhập
+  const publicLinks = [
+    { to: "/", label: "Trang chủ", end: true },
+    { to: "/service", label: "Dịch vụ" },
+    { to: "/about", label: "Giới thiệu" },
+    { to: "/contact", label: "Liên hệ" },
+  ];
+
+  const privateLinks = [
+    { to: "/", label: "Trang chủ", end: true },
+    { to: "/service", label: "Dịch vụ" },
+    { to: "/order-history", label: "Lịch sử đơn hàng" },
+    { to: "/about", label: "Giới thiệu" },
+    { to: "/contact", label: "Liên hệ" },
+  ];
+
+  const links = isLoggedIn ? privateLinks : publicLinks;
 
   return (
-    <>
-      <div className="top-info-bar">
-        <span>Hotline: 1900 1234</span>
-        <span>Email: cskh@mymaid.vn</span>
-        <span>Địa chỉ: 123 Trần Hưng Đạo, Quận 1, TP.HCM</span>
+    <nav className="navbar new-layout">
+      {/* LEFT: logo */}
+      <div className="navbar-left">
+        <div className="logo" onClick={() => navigate("/")}>
+          <img src="/images/maid.png" alt="MyMaid" />
+          <span>MyMaid</span>
+        </div>
       </div>
 
-      <nav className="navbar new-layout">
-        <div className="navbar-left">
-          <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <img src="/images/logo.png" alt="MyMaid Logo" />
-            <span>MyMaid</span>
-          </div>
-        </div>
+      {/* CENTER: nav links */}
+      <div className="navbar-center">
+        <ul className="nav-links">
+          {links.map(({ to, label, end }) => (
+            <li key={to}>
+              <NavLink
+                to={to}
+                end={end}
+                className={({ isActive }) => (isActive ? "active" : undefined)}
+              >
+                {label}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+      </div>
 
-        <div className="navbar-center">
-          <ul className="nav-links">
-            {navLinks.map((link) => (
-              <li key={link.to}>
-                <NavLink to={link.to} end={link.end}>
-                  {link.label}
-                </NavLink>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="navbar-right">
-          {isLoggedIn ? (
-            <div className="avatar-dropdown" ref={dropdownRef}>
+      {/* RIGHT */}
+      <div className="navbar-right">
+        {isLoggedIn ? (
+          <div className="avatar-dropdown" ref={dropdownRef}>
+            <div
+              className="user-chip"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMenu();
+              }}
+            >
               <img
-                src="/images/maid.png"
-                alt="User"
                 className="user-avatar"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleMenu();
-                }}
+                src={user?.avatarUrl || "/images/maid.png"}
+                alt="User"
               />
-              {menuOpen && (
-                <div className="dropdown-menu-avatar">
-                  <div onClick={() => { navigate('/profile'); setMenuOpen(false); }}>Chỉnh sửa hồ sơ</div>
-                  <div onClick={() => { navigate('/change-password'); setMenuOpen(false); }}>Đổi mật khẩu</div>
-                  <div onClick={() => { navigate('/become-maid'); setMenuOpen(false); }}>Trở thành maid</div>
-                  <div onClick={handleLogout}>Đăng xuất</div>
+              <span className="user-name">{user?.name || "Tài khoản"}</span>
+            </div>
+
+            {menuOpen && (
+              <div className="dropdown-menu-avatar">
+                <div onClick={() => { navigate("/profile"); closeMenu(); }}>
+                  Chỉnh sửa hồ sơ
                 </div>
-              )}
-            </div>
-          ) : (
-            <div className="auth-buttons-custom">
-              <button className="login-button" onClick={() => navigate('/login')}>Đăng nhập</button>
-              <button className="signup-button" onClick={() => navigate('/register')}>Đăng ký</button>
-            </div>
-          )}
-        </div>
-      </nav>
-    </>
+                <div onClick={() => { navigate("/change-password"); closeMenu(); }}>
+                  Đổi mật khẩu
+                </div>
+                <div onClick={() => { navigate("/become-maid"); closeMenu(); }}>
+                  Trở thành maid
+                </div>
+                <div onClick={handleLogout}>Đăng xuất</div>
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="auth-buttons-custom">
+            <button className="login-button" onClick={() => navigate("/login")}>
+              Đăng nhập
+            </button>
+            <button className="signup-button" onClick={() => navigate("/register")}>
+              Đăng ký
+            </button>
+          </div>
+        )}
+      </div>
+    </nav>
   );
 };
 

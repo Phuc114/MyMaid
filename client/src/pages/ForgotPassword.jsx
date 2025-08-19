@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import "./ForgotPassword.css"; // giữ style hiện tại của bạn
+import "./ForgotPassword.css";
 import { useNavigate } from "react-router-dom";
 import { useForgotPassword } from "../context/ForgotPasswordContext";
+import Notification from "../components/Notification";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -11,59 +12,43 @@ export default function ForgotPassword() {
   const navigate = useNavigate();
   const { checkEmail, requestOtp, email, setEmail, loading } = useForgotPassword();
 
-  // Trạng thái inline giống trang Đăng ký
-  // - 'idle'     : chưa đủ điều kiện kiểm tra
-  // - 'checking' : đang kiểm tra
-  // - 'ok'       : HỢP LỆ (ở quên mật khẩu == email TỒN TẠI)
-  // - 'notfound' : KHÔNG TỒN TẠI (lỗi)
+  // 'idle' | 'checking' | 'ok' | 'notfound'
   const [status, setStatus] = useState("idle");
   const [touched, setTouched] = useState(false);
-  //const showOk = status === "ok";
-  //const showChecking = status === "checking";
   const showError = status === "notfound";
+  const [notif, setNotif] = useState(null);
 
-  // debounceId dùng để hủy lần kiểm tra cũ nếu người dùng gõ tiếp
-  const debounceMs = 350;
   useEffect(() => {
-    // reset khi chuỗi rỗng hoặc format sai
     if (!email || !emailRegex.test(email)) {
       setStatus("idle");
       return;
     }
-
     let alive = true;
     setStatus("checking");
     const id = setTimeout(async () => {
       const exists = await checkEmail(email.trim());
       if (!alive) return;
-      // Ở quên mật khẩu: email TỒN TẠI mới là hợp lệ
       setStatus(exists ? "ok" : "notfound");
-    }, debounceMs);
-
-    return () => {
-      alive = false;
-      clearTimeout(id);
-    };
+    }, 350);
+    return () => { alive = false; clearTimeout(id); };
   }, [email, checkEmail]);
 
-  const canSubmit = useMemo(() => {
-    // Không re-check khi submit — chỉ cho submit khi status đang 'ok'
-    return emailRegex.test(email || "") && status === "ok" && !loading;
-  }, [email, status, loading]);
+  const canSubmit = useMemo(
+    () => emailRegex.test(email || "") && status === "ok" && !loading,
+    [email, status, loading]
+  );
 
   const onSubmit = async (e) => {
     e.preventDefault();
     setTouched(true);
-
-    // Chặn submit nếu chưa hợp lệ (giống đăng ký: phải pass inline trước)
     if (!canSubmit) return;
 
     const rs = await requestOtp(email.trim());
     if (!rs.ok) {
-      // Lỗi server/network hiển thị nhã nhặn — không đổi inline status đã có
-      alert(rs.message || "Không gửi được OTP. Vui lòng thử lại.");
+      setNotif({ type: "error", message: rs.message || "Không gửi được OTP. Vui lòng thử lại." });
       return;
     }
+    setNotif({ type: "success", message: `Đã gửi mã OTP tới ${email}.` });
     navigate("/forgot-verify-otp");
   };
 
@@ -71,8 +56,16 @@ export default function ForgotPassword() {
     <div className="forgot-wrapper">
       <Header />
 
+      {notif && (
+        <Notification
+          type={notif.type}
+          message={notif.message}
+          duration={3000}
+          onClose={() => setNotif(null)}
+        />
+      )}
+
       <main className="forgot-hero">
-        {/* LEFT: form giống bố cục trước */}
         <section className="forgot-left">
           <h1 className="forgot-title">Quên mật khẩu?</h1>
           <p className="forgot-sub">Nhập email đã đăng ký để nhận mã OTP.</p>
@@ -92,11 +85,10 @@ export default function ForgotPassword() {
               />
             </div>
 
-            {/* Trạng thái inline: giống cách hiển thị ở trang Đăng ký */}
+            {/* Chỉ giữ lỗi inline: email không tồn tại */}
             {touched && showError && (
               <div className="input-error">Email không tồn tại.</div>
             )}
-            
 
             <button type="submit" className="btn-primary" disabled={!canSubmit}>
               {loading ? "Đang gửi..." : "Gửi yêu cầu đặt lại mật khẩu"}
@@ -104,7 +96,6 @@ export default function ForgotPassword() {
           </form>
         </section>
 
-        {/* RIGHT: minh hoạ như trước */}
         <aside className="forgot-right" aria-hidden="true">
           <div className="illus-card">
             <img src="/images/vacum.png" alt="" />

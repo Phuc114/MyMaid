@@ -15,6 +15,7 @@ import { OrderHistoryProvider } from './context/OrderHistoryContext';
 import { VerifyEmailProvider } from './context/VerifyEmailContext';
 import { RegisterProvider } from './context/RegisterContext';
 import { OnboardingProvider } from './context/OnboardingContext';
+import { UserProvider } from './context/UserContext';
 
 // NEW: Forgot password context
 import { ForgotPasswordProvider } from './context/ForgotPasswordContext';
@@ -25,13 +26,13 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <LoginProvider>
+       <UserProvider>
         <ProfileProvider>
           <ChangePasswordProvider>
             <OrderHistoryProvider>
               <VerifyEmailProvider>
                 <RegisterProvider>
                   <OnboardingProvider>
-                    {/* NEW: wrap App with ForgotPasswordProvider */}
                     <ForgotPasswordProvider>
                       <App />
                     </ForgotPasswordProvider>
@@ -41,9 +42,10 @@ root.render(
             </OrderHistoryProvider>
           </ChangePasswordProvider>
         </ProfileProvider>
+       </UserProvider>
       </LoginProvider>
     </BrowserRouter>
   </React.StrictMode>
-);
+ );
 
 reportWebVitals();

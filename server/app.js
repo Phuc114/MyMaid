@@ -10,6 +10,7 @@ const serviceRoutes = require('./routes/serviceRoutes');
 const changePasswordRoutes = require('./routes/ChangePasswordRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/api/profile', profileRoutes);
 app.use('/api', serviceRoutes);
 app.use('/api', changePasswordRoutes);
 app.use('/api/orders', orderRoutes);
+app.use('/api/user', userRoutes);
 
 // Health check
 app.get('/', (req, res) => {

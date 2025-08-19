@@ -5,12 +5,12 @@ import "./ChangePassword.css";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForgotPassword } from "../context/ForgotPasswordContext";
 import { useNavigate } from "react-router-dom";
+import Notification from "../components/Notification";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
   const { email, resetPassword, loading, clearForgotFlow } = useForgotPassword();
 
-  // Guard: chỉ kiểm tra email 1 LẦN khi mount (tránh bị đá ngược sau khi reset)
   const initialEmailRef = useRef(email);
   useEffect(() => {
     if (!initialEmailRef.current) navigate("/forgot-password");
@@ -21,6 +21,8 @@ const ResetPassword = () => {
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const [notif, setNotif] = useState(null);
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -42,18 +44,27 @@ const ResetPassword = () => {
 
     const rs = await resetPassword({ password: newPassword });
     if (!rs.ok) {
-      setErrorMessage(rs.message || "Đặt lại mật khẩu thất bại.");
+      setNotif({ type: "error", message: rs.message || "Đặt lại mật khẩu thất bại." });
       return;
     }
 
-    alert("Đặt lại mật khẩu thành công!");
+    setNotif({ type: "success", message: "Đặt lại mật khẩu thành công!" });
     clearForgotFlow && clearForgotFlow();
-    navigate("/", { replace: true });
+    setTimeout(() => navigate("/", { replace: true }), 700);
   };
 
   return (
     <div className="change-password-page">
       <Header />
+
+      {notif && (
+        <Notification
+            type={notif.type}
+            message={notif.message}
+            onClose={() => setNotif(null)}
+        />
+        )}
+
       <div className="change-container">
         <div className="change-form">
           <h1>Đặt lại mật khẩu</h1>
