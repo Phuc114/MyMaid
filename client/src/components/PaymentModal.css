@@ -1,0 +1,46 @@
+.modal-overlay{
+  position:fixed; inset:0; background:rgba(0,0,0,.45);
+  display:flex; align-items:center; justify-content:center; z-index:9999;
+}
+
+/* NEW: modal co giãn theo màn hình và cho phép phần thân cuộn */
+.modal{
+  background:#fff;
+  width:min(95vw, 640px);
+  max-height:90vh;              /* NEW: giới hạn theo viewport */
+  border-radius:12px;
+  box-shadow:0 10px 40px rgba(0,0,0,.2);
+  display:flex;                 /* NEW */
+  flex-direction:column;        /* NEW */
+}
+
+.modal-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 20px;
+  border-bottom:1px solid #e5e7eb;
+}
+
+.close{border:none;background:transparent;font-size:22px;cursor:pointer}
+
+.modal-body{                    /* NEW: vùng thân cuộn */
+  padding:16px 20px;
+  overflow-y:auto;              /* quan trọng */
+}
+
+.tabs{display:flex;gap:8px;margin:0 0 12px}
+.tabs button{padding:8px 14px;border:1px solid #e5e7eb;background:#f9fafb;border-radius:8px;cursor:pointer}
+.tabs .active{background:#2563eb;color:#fff;border-color:#2563eb}
+
+.summary{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 12px;background:#f3f4f6;border-radius:8px;margin-bottom:12px
+}
+
+.tab-content{                   /* có thể cao → để auto */
+  display:block;
+}
+
+.pay-btn{
+  width:100%;padding:12px 16px;border:none;background:#16a34a;color:#fff;border-radius:10px;cursor:pointer;font-weight:600
+}
+.msg{margin-top:10px;color:#ef4444}

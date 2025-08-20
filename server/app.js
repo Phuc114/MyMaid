@@ -11,7 +11,7 @@ const changePasswordRoutes = require('./routes/ChangePasswordRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
 const userRoutes = require('./routes/userRoutes');
-
+const payRoutes = require('./routes/payRoutes');
 
 const app = express();
 
@@ -44,6 +44,8 @@ app.use('/api/services', serviceRoutes);
 app.use('/api', changePasswordRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/user', userRoutes);
+app.use('/api/pay', payRoutes);
+
 
 // Health check
 app.get('/', (req, res) => {

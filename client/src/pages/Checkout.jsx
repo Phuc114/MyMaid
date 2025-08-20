@@ -1,9 +1,17 @@
-import React from 'react';
+// client/src/pages/Checkout.jsx
+import React, { useState } from 'react';
 import './Checkout.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import PaymentModal from '../components/PaymentModal';
 
 const Checkout = () => {
+  // === NEW: bật/tắt modal thanh toán ===
+  const [showPay, setShowPay] = useState(false);
+
+  // Tổng tiền demo (sau này thay bằng tính theo dịch vụ/m2/giờ...)
+  const amountVnd = 150000; // 150,000 VND
+
   return (
     <div className="checkout-container">
       <Header />
@@ -55,12 +63,21 @@ const Checkout = () => {
             <input type="time" />
             <label>Ghi chú:</label>
             <textarea placeholder="Ghi chú thêm..." rows="3" />
-            <button>Xác nhận đặt lịch</button>
+            {/* NEW: mở modal thanh toán */}
+            <button onClick={() => setShowPay(true)}>Xác nhận đặt lịch</button>
           </div>
         </div>
       </div>
 
       <Footer />
+
+      {/* NEW: Modal thanh toán */}
+      {showPay && (
+        <PaymentModal
+          amount={amountVnd}
+          onClose={() => setShowPay(false)}
+        />
+      )}
     </div>
   );
 };

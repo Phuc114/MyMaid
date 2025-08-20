@@ -1,3 +1,19 @@
+DROP TABLE IF EXISTS danh_gia;
+DROP TABLE IF EXISTS lich_dat;
+DROP TABLE IF EXISTS dich_vu_yeu_thich;
+DROP TABLE IF EXISTS dia_chi_da_luu;
+DROP TABLE IF EXISTS khach_hang;
+DROP TABLE IF EXISTS thanh_toan;
+DROP TABLE IF EXISTS khuyen_mai;
+DROP TABLE IF EXISTS lich_lam_viec;
+DROP TABLE IF EXISTS khu_vuc_hoat_dong;
+DROP TABLE IF EXISTS khu_vuc;
+DROP TABLE IF EXISTS maid;
+DROP TABLE IF EXISTS admin;
+DROP TABLE IF EXISTS dich_vu;
+DROP TABLE IF EXISTS danh_muc_dich_vu;
+DROP TABLE IF EXISTS maid_yeu_thich;
+
 CREATE TABLE khach_hang (
     id_khach_hang INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     ho_ten VARCHAR(100) NOT NULL,
@@ -156,21 +172,7 @@ ALTER TABLE khach_hang
   ADD COLUMN IF NOT EXISTS otp_expires TIMESTAMP;
 
 
-DROP TABLE IF EXISTS danh_gia;
-DROP TABLE IF EXISTS lich_dat;
-DROP TABLE IF EXISTS dich_vu_yeu_thich;
-DROP TABLE IF EXISTS dia_chi_da_luu;
-DROP TABLE IF EXISTS khach_hang;
-DROP TABLE IF EXISTS thanh_toan;
-DROP TABLE IF EXISTS khuyen_mai;
-DROP TABLE IF EXISTS lich_lam_viec;
-DROP TABLE IF EXISTS khu_vuc_hoat_dong;
-DROP TABLE IF EXISTS khu_vuc;
-DROP TABLE IF EXISTS maid;
-DROP TABLE IF EXISTS admin;
-DROP TABLE IF EXISTS dich_vu;
-DROP TABLE IF EXISTS danh_muc_dich_vu;
-DROP TABLE IF EXISTS maid_yeu_thich;
+
 
 
 
@@ -533,8 +535,6 @@ ALTER TABLE khach_hang
 
 -- Xoá unique partial index (nếu có), trả lại unique constraint chuẩn
 DROP INDEX IF EXISTS uq_khach_hang_email_notnull;
-ALTER TABLE khach_hang
-  ADD CONSTRAINT khach_hang_email_key UNIQUE (email);
 
 -- Nếu đã tạo unique index có điều kiện cho phone thì bỏ (không còn dùng cho OTP)
 DROP INDEX IF EXISTS uq_khach_hang_phone_notnull;

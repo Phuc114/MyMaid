@@ -19,6 +19,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import CompleteProfile from "./pages/CompleteProfile";
 import ServiceCategory from './pages/ServiceCategory';
 import ServiceDetail from './pages/ServiceDetail';
+import PaymentResult from './pages/PaymentResult';
 
 // NEW: pages for forgot-password flow
 import ForgotVerifyOtp from './pages/ForgotVerifyOtp';
@@ -54,6 +55,7 @@ function App() {
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/favorite-maids" element={<FavoriteMaids />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/payment-result" element={<PaymentResult />} />
 
       {/* Lịch sử đơn: giữ cả 2 đường dẫn để không phá vỡ liên kết cũ */}
       <Route path="/order-history" element={<OrderHistory />} />
