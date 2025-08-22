@@ -10,6 +10,8 @@ const serviceRoutes = require('./routes/serviceRoutes');
 const changePasswordRoutes = require('./routes/ChangePasswordRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
+const customers = require('./routes/customers');
+const adminRoutes = require("./routes/Admin");
 
 const app = express();
 
@@ -41,7 +43,8 @@ app.use('/api/profile', profileRoutes);
 app.use('/api', serviceRoutes);
 app.use('/api', changePasswordRoutes);
 app.use('/api/orders', orderRoutes);
-
+app.use('/api/customers', customers);
+app.use("/api/admin", adminRoutes);
 // Health check
 app.get('/', (req, res) => {
   res.send('Hello from Node.js backend!');

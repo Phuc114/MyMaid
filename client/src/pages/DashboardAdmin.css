@@ -1,0 +1,48 @@
+/* DashboardAdmin.css */
+.kpi-block {
+  background: white;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+.kpi-title {
+  color: #6b7280;
+  font-weight: 500;
+}
+.kpi-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+.dashboard-container {
+  padding: 0 10rem 10rem 10rem;
+}
+
+.dashboard-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.positive-trend { color: #10b981; }
+.negative-trend { color: #ef4444; }
+
+button {
+  margin-right: 8px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+button.active-btn {
+  background-color: #8884d8;
+  color: white;
+}

@@ -23,7 +23,7 @@ const Login = () => {
 
     try {
       await login(email, matKhau); 
-      navigate('/');
+      navigate('/admin');
     } catch (err) {
       setError(err.message || 'Lỗi đăng nhập!');
     }
