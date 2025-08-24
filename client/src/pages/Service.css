@@ -1,0 +1,236 @@
+.service-page {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.service-main-content {
+  flex: 1;
+}
+
+/* Banner */
+.service-banner {
+  height: 250px;
+  color: white;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.service-banner h1 {
+  font-size: 40px;
+  margin: 0;
+}
+
+.service-banner p {
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* Intro */
+.service-intro {
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.service-intro h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 10px;
+}
+
+.service-intro p {
+  color: #666;
+}
+
+/* Grid mặc định (dùng cho DANH MỤC CON) */
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  padding: 30px 20px;
+  max-width: 1100px;
+  margin: auto;
+}
+
+/* Grid riêng cho MÀN PHÂN LOẠI: 1 hàng 4 mục */
+.service-grid.categories {
+  grid-template-columns: repeat(4, 1fr);
+  max-width: 1300px;
+}
+
+/* Card */
+.service-card {
+  background: white;
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  text-align: left;
+  transition: all 0.3s ease;
+  color: #222;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.service-card:hover {
+  background-color: #4977E5;
+}
+
+.service-card:hover h4,
+.service-card:hover p {
+  color: white;
+}
+
+.service-card img {
+  width: 50px;
+  margin-bottom: 12px;
+  filter: none !important;
+  transition: none !important;
+}
+
+.service-card h4 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #222;
+}
+
+.service-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+}
+
+/* Xem thêm / Rút gọn button */
+.see-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+.see-more-button {
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  background-color: #4977E5;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.see-more-button:hover {
+  background-color: #355ec4;
+}
+
+/* FAQ */
+.faq-section {
+  padding: 60px 20px;
+  background: #fff;
+}
+
+.faq-section h2 {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #111;
+}
+
+.faq-list {
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.faq-item {
+  border-bottom: 1px solid #dcdcdc;
+  padding: 15px 0;
+  cursor: pointer;
+}
+
+.faq-item summary {
+  list-style: none;
+  font-weight: 600;
+  font-size: 16px;
+  color: #111;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.faq-item summary::after {
+  content: "+";
+  font-size: 18px;
+  color: #111;
+  transition: transform 0.3s ease;
+}
+
+.faq-item[open] summary::after {
+  content: "−";
+  color: #4977E5;
+}
+
+.faq-item[open] summary {
+  color: #4977E5;
+}
+
+.faq-item p {
+  margin-top: 8px;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .service-grid,
+  .service-grid.categories {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .service-grid,
+  .service-grid.categories {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Căn giữa phần header khi hiển thị danh mục */
+.category-header {
+  text-align: center;
+  margin: 20px auto 30px auto;
+}
+
+.category-header .back-button {
+  display: block;
+  margin: 0 auto 10px auto;
+}
+
+.category-header .category-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.category-header .category-subtitle {
+  font-size: 16px;
+  color: #666;
+  margin-top: 6px;
+}

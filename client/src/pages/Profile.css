@@ -1,0 +1,346 @@
+.profile-page {
+  display: flex;
+  justify-content: flex-start; 
+  align-items: flex-start;
+  padding: 40px 550px;
+  column-gap: 100px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.profile-left {
+  flex: 2;
+  max-width: 700px;
+}
+
+.profile-left h2 {
+  font-size: 32px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 12px 16px;         /* giống Register */
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 999px;       /* bo tròn như trang đăng ký */
+  background-color: #fff;
+}
+
+.profile-right {
+  flex: 1;
+  max-width: 280px;
+  padding-top: 40px;
+}
+
+.profile-right h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.profile-right p {
+  color: #444;
+  margin-bottom: 10px;
+}
+
+.social-icons {
+  margin-top: 15px;
+}
+
+.social-icons i {
+  font-size: 20px;
+  margin-right: 10px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.social-icons i:hover {
+  color: #3b82f6;
+}
+
+.btn-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.update-btn {
+  padding: 12px;
+  background-color: #467eea;  /* giống trang đăng ký */
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s ease;
+}
+
+.update-btn:hover {
+  background-color: #3569d6;
+}
+
+.back-btn {
+  background-color: #e0e0e0;
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background-color: #cfcfcf;
+}
+
+.error-text {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+}
+
+.popup-title {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.cancel-btn,
+.confirm-btn {
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.cancel-btn {
+  background: #ccc;
+}
+
+.confirm-btn {
+  background: #007bff;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 60px 40px;
+    column-gap: 80px;
+    font-family: 'Segoe UI', sans-serif;
+    flex-wrap: wrap;
+  }
+  
+  .profile-left,
+  .profile-right {
+    flex: 1;
+    max-width: 460px;
+    padding-top: 60px;
+  }  
+
+  .btn-group {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .update-btn,
+  .back-btn {
+    width: 100%;
+  }
+}
+
+.social-icons .blue-icon {
+  color: #3b82f6; /* Xanh dương */
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+/* Popup Notification */
+.popup-notification {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 350px;
+  max-width: 90vw;
+  padding: 20px 25px;
+  border-radius: 12px;
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  z-index: 9999;
+  color: #333;
+  background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.popup-notification.success {
+  background-color: #e6f9ec;
+  border: 2px solid #28a745;
+}
+
+.popup-notification.error {
+  background-color: #fbeaea;
+  border: 2px solid #dc3545;
+}
+
+.popup-icon {
+  font-size: 24px;
+}
+
+.popup-content p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.popup-close {
+  margin-left: auto;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* Social icons - blue version */
+.social-icons.blue i {
+  color: #337ab7;
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.popup-icon img,
+.popup-img {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -40%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+/* Bố cục 2 cột */
+.grid-2cols {
+  display: grid;
+  grid-template-columns: 1fr 360px; /* trái rộng, phải 360px */
+  gap: 32px;
+}
+
+@media (max-width: 992px) {
+  .grid-2cols {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card avatar */
+.avatar-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0;              
+  border: none;            
+  border-radius: 0;        
+  background: transparent; 
+  box-shadow: none;        
+  margin-bottom: 16px;
+}
+.avatar-lg {
+  width: 120px; height: 120px;
+  border-radius: 9999px; object-fit: cover;
+  border: 2px solid #e5e7eb; margin-bottom: 12px;
+}
+
+.upload-note {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #6b7280;
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Nút “Tải ảnh” nhìn giống nút cập nhật nhưng là outline */
+.update-btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.update-btn:hover { opacity: 0.95; }
+
+.update-btn.outline {
+  background: transparent;
+  color: #2563eb;
+  border: 2px solid #2563eb;
+}
+
+/* Contact box bên dưới avatar */
+.contact-card {
+  padding: 0;              
+  border: none;            
+  border-radius: 0;        
+  background: transparent; 
+  box-shadow: none;        
+  transform: translate(350px, -230px); /* sang phải 350px, lên 50px */ 
+  
+}

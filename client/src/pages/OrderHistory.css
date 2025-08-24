@@ -1,0 +1,406 @@
+/* ===== Page layout ===== */
+.order-history-page {
+  background: #fff;
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr auto; /* sticky footer */
+}
+
+/* Tăng độ rộng khu vực nội dung cho giống hình 2 */
+.order-history-container {
+  max-width: 1280px;           /* 1080px -> 1280px */
+  margin: 32px auto 24px;      /* thoáng hơn */
+  padding: 0 32px;             /* đẩy card vào trong một chút */
+  min-height: 0;
+}
+
+/* đảm bảo phần footer (component Footer) chiếm cả hàng cuối */
+.order-history-page > footer,
+.order-history-page > .footer,
+.order-history-page > .site-footer {
+  align-self: stretch;
+}
+
+.breadcrumb {
+  color: #6b7280;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Tiêu đề to & cách dưới rộng như hình 2 */
+.order-history-container h1 {
+  font-size: 28px;
+  margin: 8px 0 24px;
+}
+
+/* ===== CTA ===== */
+.new-service-btn {
+  border: 0;
+  background: #1d4ed8;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.08s ease, box-shadow 0.08s ease, opacity 0.2s;
+}
+.new-service-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(29, 78, 216, 0.2);
+}
+.new-service-btn:active {
+  transform: translateY(0);
+}
+
+/* ===== List & Card ===== */
+.order-list {
+  display: grid;
+  grid-template-columns: 1fr;   /* luôn 1 cột dài */
+  gap: 24px;                    /* card cách nhau xa hơn */
+}
+
+.order-card {
+  width: 100%;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 22px 24px;           /* đậm padding hơn */
+  background: #fff;
+  transition: box-shadow 0.15s ease, transform 0.05s ease;
+}
+
+.order-card:hover {
+  box-shadow: 0 12px 28px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.order-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+/* Nhãn + chữ giống spacing hình 2 */
+.order-left h3 {
+  font-size: 18px;
+  margin: 2px 0 12px;
+}
+.label-muted {
+  color: #6b7280;
+  font-size: 13px;
+  margin-top: 12px;
+}
+.bold-address { font-weight: 600; margin-top: 4px; }
+
+/* ===== Menu (3 chấm) giống style avatar box ===== */
+.order-right {
+  position: relative; /* để dropdown bám vào */
+}
+
+.menu-btn {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 6px 8px;
+  border-radius: 10px;
+}
+.menu-btn:hover {
+  background: #f5f7fb;
+}
+
+/* Hộp dropdown */
+.oh-dropdown-surface {
+  position: absolute;
+  top: 32px;
+  right: 0;
+  min-width: 240px;
+  background: #fff;
+  border-radius: 20px; /* bo góc lớn giống avatar */
+  box-shadow: 0 14px 30px rgba(0,0,0,0.12), 0 3px 8px rgba(0,0,0,0.08);
+  padding: 8px;       /* có khoảng đệm để hover có góc bo bên trong */
+  z-index: 30;
+  animation: oh-pop 140ms ease-out;
+}
+
+/* Item trong dropdown */
+.oh-dropdown-option {
+  width: 100%;
+  display: block;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  outline: none;
+  cursor: pointer;
+  /* khoảng đệm và bo góc như menu avatar */
+  padding: 12px 16px;
+  margin: 4px;              /* tạo khoảng cách để nền hover bo tròn đẹp */
+  border-radius: 12px;
+  font-size: 15px;
+  color: #374151;           /* xám đậm mặc định */
+  transition: background 120ms ease, color 120ms ease, transform 60ms ease;
+}
+
+/* Hover/focus: nền xanh rất nhạt + chữ xanh */
+.oh-dropdown-option:hover,
+.oh-dropdown-option:focus-visible {
+  background: #e8f0fe;      /* xanh nhạt như hình 2 */
+  color: #1d4ed8;           /* chữ xanh */
+  /* nếu muốn giống “nổi” hơn thì dùng font-weight 600 */
+  font-weight: 600;
+}
+
+/* Active: nhấn giữ */
+.oh-dropdown-option:active {
+  background: #dbe7ff;
+  transform: scale(0.997);
+}
+
+/* khoảng cách nhẹ giữa các mục (không cần gạch) */
+.oh-dropdown-option + .oh-dropdown-option { margin-top: 0; }
+
+
+@keyframes oh-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== Footer: trạng thái & nút ===== */
+.order-footer {
+  margin-top: 20px;
+  padding-top: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px dashed #e5e7eb;
+  gap: 12px;
+}
+
+.status-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.status-group .label-muted {
+  margin-top: 0;
+  font-size: 14px;
+}
+
+/* Badge trạng thái như cũ */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;           /* pill rõ hơn */
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.status-badge.pending {
+  background: #fff7ed;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.status-badge.completed {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.status-badge.cancelled {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.footer-buttons {
+  display: flex;
+  gap: 12px;                   /* cách nhau hơn */
+}
+.action-button {
+  border: 1px solid #e5e7eb;
+  background: #fff;
+  color: #111827;
+  padding: 10px 14px;          /* pill bự hơn */
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.12s ease, transform 0.05s ease, box-shadow 0.12s ease;
+}
+.action-button:hover {
+  background: #f3f4f6;
+  box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+}
+.action-button:active { transform: translateY(1px); }
+
+/* ===== Modal đánh giá ===== */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.45);
+  display: grid;
+  place-items: center;
+  z-index: 100;
+}
+
+.modal-content {
+  position: relative;
+  width: 380px;
+  max-width: 92vw;
+  background: #fff;
+  border-radius: 18px;
+  padding: 24px 20px 22px;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+  animation: oh-pop 160ms ease-out;
+}
+
+.favorite-btn {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+}
+
+.favorite-toast-outer {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #111827;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  pointer-events: none;
+  z-index: 101;
+}
+
+.maid-avatar {
+  width: 84px;
+  height: 84px;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 8px;
+}
+
+.rating-title {
+  font-size: 20px;
+  margin: 4px 0 2px;
+}
+
+.rating-sub {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 10px;
+}
+
+.star-rating {
+  font-size: 28px;
+  margin: 4px 0 12px;
+}
+.star {
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.06s ease;
+  margin: 0 2px;
+}
+.star:hover {
+  transform: scale(1.08);
+}
+.star.filled {
+  color: #f59e0b;
+}
+
+.submit-rating-button {
+  display: inline-block;
+  width: 100%;
+  border: 0;
+  background: #1d4ed8;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 4px;
+  transition: transform 0.06s ease, box-shadow 0.12s ease;
+}
+.submit-rating-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(29, 78, 216, 0.18);
+}
+
+/* Nút màu khi Completed / Cancelled (theo yêu cầu trước) */
+.order-card.completed .action-button,
+.order-card.cancelled .action-button {
+  background-color: #4977E5;
+  color: #fff;
+  border: 1px solid #4977E5;
+}
+.order-card.completed .action-button:hover,
+.order-card.cancelled .action-button:hover {
+  background-color: #3b66d3;
+  border-color: #3b66d3;
+}
+
+/* Responsive giống hình 2: thu padding khi màn hẹp */
+@media (max-width: 768px) {
+  .order-history-container { padding: 0 16px; }
+  .order-card { padding: 18px; }
+  .footer-buttons { gap: 8px; }
+}
+
+/* ===== Uncap width for this page only ===== */
+/* Nhiều dự án có .container / .content / .page-container ... set max-width nhỏ.
+   Ta bỏ giới hạn đó khi ở trong .order-history-page */
+   .order-history-page,
+   .order-history-page .container,
+   .order-history-page .content,
+   .order-history-page .page,
+   .order-history-page .page-container,
+   .order-history-page .main,
+   .order-history-page .wrapper {
+     max-width: none !important;
+     width: 100% !important;
+   }
+   
+   /* Container chính: rộng ~hình 2, vẫn có padding hai bên */
+   .order-history-page .order-history-container {
+     width: min(1280px, 100%);      /* full chiều rộng khả dụng nhưng không vượt 1280px */
+     max-width: 1280px !important;  /* ép lại lần nữa để thắng các rule khác */
+     margin: 32px auto 24px !important;
+     padding-inline: 32px;
+   }
+   
+   /* Card kéo dài trọn container */
+   .order-history-page .order-card {
+     width: 100%;
+     padding: 22px 24px;
+   }
+   
+   /* Khi màn nhỏ, thu padding cho gọn */
+   @media (max-width: 768px) {
+     .order-history-page .order-history-container { padding-inline: 16px; }
+     .order-history-page .order-card { padding: 18px; }
+   }
+   

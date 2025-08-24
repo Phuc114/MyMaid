@@ -1,0 +1,85 @@
+/* ===== Layout: footer luôn dính đáy mà không cần fixed ===== */
+.complete-profile-page{
+  min-height:100dvh;          /* dvh cho mobile chính xác */
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+}
+.cp-main{
+  flex:1;                     /* chiếm phần trống, đẩy Footer xuống */
+  display:block;
+}
+
+/* ===== Content ===== */
+.cp-container{
+  max-width:1200px;
+  margin:40px auto;
+  padding:0 24px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:40px;
+}
+.cp-left h1{ font-size:32px; font-weight:800; margin:8px 0; }
+.cp-left p{ color:#475569; margin-bottom:20px; }
+
+.avatar-row{ display:flex; align-items:center; gap:16px; margin:16px 0 8px; }
+.avatar{
+  width:96px; height:96px;
+  border-radius:9999px;
+  background:#eef2ff;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  border:2px dashed #c7d2fe;
+}
+.avatar img{ width:100%; height:100%; object-fit:cover; }
+.placeholder{ color:#64748b; font-size:12px; }
+.upload-btn{
+  padding:10px 14px;
+  border:1px solid #cbd5e1;
+  border-radius:10px;
+  background:#fff;
+  cursor:pointer;
+}
+.hint{ color:#64748b; font-size:12px; }
+
+.cp-form{
+  display:grid;
+  gap:12px;
+  max-width:560px;
+}
+.cp-form label{ font-weight:600; color:#0f172a; }
+.cp-form input{
+  height:44px;
+  border:1px solid #e2e8f0;
+  border-radius:10px;
+  padding:0 14px;
+  outline:none;
+}
+.cp-form input:disabled{ background:#f8fafc; }
+.cp-form button{
+  margin-top:8px;
+  height:48px;
+  border:none;
+  border-radius:12px;
+  background:#5b8cff;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+.cp-form button:disabled{ opacity:.6; cursor:not-allowed; }
+
+.note{ color:#ef4444; font-size:13px; }
+.cp-right{ display:flex; align-items:center; justify-content:center; }
+.cp-right img{ max-width:100%; height:auto; }
+
+/* ===== Responsive ===== */
+@media (max-width: 992px){
+  .cp-container{
+    grid-template-columns:1fr;
+    gap:28px;
+  }
+  .cp-left, .cp-right{
+    text-align:center;
+  }
+  .cp-form{ margin-left:auto; margin-right:auto; }
+}

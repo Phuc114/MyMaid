@@ -1,0 +1,263 @@
+/* === GIAO DIỆN CHUNG CỦA TRANG === */
+.service-manager-page {
+    background-color: #f4f7f6;
+    min-height: 100vh;
+}
+
+.service-manager-main {
+    padding: 2rem;
+}
+
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+}
+
+.add-service-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 0.7rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    transition: background 0.2s ease;
+}
+.add-service-btn:hover {
+    background-color: #0056b3;
+}
+
+.service-list-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.service-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.service-table th,
+.service-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #e9ecef;
+}
+.service-table th {
+    font-weight: 600;
+    color: #495057;
+}
+.service-table td {
+    color: #6c757d;
+    vertical-align: middle;
+}
+
+.service-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.service-image {
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.service-description {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Toggle switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 46px;
+    height: 24px;
+}
+.toggle-switch input { display: none; }
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #ccc;
+    border-radius: 34px;
+    transition: .4s;
+}
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px; width: 18px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    border-radius: 50%;
+    transition: .4s;
+}
+input:checked + .slider {
+    background-color: #28a745;
+}
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+/* Action menu (3 chấm) - ĐÃ CẬP NHẬT */
+.action-menu {
+    position: relative;
+    display: inline-block;
+}
+.action-dots {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #6c757d;
+    padding: 0.5rem; /* Tăng vùng có thể click */
+}
+.dropdown {
+    /* Mặc định ẩn, sẽ được hiển thị bằng state trong React */
+    position: absolute;
+    right: 0;
+    margin-top: 0.5rem;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    overflow: hidden;
+    z-index: 10;
+    width: 120px; /* Thêm chiều rộng cố định */
+}
+/* Bỏ đi :hover, vì giờ đã dùng state */
+/* .action-menu:hover .dropdown {
+    display: block;
+} */
+.dropdown button {
+    display: flex; /* Dùng flex để căn chỉnh icon và chữ */
+    align-items: center;
+    gap: 0.5rem; /* Khoảng cách giữa icon và chữ */
+    width: 100%;
+    padding: 0.6rem 1rem;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.dropdown button:hover {
+    background: #f1f1f1;
+}
+.edit-btn { color: #007bff; }
+.delete-btn { color: #dc3545; }
+
+
+/* === CSS CHO MODAL THÊM/SỬA DỊCH VỤ === */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+.modal-content {
+    background: white;
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #333;
+}
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.modal-content input:focus,
+.modal-content textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.2);
+}
+.modal-content textarea {
+    min-height: 80px;
+    resize: vertical;
+    border-radius: 15px;
+}
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+.modal-actions button {
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.btn-cancel {
+    background-color: #f1f1f1;
+    color: #555;
+}
+.btn-cancel:hover {
+    background-color: #e0e0e0;
+}
+.btn-save {
+    background-color: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+.btn-save:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* Thêm vào cuối file ServiceManager.css */
+.service-link {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+}
+.service-link:hover {
+    text-decoration: underline;
+}

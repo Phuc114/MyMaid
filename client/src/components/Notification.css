@@ -1,0 +1,63 @@
+/* components/Notification.css */
+  .notification {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* căn giữa */
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    min-width: 320px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 9999;
+    animation: fadeInScale 0.3s ease;
+  }
+
+  @keyframes fadeInScale {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .notification .icon {
+    font-size: 26px;
+    margin-right: 15px;
+  }
+  
+  .notification .text h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  .notification .text p {
+    margin: 4px 0 0;
+    font-size: 13px;
+  }
+  
+  .notification .close-btn {
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: inherit;
+    margin-left: auto;
+    cursor: pointer;
+  }
+  
+  .notification.success {
+    background-color: #e6f7e9;
+    color: #2e7d32;
+    border: 1.5px solid #2e7d32;
+  }
+  
+  .notification.error {
+    background-color: #fdecea;
+    color: #c62828;
+    border: 1.5px solid #c62828;
+  }
+  

@@ -1,0 +1,159 @@
+.about-section {
+  font-family: 'Segoe UI', sans-serif;
+  padding: 40px 20px;
+}
+
+.about-intro {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+
+.about-left {
+  max-width: 540px;
+}
+
+.about-left h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+.desc {
+  color: #555;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.features {
+  list-style-type: disc;
+  padding-left: 20px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.about-button {
+  background-color: #3b82f6;
+  color: #fff;
+  padding: 12px 22px;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.about-button:hover {
+  background-color: #2563eb;
+}
+
+.about-right {
+  position: relative;
+  max-width: 400px;
+}
+
+.main-img {
+  width: 100%;
+  border-radius: 20px;
+}
+
+.stat-box {
+  position: absolute;
+  background-color: #fff;
+  padding: 10px 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+  font-size: 13px;
+  color: #333;
+  width: 180px;
+}
+
+.stat-box span {
+  font-size: 18px;
+  font-weight: bold;
+  display: block;
+  color: #1e40af;
+  margin-bottom: 4px;
+}
+
+.stat-box.top-left {
+  top: 10%;
+  left: -40px;
+}
+
+.stat-box.bottom-right {
+  bottom: 8%;
+  right: -30px;
+}
+
+/* ====== Dịch vụ ====== */
+.service-intro {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.service-intro h3 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.sub-desc {
+  color: #666;
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  font-size: 15px;
+}
+
+.service-grid {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.service-box {
+  background-color: #fff;
+  padding: 30px 24px;
+  border-radius: 16px;
+  width: 280px;
+  text-align: left;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
+  cursor: pointer;
+  border: 1px solid transparent;
+}
+
+.service-box img {
+  width: 50px;
+  height: 50px;
+  margin-bottom: 15px;
+  transition: transform 0.3s ease;
+}
+
+.service-box h3 {
+  font-size: 17px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.service-box p {
+  color: #555;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Hover effect */
+.service-box:hover {
+  background-color: #e6edff;
+  border: 2px solid #3b82f6;
+  box-shadow: 0 8px 16px rgba(59, 130, 246, 0.2);
+}
+
+.service-box:hover img {
+  transform: translateY(-5px);
+}

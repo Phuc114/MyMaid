@@ -1,0 +1,200 @@
+.homepage {
+  font-family: 'Montserrat', sans-serif;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* --- Hero Section --- */
+.hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 60px;
+  background-color: #e8f1ff;
+  flex-wrap: wrap;
+}
+
+.hero-content {
+  max-width: 50%;
+}
+
+.hero-content h1 {
+  font-size: 36px;
+  color: #1d4ed8;
+  margin-bottom: 15px;
+}
+
+.hero-content p {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.btn-primary {
+  padding: 10px 20px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-primary:hover {
+  background-color: #2563eb;
+}
+
+.hero-image img {
+  max-width: 400px;
+  width: 100%;
+}
+
+/* --- Service / Team / News Sections --- */
+.services,
+.team,
+.news {
+  padding: 60px 20px;
+  text-align: center;
+  background-color: #fff;
+}
+
+.services h2,
+.team h2,
+.news h2 {
+  font-size: 28px;
+  color: #0f172a;
+  margin-bottom: 30px;
+}
+
+.service-cards,
+.team-cards,
+.news-items {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.card,
+.member,
+.news-card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 20px;
+  width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.card:hover,
+.member:hover,
+.news-card:hover {
+  transform: translateY(-5px);
+}
+
+/* --- Benefits Section --- */
+.benefits {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 60px;
+  background-color: #fef9f3;
+  flex-wrap: wrap;
+}
+
+.benefits-text h3 {
+  font-size: 24px;
+  color: #ea580c;
+  margin-bottom: 10px;
+}
+
+.benefits-text p {
+  font-size: 16px;
+  color: #555;
+}
+
+.benefits-img img {
+  max-width: 300px;
+  width: 100%;
+}
+
+/* --- Stats Section --- */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 40px 20px;
+  background-color: #f3f4f6;
+  color: #1e40af;
+  font-weight: bold;
+  text-align: center;
+  flex-wrap: wrap;
+}
+
+.stat {
+  margin: 10px 20px;
+  font-size: 18px;
+}
+
+/* --- Contact Section --- */
+.contact {
+  display: flex;
+  justify-content: space-between;
+  padding: 60px;
+  background-color: #eff6ff;
+  flex-wrap: wrap;
+}
+
+.contact-img img {
+  max-width: 300px;
+  width: 100%;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 400px;
+  width: 100%;
+}
+
+.contact-form h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  color: #1d4ed8;
+}
+
+.contact-form input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.contact-form button {
+  padding: 10px;
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.contact-form button:hover {
+  background-color: #1d4ed8;
+}
+
+/* --- Auth Button (Nav) --- */
+.nav-auth {
+  text-decoration: none;
+  color: #111;
+  font-weight: 500;
+  margin: 0 5px;
+  transition: color 0.2s;
+}
+
+.nav-auth:hover {
+  color: #2563eb;
+  cursor: pointer;
+}

@@ -1,0 +1,95 @@
+/* ====== Layout: footer luôn dưới đáy trang ====== */
+.verify-page{
+  min-height:100dvh;           /* dvh chuẩn trên mobile */
+  display:flex;
+  flex-direction:column;
+  background:#fff;
+}
+.verify-main{
+  flex:1;                      /* chiếm phần trống, đẩy Footer xuống */
+  display:grid;
+  place-items:center;
+  padding:24px 16px;
+}
+
+/* ====== Hero ====== */
+.verify-hero{
+  width:100%;
+  max-width:1100px;
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  align-items:center;
+  gap:40px;
+}
+
+.verify-title{
+  font-size:32px;
+  font-weight:800;
+  margin:0 0 8px;
+}
+.verify-desc{
+  color:#475569;
+  margin:0 0 24px;
+}
+
+/* ====== Form ====== */
+.code-form{ max-width:420px; }
+.code-boxes{ display:flex; gap:12px; margin-bottom:16px; }
+
+.code-boxes input{
+  width:64px; height:64px;
+  border:2px solid #e2e8f0;
+  border-radius:12px;
+  background:#fff;
+  text-align:center;
+  font-size:28px;
+  font-weight:700;
+  outline:none;
+  transition:border-color .15s ease, box-shadow .15s ease;
+}
+.code-boxes input:focus{
+  border-color:#497cf6;
+  box-shadow:0 0 0 4px #497cf61a;
+}
+
+/* Buttons */
+.actions{ display:flex; gap:12px; }
+.btn{
+  height:42px;
+  padding:0 16px;
+  border-radius:10px;
+  border:1px solid transparent;
+  cursor:pointer;
+}
+.btn-primary{
+  background:#497cf6;
+  color:#fff;
+}
+.btn-primary:hover{ background:#366df1; }
+.btn-ghost{
+  background:#fff;
+  border-color:#cbd5e1;
+  color:#374151;
+}
+.btn-ghost:disabled{
+  opacity:.6; cursor:not-allowed;
+}
+
+/* Illustration */
+.verify-right img{
+  width:100%;
+  max-width:440px;
+  display:block;
+  margin:0 auto;
+}
+
+/* ====== Responsive ====== */
+@media (max-width: 960px){
+  .verify-hero{ grid-template-columns:1fr; }
+  .verify-right{ order:-1; }
+  .verify-title, .verify-desc, .code-form{ text-align:center; margin-left:auto; margin-right:auto; }
+  .code-boxes{ justify-content:center; }
+  .actions{ justify-content:center; }
+}
+
+.link-btn { background: transparent; border: none; text-decoration: underline; cursor: pointer; }
