@@ -1,15 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-export default function PaymentResult(){
-  const params = new URLSearchParams(window.location.search);
-  const status = params.get('status') || params.get('resultCode') === '0' ? 'success' : 'pending';
+const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
+
+export default function PaymentResult() {
+  const [msg, setMsg] = useState('Đang xác nhận thanh toán...');
+  useEffect(() => {
+    const run = async () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const resultCode = params.get('resultCode');  // MoMo = '0' là OK
+        const status = params.get('status');          // Stripe (fallback)
+        const method = params.get('method') || (resultCode !== null ? 'MOMO' : 'STRIPE');
+
+        // Lấy orderId đã lưu khi user bấm thanh toán
+        const orderId = sessionStorage.getItem('orderId');
+        if (!orderId) {
+          setMsg('Không tìm thấy orderId để xác nhận.');
+          return;
+        }
+
+        // Thành công (MoMo: resultCode===0; Stripe: status==='success' hoặc không có tham số nhưng đã confirm client)
+        const isSuccess = (resultCode === '0') || (status === 'success') || !params.size;
+
+        if (isSuccess) {
+          const resp = await fetch(`${API_BASE}/api/pay/mark-paid`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+              orderId,
+              method,
+              amount: Number(sessionStorage.getItem('amount')) || 0,
+              transactionId: params.get('payment_intent') || params.get('transId') || null
+            })
+          }).then(r=>r.json());
+
+          if (resp?.ok) {
+            setMsg('Thanh toán thành công! Đơn của bạn đã được xác nhận.');
+          } else {
+            setMsg(resp?.message || 'Không xác nhận được thanh toán.');
+          }
+        } else {
+          setMsg('Thanh toán không thành công hoặc bị huỷ.');
+        }
+      } catch (e) {
+        setMsg('Lỗi: ' + e.message);
+      }
+    };
+    run();
+  }, []);
 
   return (
-    <div style={{maxWidth:680,margin:'40px auto'}}>
+    <div style={{maxWidth:640,margin:'40px auto',padding:20,fontFamily:'system-ui'}}>
       <h2>Kết quả thanh toán</h2>
-      <p>Trạng thái: <strong>{status}</strong></p>
-      <p>Nếu là MoMo sandbox, `resultCode=0` nghĩa là thành công. Stripe sẽ redirect hoặc trả về trong trang tuỳ phương thức.</p>
-      <a href="/order-history">Về Lịch sử đặt</a>
+      <p>{msg}</p>
+      <a href="/">Về trang chủ</a>
     </div>
   );
 }

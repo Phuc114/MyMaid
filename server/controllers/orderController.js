@@ -1,8 +1,9 @@
-// controllers/orderController.js
+// server/controllers/orderController.js
 const db = require('../config/db');
 
+// ===== Lịch sử đơn =====
 exports.getOrderHistory = async (req, res) => {
-  const idKh = req.user?.id_khach_hang; // lấy từ token decode
+  const idKh = req.user?.id_khach_hang; // từ token
   const page = Number(req.query.page || 1);
   const pageSize = Number(req.query.pageSize || 20);
   const offset = (page - 1) * pageSize;
@@ -64,5 +65,113 @@ exports.getOrderHistory = async (req, res) => {
   } catch (err) {
     console.error('Lỗi lấy lịch sử đơn:', err);
     res.status(500).json({ message: 'Lỗi server' });
+  }
+};
+
+// Tạo một đơn pending và trả về id_lich_dat
+exports.createPending = async (req, res) => {
+  try {
+    const idKh = req.user?.id_khach_hang;
+    if (!idKh) return res.status(401).json({ message: 'Thiếu id_khach_hang trong token' });
+
+    const {
+      id_dich_vu,
+      id_dia_chi,
+      ngay_lam_viec, // 'YYYY-MM-DD'
+      gio_bat_dau,   // 'HH:mm'
+      ghi_chu,
+      tong_tien
+    } = req.body || {};
+
+    if (!id_dich_vu || !id_dia_chi || !ngay_lam_viec || !gio_bat_dau || !tong_tien) {
+      return res.status(400).json({
+        message: 'Thiếu dữ liệu: id_dich_vu, id_dia_chi, ngay_lam_viec, gio_bat_dau, tong_tien'
+      });
+    }
+
+    const q = `
+      INSERT INTO lich_dat (
+        id_khach_hang, id_dich_vu, id_dia_chi,
+        thoi_gian_dat, ngay_lam_viec, gio_lam_viec,
+        ghi_chu, tong_tien, trang_thai
+      )
+      VALUES ($1,$2,$3,NOW(),$4,$5,$6,$7,'pending')
+      RETURNING id_lich_dat
+    `;
+    const { rows } = await db.query(q, [
+      idKh, id_dich_vu, id_dia_chi,
+      ngay_lam_viec, gio_bat_dau,
+      ghi_chu ?? null, tong_tien
+    ]);
+
+    return res.json({ ok: true, id_lich_dat: rows[0].id_lich_dat });
+  } catch (e) {
+    console.error('createPending error:', e);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
+
+// ===== Gắn orderId (ma_don_hang) cho đơn pending =====
+// Body: { orderId: string, amount?: number, id_lich_dat?: number }
+exports.attachOrderIdToPending = async (req, res) => {
+  try {
+    const idKh = req.user?.id_khach_hang;
+    if (!idKh) return res.status(401).json({ message: 'Thiếu id_khach_hang trong token' });
+
+    const { orderId, amount, id_lich_dat } = req.body || {};
+    if (!orderId) return res.status(400).json({ message: 'orderId required' });
+
+    let targetId = id_lich_dat;
+
+    // Nếu client không gửi id_lich_dat thì lấy đơn pending mới nhất
+    if (!targetId) {
+      const pending = await db.query(
+        `SELECT id_lich_dat
+           FROM lich_dat
+          WHERE id_khach_hang = $1 AND trang_thai = 'pending'
+          ORDER BY id_lich_dat DESC
+          LIMIT 1`,
+        [idKh]
+      );
+      if (!pending.rows.length) {
+        return res.status(404).json({ message: 'Không tìm thấy đơn pending để gắn orderId' });
+      }
+      targetId = pending.rows[0].id_lich_dat;
+    } else {
+      // Bảo vệ: kiểm tra id_lich_dat có thuộc user & còn hợp lệ
+      const chk = await db.query(
+        `SELECT 1 FROM lich_dat
+          WHERE id_lich_dat = $1 AND id_khach_hang = $2
+            AND trang_thai IN ('pending','created','draft')`,
+        [targetId, idKh]
+      );
+      if (!chk.rows.length) {
+        return res.status(404).json({ message: 'Đơn không hợp lệ để gắn orderId' });
+      }
+    }
+
+    try {
+      const upd = await db.query(
+        `UPDATE lich_dat
+            SET ma_don_hang = $1,
+                tong_tien   = COALESCE($2, tong_tien)
+          WHERE id_lich_dat = $3
+          RETURNING id_lich_dat, ma_don_hang`,
+        [orderId, amount ?? null, targetId]
+      );
+      return res.json({ ok: true, id_lich_dat: upd.rows[0].id_lich_dat, orderId });
+    } catch (uerr) {
+      // Nếu DB chưa có cột ma_don_hang thì báo lỗi "thiếu cột"
+      if (uerr?.code === '42703') {
+        return res.status(409).json({
+          message: "Thiếu cột 'ma_don_hang' trong bảng lich_dat. Hãy chạy lệnh SQL để thêm cột trước khi gắn orderId."
+        });
+      }
+      throw uerr;
+    }
+  } catch (e) {
+    console.error('attachOrderIdToPending error:', e);
+    return res.status(500).json({ message: 'Server error' });
   }
 };

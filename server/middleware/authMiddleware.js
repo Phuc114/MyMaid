@@ -1,3 +1,4 @@
+// server/middleware/authMiddleware.js
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
@@ -19,4 +20,7 @@ const verifyToken = (req, res, next) => {
   });
 };
 
-module.exports = verifyToken;
+// Export cả 3 kiểu để route nào import cũng OK
+module.exports = verifyToken;            // default export: require('../.../authMiddleware')
+module.exports.verifyToken = verifyToken;
+module.exports.requireAuth = verifyToken;

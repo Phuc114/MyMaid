@@ -2,6 +2,46 @@ const crypto = require('crypto');
 const axios = require('axios');
 const Stripe = require('stripe');
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const db = require('../config/db');
+
+exports.markPaid = async (req, res) => {
+  try {
+    const { orderId, method, amount, transactionId } = req.body || {};
+    if (!orderId || !method) {
+      return res.status(400).json({ message: 'orderId & method required' });
+    }
+
+    // 1) Tìm lịch đặt theo ma_don_hang
+    const { rows } = await db.query(
+      'SELECT id_lich_dat FROM lich_dat WHERE ma_don_hang = $1 LIMIT 1',
+      [orderId]
+    );
+    if (!rows.length) return res.status(404).json({ message: 'Order not found' });
+
+    const idLichDat = rows[0].id_lich_dat;
+
+    // 2) Tạo/ghi bản thanh toán
+    const payIns = await db.query(
+      `INSERT INTO thanh_toan (phuong_thuc, so_tien, trang_thai, ma_giao_dich, ngay_thanh_toan)
+       VALUES ($1,$2,'successful',$3, NOW())
+       RETURNING id_thanh_toan`,
+      [method, amount || 0, transactionId || null]
+    );
+    const idThanhToan = payIns.rows[0].id_thanh_toan;
+
+    // 3) Gắn vào lịch đặt + đổi trạng thái đơn
+    await db.query(
+      'UPDATE lich_dat SET id_thanh_toan=$1, trang_thai=$2 WHERE id_lich_dat=$3',
+      [idThanhToan, 'confirmed', idLichDat]
+    );
+
+    return res.json({ ok: true, id_lich_dat: idLichDat, id_thanh_toan: idThanhToan });
+  } catch (e) {
+    console.error('markPaid error:', e);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};
+
 
 // ====== MoMo: Create Payment ======
 exports.createMomoPayment = async (req, res, next) => {
