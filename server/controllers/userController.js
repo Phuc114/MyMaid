@@ -1,5 +1,5 @@
 // controllers/userController.js
-// Lấy thông tin user (tên + avatar) cho Header
+// Lấy thông tin user (tên + avatar + phone + dob) cho Header/Profile
 const pool = require("../config/db");
 
 /**
@@ -8,7 +8,6 @@ const pool = require("../config/db");
  */
 exports.getMe = async (req, res) => {
   try {
-    // hỗ trợ nhiều cách middleware gắn id
     const userId =
       req.user?.id_khach_hang ||
       req.user?.id ||
@@ -19,7 +18,7 @@ exports.getMe = async (req, res) => {
     }
 
     const result = await pool.query(
-      `SELECT id_khach_hang, ho_ten, email, anh_ho_so_url
+      `SELECT id_khach_hang, ho_ten, email, anh_ho_so_url, so_dien_thoai, ngay_sinh
        FROM khach_hang
        WHERE id_khach_hang = $1`,
       [userId]
@@ -30,18 +29,18 @@ exports.getMe = async (req, res) => {
     }
 
     const row = result.rows[0];
-    const name =
-      row.ho_ten ||
-      (row.email ? row.email.split("@")[0] : "Người dùng");
+    const name = row.ho_ten || (row.email ? row.email.split("@")[0] : "Người dùng");
 
-    const payload = {
+    return res.json({
       id: row.id_khach_hang,
       name,
+      ho_ten: row.ho_ten || name,                // alias cho FE cũ
       email: row.email,
-      avatarUrl: row.anh_ho_so_url || null
-    };
-
-    return res.json(payload);
+      avatarUrl: row.anh_ho_so_url || null,
+      so_dien_thoai: row.so_dien_thoai || "",
+      phone: row.so_dien_thoai || "",
+      ngay_sinh: row.ngay_sinh || null
+    });
   } catch (e) {
     console.error("getMe error:", e);
     return res.status(500).json({ message: "Server error" });

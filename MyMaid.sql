@@ -603,7 +603,6 @@ ALTER TABLE danh_muc_dich_vu
 ADD COLUMN IF NOT EXISTS id_phan_loai INT;
 
 
-
 UPDATE danh_muc_dich_vu d
 SET id_phan_loai = p.id_phan_loai
 FROM phan_loai_dich_vu p
@@ -619,6 +618,8 @@ ALTER TABLE danh_muc_dich_vu
   REFERENCES phan_loai_dich_vu(id_phan_loai)
   ON DELETE CASCADE;
 
+ALTER TABLE danh_muc_dich_vu
+DROP COLUMN IF EXISTS phan_loai;
 
   
   

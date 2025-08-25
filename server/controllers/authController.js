@@ -56,34 +56,63 @@ exports.register = async (req, res) => {
 };
 
 // ===== Gửi lại OTP theo email =====
+// ===== Gửi lại OTP theo email (chống spam, tái dùng mã còn hạn) =====
 exports.requestVerifyEmail = async (req, res) => {
   try {
     const { email } = req.body || {};
     if (!email) return res.status(400).json({ ok: false, message: 'Thiếu email' });
 
-    const rs = await pool.query('SELECT id_khach_hang, email_verified FROM khach_hang WHERE email = $1', [email]);
+    const rs = await pool.query(
+      'SELECT id_khach_hang, email_verified, otp_code, otp_expires FROM khach_hang WHERE email = $1',
+      [email]
+    );
     if (rs.rowCount === 0) return res.status(404).json({ ok: false, message: 'Email chưa đăng ký' });
-    if (rs.rows[0].email_verified) return res.status(200).json({ ok: true, message: 'Email đã xác minh.' });
 
+    const u = rs.rows[0];
+    if (u.email_verified) return res.json({ ok: true, message: 'Email đã xác minh.' });
+
+    const now = Date.now();
+    const ttlMs = OTP_TTL_MIN * 60 * 1000;
+
+    // Suy ra thời điểm gửi lần trước từ otp_expires (lúc tạo: expires = now + TTL)
+    const lastSentAt = u.otp_expires ? new Date(u.otp_expires).getTime() - ttlMs : 0;
+    const justSent   = u.otp_expires && (now - lastSentAt) < 30_000; // < 30 giây
+
+    if (justSent) {
+      return res.json({ ok: true, message: 'Mã đã được gửi gần đây. Vui lòng kiểm tra email.' });
+    }
+
+    // Nếu mã cũ còn hạn -> gửi lại đúng mã cũ (không đổi mã)
+    if (u.otp_code && u.otp_expires && new Date(u.otp_expires).getTime() > now) {
+      const leftMin = Math.ceil((new Date(u.otp_expires).getTime() - now) / 60000);
+      await sendEmail(
+        email,
+        'Mã xác minh MyMaid',
+        `Mã xác minh của bạn là: ${u.otp_code}. Mã có hiệu lực trong khoảng ${leftMin} phút.`
+      );
+      return res.json({ ok: true, message: 'Đã gửi lại mã xác minh.' });
+    }
+
+    // Hết hạn -> tạo mã mới
     const otp = genOTP();
-    const expires = new Date(Date.now() + OTP_TTL_MIN * 60 * 1000);
+    const expires = new Date(now + ttlMs);
     await pool.query(
       `UPDATE khach_hang SET otp_code = $1, otp_expires = $2 WHERE email = $3`,
       [otp, expires, email]
     );
-
     await sendEmail(
       email,
       'Mã xác minh MyMaid',
       `Mã xác minh của bạn là: ${otp}. Mã có hiệu lực trong ${OTP_TTL_MIN} phút.`
     );
 
-    res.json({ ok: true, message: 'Đã gửi lại mã xác minh.' });
+    return res.json({ ok: true, message: 'Đã gửi mã xác minh.' });
   } catch (err) {
     console.error('requestVerifyEmail error:', err);
     res.status(500).json({ ok: false, message: 'Lỗi server.' });
   }
 };
+
 
 // ===== Xác minh email bằng OTP (4 số) =====
 exports.verifyEmail = async (req, res) => {
@@ -92,18 +121,15 @@ exports.verifyEmail = async (req, res) => {
     if (!email || !code) return res.status(400).json({ ok: false, message: 'Thiếu email hoặc mã OTP' });
 
     const rs = await pool.query(
-      'SELECT otp_code, otp_expires FROM khach_hang WHERE email = $1',
+      'SELECT id_khach_hang, ho_ten, email, anh_ho_so_url, otp_code, otp_expires FROM khach_hang WHERE email = $1',
       [email]
     );
     if (rs.rowCount === 0) return res.status(404).json({ ok: false, message: 'Email không tồn tại' });
 
-    const { otp_code, otp_expires } = rs.rows[0];
-    if (!otp_code || !otp_expires) return res.status(400).json({ ok: false, message: 'Chưa yêu cầu mã OTP' });
-
-    if (otp_code !== code) return res.status(400).json({ ok: false, message: 'Mã OTP không đúng' });
-    if (new Date(otp_expires).getTime() < Date.now()) {
-      return res.status(400).json({ ok: false, message: 'Mã OTP đã hết hạn' });
-    }
+    const u = rs.rows[0];
+    if (!u.otp_code || !u.otp_expires) return res.status(400).json({ ok: false, message: 'Chưa yêu cầu mã OTP' });
+    if (u.otp_code !== code) return res.status(400).json({ ok: false, message: 'Mã OTP không đúng' });
+    if (new Date(u.otp_expires).getTime() < Date.now()) return res.status(400).json({ ok: false, message: 'Mã OTP đã hết hạn' });
 
     await pool.query(
       `UPDATE khach_hang
@@ -112,12 +138,26 @@ exports.verifyEmail = async (req, res) => {
       [email]
     );
 
-    res.json({ ok: true, message: 'Xác minh email thành công.' });
+    const token = jwt.sign(
+      { id: u.id_khach_hang, role: 'khach_hang', email: u.email },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '2h' }
+    );
+
+    const user = {
+      id: u.id_khach_hang,
+      name: u.ho_ten || (u.email ? u.email.split('@')[0] : 'Người dùng'),
+      email: u.email,
+      avatarUrl: u.anh_ho_so_url || null
+    };
+
+    return res.json({ ok: true, message: 'Xác minh email thành công.', token, user });
   } catch (err) {
     console.error('verifyEmail error:', err);
     res.status(500).json({ ok: false, message: 'Lỗi server.' });
   }
 };
+
 
 // ===== Hoàn tất hồ sơ (tùy chọn) – nếu muốn finalize qua auth thay vì profile =====
 exports.registerFinalize = async (req, res) => {
@@ -145,6 +185,34 @@ exports.registerFinalize = async (req, res) => {
   } catch (err) {
     console.error('registerFinalize error:', err);
     res.status(500).json({ ok: false, message: 'Lỗi server.' });
+  }
+};
+
+// NEW: xoá tài khoản chưa hoàn tất (chưa onboard xong)
+exports.abandonRegistration = async (req, res) => {
+  try {
+    const { email } = req.body || {};
+    if (!email) return res.status(400).json({ ok: false, message: 'Thiếu email' });
+
+    // Điều kiện "chưa hoàn tất": chưa có phone/avatar/ngày sinh (tùy bạn định nghĩa)
+    const sel = await pool.query(
+      `SELECT id_khach_hang, email_verified, so_dien_thoai, ngay_sinh, anh_ho_so_url
+       FROM khach_hang WHERE email = $1`,
+      [email]
+    );
+    if (sel.rowCount === 0) return res.json({ ok: true }); // coi như đã xoá
+
+    const u = sel.rows[0];
+    const onboarded = !!(u.so_dien_thoai || u.ngay_sinh || u.anh_ho_so_url);
+    if (onboarded) {
+      return res.status(409).json({ ok: false, message: 'Tài khoản đã hoàn tất, không thể xoá.' });
+    }
+
+    await pool.query('DELETE FROM khach_hang WHERE email = $1', [email]);
+    return res.json({ ok: true });
+  } catch (e) {
+    console.error('abandonRegistration error:', e);
+    return res.status(500).json({ ok: false, message: 'Lỗi server.' });
   }
 };
 

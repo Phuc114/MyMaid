@@ -67,10 +67,6 @@ const Login = () => {
             {error && <p className="error-message">{error}</p>}
 
             <div className="options-row">
-              <label className="checkbox-label">
-                <input type="checkbox" />
-                Lưu mật khẩu
-              </label>
               <Link to="/forgot-password" className="forgot-link">
                 Quên mật khẩu?
               </Link>

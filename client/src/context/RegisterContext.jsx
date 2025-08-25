@@ -6,37 +6,41 @@ const RegisterCtx = createContext(null);
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
 export function RegisterProvider({ children }) {
-  const { startVerification } = useVerifyEmail();
+  // lấy đúng 2 hàm này: KHÔNG dùng startVerification để tránh gửi OTP lần nữa
+  const { goToVerifyOnly, primePendingInfo } = useVerifyEmail();
   const [loading, setLoading] = useState(false);
 
   const register = async ({ name, email, password }) => {
+    const cleanName = (name || "").trim();
+    const cleanEmail = (email || "").trim().toLowerCase();
+
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim().toLowerCase(),
-          password,
-        }),
+        body: JSON.stringify({ name: cleanName, email: cleanEmail, password }),
       });
 
-      if (res.status === 201) {
-        await startVerification(email.trim().toLowerCase());
+      const data = await res.json().catch(() => ({}));
+
+      if (res.status === 201 || data?.ok) {
+        // LƯU THÔNG TIN TẠM ĐỂ PREFILL BƯỚC SAU
+        primePendingInfo({ name: cleanName, email: cleanEmail, password });
+        // CHỈ CHUYỂN TRANG NHẬP MÃ, KHÔNG GỬI OTP LẠI
+        goToVerifyOnly(cleanEmail);
         return { ok: true };
       }
 
-      const data = await res.json().catch(() => ({}));
-      return { ok: false, message: data.message || "Đăng ký không thành công." };
-    } catch (e) {
+      return { ok: false, message: data?.message || "Đăng ký không thành công." };
+    } catch (_e) {
       return { ok: false, message: "Không thể kết nối máy chủ." };
     } finally {
       setLoading(false);
     }
   };
 
-  // kiểm tra email trùng (giữ nguyên như trước)
+  // kiểm tra email trùng (giữ nguyên)
   const checkEmailAvailability = async (email, { signal } = {}) => {
     try {
       const url = `${API_BASE}/api/auth/check-email?email=${encodeURIComponent(

@@ -1,14 +1,22 @@
 import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import Notification from "../components/Notification";
 import { useVerifyEmail } from "../context/VerifyEmailContext";
 import "./VerifyEmail.css";
 
 const VerifyEmail = () => {
-  const { email, cooldown, resendDisabled, handleResend, handleSubmitCode } = useVerifyEmail();
+  const {
+    email,
+    cooldown,
+    resendDisabled,
+    handleResend,
+    handleSubmitCode,
+  } = useVerifyEmail();
 
   const [digits, setDigits] = useState(["", "", "", ""]);
   const inputsRef = useRef([]);
+  const [notif, setNotif] = useState(null); // {type, title, message}
 
   const focusAt = (idx) => inputsRef.current[idx]?.focus();
 
@@ -41,21 +49,36 @@ const VerifyEmail = () => {
     e.preventDefault();
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
     const code = digits.join("");
-    if (code.length === 4) handleSubmitCode(code);
+    if (code.length !== 4) {
+      setNotif({ type: "error", title: "Lỗi", message: "Vui lòng nhập đủ 4 số." });
+      return;
+    }
+    const rs = await handleSubmitCode(code);
+    if (!rs?.ok) {
+      setNotif({
+        type: "error",
+        title: "Xác minh thất bại",
+        message: rs?.message || "Mã không hợp lệ hoặc đã hết hạn.",
+      });
+    }
   };
 
   useEffect(() => { focusAt(0); }, []);
 
+  const onClickResend = async () => {
+    await handleResend();
+    setNotif({ type: "success", title: "Đã gửi", message: "Mã xác minh đã được gửi lại." });
+  };
+
   return (
-    <div className="verify-page"> {/* flex column, min-height: 100dvh */}
+    <div className="verify-page">
       <Header />
 
-      <main className="verify-main"> {/* flex:1 để đẩy Footer xuống đáy */}
+      <main className="verify-main">
         <section className="verify-hero">
-          {/* LEFT */}
           <div className="verify-left">
             <h1 className="verify-title">Xác minh địa chỉ email của bạn</h1>
             <p className="verify-desc">
@@ -82,7 +105,7 @@ const VerifyEmail = () => {
                 <button
                   type="button"
                   className="btn btn-ghost"
-                  onClick={handleResend}
+                  onClick={onClickResend}
                   disabled={resendDisabled}
                 >
                   {resendDisabled ? `Gửi lại mã (${cooldown}s)` : "Gửi lại mã"}
@@ -92,7 +115,6 @@ const VerifyEmail = () => {
             </form>
           </div>
 
-          {/* RIGHT illustration */}
           <div className="verify-right" aria-hidden="true">
             <img src="/images/vacum.png" alt="" />
           </div>
@@ -100,6 +122,15 @@ const VerifyEmail = () => {
       </main>
 
       <Footer />
+
+      {notif && (
+        <Notification
+          type={notif.type}
+          title={notif.title}
+          message={notif.message}
+          onClose={() => setNotif(null)}
+        />
+      )}
     </div>
   );
 };

@@ -1,93 +1,81 @@
 // src/context/UserContext.jsx
 import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { useLogin } from "./LoginContext";
 
 const UserCtx = createContext(null);
 const API_BASE = process.env.REACT_APP_API_BASE || "http://localhost:5000";
 
+const getToken = () => localStorage.getItem("token") || null;
+
 export const UserProvider = ({ children }) => {
-  const { token } = useLogin();
-  const [user, setUser] = useState(null);   // { id, name, email, avatarUrl }
+  const [user, setUser] = useState(null);   // { id, name, ho_ten, email, avatarUrl, phone, ngay_sinh }
   const [loading, setLoading] = useState(false);
 
-  // Cache-busting cho avatar để trình duyệt không dính ảnh cũ
   const bust = (url) => {
     if (!url) return url;
     const sep = url.includes("?") ? "&" : "?";
     return `${url}${sep}t=${Date.now()}`;
   };
 
-  // --- Lấy lại từ BE (chuẩn) ---
   const refresh = useCallback(async () => {
-    if (!token) {
-      setUser(null);
-      return;
-    }
+    const token = getToken();
+    if (!token) { setUser(null); return; }
     setLoading(true);
     try {
       const res = await fetch(`${API_BASE}/api/user/me`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
         credentials: "include",
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.message || "Không lấy được thông tin người dùng");
 
-      setUser({
+      const next = {
         id: data.id,
         name: data.name,
+        ho_ten: data.ho_ten || data.name,
         email: data.email,
         avatarUrl: data.avatarUrl || null,
-      });
+        so_dien_thoai: data.so_dien_thoai || data.phone || "",
+        phone: data.so_dien_thoai || data.phone || "",
+        ngay_sinh: data.ngay_sinh || ""
+      };
+      setUser(next);
+      localStorage.setItem("user", JSON.stringify(next));
     } catch (e) {
       console.error("UserContext refresh:", e.message);
       setUser(null);
     } finally {
       setLoading(false);
     }
-  }, [token]);
-
-  // --- Cập nhật tức thì tại client ---
-  const applyProfilePatch = useCallback(({ name, avatarUrl } = {}) => {
-    setUser((prev) => {
-      if (!prev) return prev;
-      return {
-        ...prev,
-        ...(name != null ? { name } : {}),
-        ...(avatarUrl != null ? { avatarUrl: bust(avatarUrl) } : {}),
-      };
-    });
   }, []);
 
-  // --- Phương án A+ tối ưu: cập nhật ngay + đồng bộ lại từ BE ở hậu cảnh ---
-  const optimisticUpdateProfile = useCallback(async ({ name, avatarUrl } = {}) => {
-    // 1) Cho Header đổi NGAY
-    applyProfilePatch({ name, avatarUrl });
-    // 2) Rồi gọi refresh() để khớp hoàn toàn với server (không chặn UI)
-    //    Không await để UI mượt, nhưng bạn có thể await nếu muốn.
-    refresh(); 
+  // cập nhật tức thì trên UI (và giữ đồng bộ field alias)
+  const applyProfilePatch = useCallback(({ name, avatarUrl, phone, ngay_sinh } = {}) => {
+    setUser((prev) => prev ? {
+      ...prev,
+      ...(name != null ? { name, ho_ten: name } : {}),
+      ...(avatarUrl != null ? { avatarUrl: bust(avatarUrl) } : {}),
+      ...(phone != null ? { phone, so_dien_thoai: phone } : {}),
+      ...(ngay_sinh != null ? { ngay_sinh } : {}),
+    } : prev);
+  }, []);
+
+  // cập nhật lạc quan rồi gọi refresh để đồng bộ từ BE
+  const optimisticUpdateProfile = useCallback(({ name, avatarUrl, phone, ngay_sinh } = {}) => {
+    applyProfilePatch({ name, avatarUrl, phone, ngay_sinh });
+    refresh();
   }, [applyProfilePatch, refresh]);
 
-  // Tự refresh khi token đổi (login/logout) => Header đổi ngay
   useEffect(() => {
     refresh();
+    const onStorage = (e) => { if (e.key === "token") refresh(); };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
   }, [refresh]);
 
+  const token = getToken();
+
   return (
-    <UserCtx.Provider
-      value={{
-        user,
-        loading,
-        // public APIs
-        refresh,
-        setUser,
-        applyProfilePatch,
-        optimisticUpdateProfile, // <-- dùng cái này là tối ưu nhất
-      }}
-    >
+    <UserCtx.Provider value={{ user, loading, token, refresh, setUser, applyProfilePatch, optimisticUpdateProfile }}>
       {children}
     </UserCtx.Provider>
   );
