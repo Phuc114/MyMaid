@@ -22,6 +22,7 @@ import CustomerManagement from "./pages/CustomerManagement";
 import Statistics from "./pages/Statistics";
 import ServiceCategory from './pages/ServiceCategory';
 import ServiceDetail from './pages/ServiceDetail';
+import PaymentResult from './pages/PaymentResult';
 import ServiceManager from './pages/ServiceManager';
 import AdminServiceDetail from './pages/AdminServiceDetail';
 import CategoryManager from './pages/CategoryManager'; // ✅ Import mới
@@ -60,6 +61,7 @@ function App() {
       <Route path="/change-password" element={<ChangePassword />} />
       <Route path="/favorite-maids" element={<FavoriteMaids />} />
       <Route path="/checkout" element={<Checkout />} />
+      <Route path="/payment-result" element={<PaymentResult />} />
 
       {/* Lịch sử đơn: giữ cả 2 đường dẫn để không phá vỡ liên kết cũ */}
       <Route path="/order-history" element={<OrderHistory />} />

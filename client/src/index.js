@@ -15,9 +15,11 @@ import { OrderHistoryProvider } from './context/OrderHistoryContext';
 import { VerifyEmailProvider } from './context/VerifyEmailContext';
 import { RegisterProvider } from './context/RegisterContext';
 import { OnboardingProvider } from './context/OnboardingContext';
-
-// NEW: Forgot password context
+import { UserProvider } from './context/UserContext';
 import { ForgotPasswordProvider } from './context/ForgotPasswordContext';
+
+// NEW: Service context (lấy danh mục/phân loại từ server)
+import { ServiceProvider } from './context/ServiceContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -25,22 +27,26 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <LoginProvider>
-        <ProfileProvider>
-          <ChangePasswordProvider>
-            <OrderHistoryProvider>
-              <VerifyEmailProvider>
-                <RegisterProvider>
-                  <OnboardingProvider>
-                    {/* NEW: wrap App with ForgotPasswordProvider */}
-                    <ForgotPasswordProvider>
-                      <App />
-                    </ForgotPasswordProvider>
-                  </OnboardingProvider>
-                </RegisterProvider>
-              </VerifyEmailProvider>
-            </OrderHistoryProvider>
-          </ChangePasswordProvider>
-        </ProfileProvider>
+        <UserProvider>
+          <ProfileProvider>
+            <ChangePasswordProvider>
+              <OrderHistoryProvider>
+                <VerifyEmailProvider>
+                  <RegisterProvider>
+                    <OnboardingProvider>
+                      <ForgotPasswordProvider>
+                        {/* Bọc toàn bộ app bằng ServiceProvider */}
+                        <ServiceProvider>
+                          <App />
+                        </ServiceProvider>
+                      </ForgotPasswordProvider>
+                    </OnboardingProvider>
+                  </RegisterProvider>
+                </VerifyEmailProvider>
+              </OrderHistoryProvider>
+            </ChangePasswordProvider>
+          </ProfileProvider>
+        </UserProvider>
       </LoginProvider>
     </BrowserRouter>
   </React.StrictMode>

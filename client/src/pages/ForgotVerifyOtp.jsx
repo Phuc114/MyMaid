@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useForgotPassword } from "../context/ForgotPasswordContext";
+import Notification from "../components/Notification";
 import "./VerifyEmail.css";
 
 const RESEND_SECONDS = 60;
@@ -12,6 +13,8 @@ const ForgotVerifyOtp = () => {
   const [digits, setDigits] = useState(["", "", "", ""]);
   const inputsRef = useRef([]);
   const focusAt = (idx) => inputsRef.current[idx]?.focus();
+
+  const [notif, setNotif] = useState(null);
 
   const setDigit = (i, v) => {
     const val = v.replace(/\D/g, "").slice(0, 1);
@@ -44,50 +47,63 @@ const ForgotVerifyOtp = () => {
 
   const [cooldown, setCooldown] = useState(RESEND_SECONDS);
   const resendDisabled = cooldown > 0;
+
   useEffect(() => {
     focusAt(0);
     setCooldown(RESEND_SECONDS);
   }, []);
+
   useEffect(() => {
     if (cooldown <= 0) return;
     const t = setTimeout(() => setCooldown((s) => s - 1), 1000);
     return () => clearTimeout(t);
   }, [cooldown]);
 
-  const [error, setError] = useState("");
-
   const handleResend = async () => {
     if (!email || resendDisabled) return;
-    setError("");
     const rs = await requestOtp(email);
-    if (rs?.ok) setCooldown(RESEND_SECONDS);
-    else setError(rs?.message || "Gửi lại OTP thất bại.");
+    if (rs?.ok) {
+      setNotif({ type: "success", message: "Đã gửi lại OTP." });
+      setCooldown(RESEND_SECONDS);
+    } else {
+      setNotif({ type: "error", message: rs?.message || "Gửi lại OTP thất bại." });
+    }
   };
 
   const submit = async (e) => {
     e.preventDefault();
-    setError("");
     const code = digits.join("");
     if (code.length !== 4) {
-      setError("Vui lòng nhập đủ 4 chữ số OTP.");
+      setNotif({ type: "error", message: "Vui lòng nhập đủ 4 chữ số OTP." });
       return;
     }
     const rs = await verifyOtp(code);
     if (!rs?.ok) {
       if (rs.reason === "expired") {
-        setError("Mã OTP đã hết hạn. Vui lòng bấm “Gửi lại OTP” để nhận mã mới.");
-        setCooldown(0); // mở khóa nút gửi lại
+        setNotif({ type: "error", message: "Mã OTP đã hết hạn. Vui lòng bấm Gửi lại OTP để nhận mã mới." });
+        setCooldown(0); // mở khóa nút gửi lại ngay
       } else {
-        setError(rs?.message || "OTP không đúng.");
+        setNotif({ type: "error", message: rs?.message || "OTP không đúng." });
       }
       return;
     }
+    setNotif({ type: "success", message: "Xác minh OTP thành công!" });
     window.location.href = "/reset-password";
   };
 
   return (
     <div className="verify-page">
       <Header />
+
+      {notif && (
+        <Notification
+          type={notif.type}
+          message={notif.message}
+          duration={3000}
+          onClose={() => setNotif(null)}
+        />
+      )}
+
       <main className="verify-main">
         <section className="verify-hero">
           <div className="verify-left">
@@ -112,14 +128,12 @@ const ForgotVerifyOtp = () => {
                 ))}
               </div>
 
-              {error && <div className="input-error" style={{ marginTop: 8 }}>{error}</div>}
-
               <div className="actions">
                 <button
-                    type="button"
-                    className="btn btn-ghost"
-                    onClick={handleResend}
-                    disabled={resendDisabled || loading}
+                  type="button"
+                  className="btn btn-ghost"
+                  onClick={handleResend}
+                  disabled={resendDisabled || loading}
                 >
                   {resendDisabled ? `Gửi lại OTP (${cooldown}s)` : "Gửi lại OTP"}
                 </button>
@@ -135,6 +149,7 @@ const ForgotVerifyOtp = () => {
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   );
