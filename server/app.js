@@ -12,6 +12,9 @@ const orderRoutes = require('./routes/orderRoutes');
 const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
 const customers = require('./routes/customers');
 const adminRoutes = require("./routes/Admin");
+const userRoutes = require('./routes/userRoutes');
+const adminServiceRoutes = require('./routes/adminServiceRoutes'); // Route cho admin quản lý dịch vụ
+const categoryAdminRoutes = require('./routes/categoryAdminRoutes'); // ✅ Import route mới
 
 const app = express();
 
@@ -40,11 +43,15 @@ app.use(express.json());
 // Mount routes (KHÔNG dùng pattern '*' hay '(.*)' ở đâu nữa)
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
-app.use('/api', serviceRoutes);
+app.use('/api/services', serviceRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/user', userRoutes);
 app.use('/api', changePasswordRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/customers', customers);
 app.use("/api/admin", adminRoutes);
+app.use('/api/admin/services', adminServiceRoutes);
+app.use('/api/admin/categories', categoryAdminRoutes); // Thêm route mới
 // Health check
 app.get('/', (req, res) => {
   res.send('Hello from Node.js backend!');

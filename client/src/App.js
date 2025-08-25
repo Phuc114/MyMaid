@@ -20,6 +20,12 @@ import CompleteProfile from "./pages/CompleteProfile";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import CustomerManagement from "./pages/CustomerManagement";
 import Statistics from "./pages/Statistics";
+import ServiceCategory from './pages/ServiceCategory';
+import ServiceDetail from './pages/ServiceDetail';
+import ServiceManager from './pages/ServiceManager';
+import AdminServiceDetail from './pages/AdminServiceDetail';
+import CategoryManager from './pages/CategoryManager'; // ✅ Import mới
+import CategoryServiceList from './pages/CategoryServiceList'; // ✅ Import mới
 
 // NEW: pages for forgot-password flow
 import ForgotVerifyOtp from './pages/ForgotVerifyOtp';
@@ -34,6 +40,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/service" element={<Service />} />
+	  <Route path="/service/:category" element={<ServiceCategory />} />
+      <Route path="/service/:category/:service" element={<ServiceDetail />} />
       <Route path="/contact" element={<Contact />} />
 
       {/* Auth */}
@@ -61,6 +69,10 @@ function App() {
       <Route path="/admin" element={<DashboardAdmin />} />
       <Route path="/admin/customers" element={<CustomerManagement />} />
       <Route path="/admin/statistics" element={<Statistics />} />
+	  <Route path="/admin/services" element={<ServiceManager />} />
+      <Route path="/admin/services/:id" element={<AdminServiceDetail />} />
+      <Route path="/admin/categories" element={<CategoryManager />} />
+      <Route path="/admin/categories/:categoryId/services" element={<CategoryServiceList />} />
     </Routes>
   );
 }
