@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import HeaderAdmin from '../components/HeaderAdmin';
 import './CustomerManagement.css';
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
@@ -10,31 +11,6 @@ const CustomerManagement = () => {
   const [sortOrder, setSortOrder] = useState('newest');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  // Fetch customers from API
-//   useEffect(() => {
-//     const fetchCustomers = async () => {
-//       try {
-//         setLoading(true);
-//         const response = await fetch(`/api/customers?sort=${sortOrder}&search=${searchTerm}`);
-        
-//         if (!response.ok) {
-//           throw new Error('Failed to fetch customers');
-//         }
-        
-//         const data = await response.json();
-//         setCustomers(data);
-        
-//       } catch (err) {
-//         setError(err.message);
-//         console.error('Error fetching customers:', err);
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-
-//     fetchCustomers();
-//   }, [searchTerm, sortOrder]);
 
 useEffect(() => {
     (async () => {
@@ -98,6 +74,8 @@ useEffect(() => {
 
   return (
     <div className="customer-management">
+      <HeaderAdmin />
+
       <div className="header-container">
         <h1>Tất cả khách hàng</h1>
         

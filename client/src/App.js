@@ -19,7 +19,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import CompleteProfile from "./pages/CompleteProfile";
 import DashboardAdmin from "./pages/DashboardAdmin";
 import CustomerManagement from "./pages/CustomerManagement";
-
+import Statistics from "./pages/Statistics";
 
 // NEW: pages for forgot-password flow
 import ForgotVerifyOtp from './pages/ForgotVerifyOtp';
@@ -60,6 +60,7 @@ function App() {
 	  {/* Admin */}
       <Route path="/admin" element={<DashboardAdmin />} />
       <Route path="/admin/customers" element={<CustomerManagement />} />
+      <Route path="/admin/statistics" element={<Statistics />} />
     </Routes>
   );
 }

@@ -8,7 +8,7 @@ import "./DashboardAdmin.css";
 const DashboardAdmin = () => {
   const [stats, setStats] = useState({});
   const [revenueData, setRevenueData] = useState([]);
-  const [period, setPeriod] = useState("week"); // default view
+  const [period, setPeriod] = useState("month"); // default view
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -71,19 +71,19 @@ const DashboardAdmin = () => {
 
         {/* Picker buttons */}
         <div style={{ marginBottom: "1rem" }}>
-          <button onClick={() => setPeriod("week")} className={period==="week" ? "active-btn" : ""}>Tuần</button>
-          <button onClick={() => setPeriod("month")} className={period==="month" ? "active-btn" : ""}>Tháng</button>
-          <button onClick={() => setPeriod("year")} className={period==="year" ? "active-btn" : ""}>Năm</button>
-        </div>
+			<button onClick={() => setPeriod("month")} className={period==="month" ? "active-btn" : ""}>Tháng</button>
+			<button onClick={() => setPeriod("quarter")} className={period==="quarter" ? "active-btn" : ""}>Quý</button>
+			<button onClick={() => setPeriod("year")} className={period==="year" ? "active-btn" : ""}>Năm</button>
+		</div>
 
         <ResponsiveContainer width="100%" height={300}>
 			<LineChart data={revenueData}>
 				<CartesianGrid strokeDasharray="3 3" />
 				<XAxis 
 				dataKey="label" 
-				interval={0}   // show all ticks
-				angle={-30}    // rotate labels to avoid overlap
-				textAnchor="end"
+				interval={0}   // show all 12
+				angle={-30} 
+				textAnchor="end" 
 				/>
 				<YAxis />
 				<Tooltip />
