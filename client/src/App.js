@@ -1,30 +1,30 @@
 // App.js
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
 // Pages
-import Home from './pages/Home';
-import Login from './pages/Login';
-import About from './pages/About';
-import Service from './pages/Service';
-import Contact from './pages/Contact';
-import Checkout from './pages/Checkout';
-import OrderHistory from './pages/OrderHistory';
-import FavoriteMaids from './pages/FavoriteMaids';
-import Register from './pages/Register';
-import ForgotPassword from './pages/ForgotPassword';
-import Profile from './pages/Profile';
-import ChangePassword from './pages/ChangePassword';
-import VerifyEmail from './pages/VerifyEmail';
+import Home from "./pages/Home";
+import Login from "./pages/Login";
+import About from "./pages/About";
+import Service from "./pages/Service";
+import Contact from "./pages/Contact";
+import Checkout from "./pages/Checkout";
+import OrderHistory from "./pages/OrderHistory";
+import FavoriteMaids from "./pages/FavoriteMaids";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import Profile from "./pages/Profile";
+import ChangePassword from "./pages/ChangePassword";
+import VerifyEmail from "./pages/VerifyEmail";
 import CompleteProfile from "./pages/CompleteProfile";
-import ServiceCategory from './pages/ServiceCategory';
-import ServiceDetail from './pages/ServiceDetail';
+import ServiceCategory from "./pages/ServiceCategory";
+import ServiceDetail from "./pages/ServiceDetail";
 
-// NEW: pages for forgot-password flow
-import ForgotVerifyOtp from './pages/ForgotVerifyOtp';
-import ResetPassword from './pages/ResetPassword';
+// Forgot password flow
+import ForgotVerifyOtp from "./pages/ForgotVerifyOtp";
+import ResetPassword from "./pages/ResetPassword";
 
-import './pages/Service.css';
+import "./pages/Service.css";
 
 function App() {
   return (
@@ -32,7 +32,6 @@ function App() {
       {/* Public */}
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
-      <Route path="/service" element={<Service />} />
       <Route path="/service" element={<Service />} />
       <Route path="/service/:category" element={<ServiceCategory />} />
       <Route path="/service/:category/:service" element={<ServiceDetail />} />
@@ -55,9 +54,12 @@ function App() {
       <Route path="/favorite-maids" element={<FavoriteMaids />} />
       <Route path="/checkout" element={<Checkout />} />
 
-      {/* Lịch sử đơn: giữ cả 2 đường dẫn để không phá vỡ liên kết cũ */}
+      {/* Lịch sử đơn: giữ 2 đường dẫn cũ/mới */}
       <Route path="/order-history" element={<OrderHistory />} />
       <Route path="/orderhistory" element={<OrderHistory />} />
+
+      {/* Optional: 404 */}
+      {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   );
 }

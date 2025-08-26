@@ -11,46 +11,44 @@ const changePasswordRoutes = require('./routes/ChangePasswordRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const forgotPasswordRoutes = require('./routes/forgotPasswordRoutes');
 const userRoutes = require('./routes/userRoutes');
-
+// NEW
+const homeRoutes = require('./routes/home.routes');
+const messageRoutes = require('./routes/messageRoutes');
 
 const app = express();
 
-/**
- * ===================== CORS (thủ công, không tạo route) =====================
- * - Không dùng app.options(...). Trả preflight trực tiếp trong middleware.
- * - Hợp với credentials và Express 5 (path-to-regexp v6).
- */
+/** ============ CORS thủ công ============ */
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:3000';
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', CLIENT_ORIGIN);
-  res.header('Vary', 'Origin'); // để tránh cache sai khi Origin thay đổi
+  res.header('Vary', 'Origin');
   res.header('Access-Control-Allow-Credentials', 'true');
   res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-  if (req.method === 'OPTIONS') {
-    return res.sendStatus(204); // preflight OK, KHÔNG đăng ký route nào cả
-  }
+  if (req.method === 'OPTIONS') return res.sendStatus(204);
   next();
 });
 
 // Body parser
 app.use(express.json());
 
-// Mount routes (KHÔNG dùng pattern '*' hay '(.*)' ở đâu nữa)
+// Mount routes
 app.use('/api/auth', authRoutes);
 app.use('/api/profile', profileRoutes);
 app.use('/api/services', serviceRoutes);
 app.use('/api', changePasswordRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/user', userRoutes);
+// NEW
+app.use('/api/home', homeRoutes);
+app.use('/api/messages', messageRoutes);
 
 // Health check
 app.get('/', (req, res) => {
   res.send('Hello from Node.js backend!');
 });
 
-// Global error handler (kể cả lỗi từ multer fileFilter)
+// Global error handler
 app.use((err, req, res, next) => {
   if (err && err.message) {
     console.error('GLOBAL ERROR:', err);
@@ -61,7 +59,6 @@ app.use((err, req, res, next) => {
 
 app.use('/api/auth/forgot', forgotPasswordRoutes);
 
-// Phòng khi có lỗi chưa bắt khiến process thoát mà không có log
 process.on('unhandledRejection', (e) => console.error('UNHANDLED REJECTION:', e));
 process.on('uncaughtException', (e) => console.error('UNCAUGHT EXCEPTION:', e));
 

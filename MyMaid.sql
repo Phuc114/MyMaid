@@ -1,178 +1,208 @@
-CREATE TABLE khach_hang (
-    id_khach_hang INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    ho_ten VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    mat_khau VARCHAR(255) NOT NULL,
-    so_dien_thoai VARCHAR(15),
-    ngay_sinh DATE,
-    anh_ho_so_url TEXT,
-    ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+BEGIN;
 
-CREATE TABLE dia_chi_da_luu (
-    id_dia_chi INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_khach_hang INTEGER NOT NULL REFERENCES khach_hang(id_khach_hang) ON DELETE CASCADE,
-    ten_goi_nho VARCHAR(100),
-    dia_chi_day_du VARCHAR(255) NOT NULL
-);
-
-CREATE TABLE admin (
-    id_admin INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    ho_ten VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    mat_khau VARCHAR(255) NOT NULL,
-    so_dien_thoai VARCHAR(15),
-    ngay_sinh DATE,
-    vai_tro VARCHAR(10) NOT NULL CHECK (vai_tro IN ('maid', 'admin')),
-    trang_thai VARCHAR(20) DEFAULT 'active' CHECK (trang_thai IN ('active', 'inactive')),
-    anh_ho_so_url TEXT,
-    ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE maid (
-    id_maid INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    ho_ten VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
-    mat_khau VARCHAR(255) NOT NULL,
-    so_dien_thoai VARCHAR(15),
-    ngay_sinh DATE,
-    vai_tro VARCHAR(10) NOT NULL CHECK (vai_tro IN ('maid', 'admin')),
-    trang_thai VARCHAR(20) DEFAULT 'active' CHECK (trang_thai IN ('active', 'inactive')),
-    tieu_su TEXT,
-    diem_danh_gia_tb NUMERIC(3,2) DEFAULT 5.00,
-    anh_ho_so_url TEXT,
-    ngay_tao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE lich_lam_viec (
-    id_lich_lam_viec INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_maid INTEGER NOT NULL REFERENCES maid(id_maid) ON DELETE CASCADE,
-    ngay_lam DATE NOT NULL,
-    gio_bat_dau TIME NOT NULL,
-    gio_ket_thuc TIME NOT NULL,
-    trang_thai VARCHAR(15) NOT NULL DEFAULT 'available'
-        CHECK (trang_thai IN ('available', 'booked'))
-);
-
-CREATE TABLE khu_vuc (
-    id_khu_vuc INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    ten_khu_vuc VARCHAR(100) NOT NULL UNIQUE
-);
-
-CREATE TABLE khu_vuc_hoat_dong (
-    id_maid INTEGER NOT NULL REFERENCES maid(id_maid) ON DELETE CASCADE,
-    id_khu_vuc INTEGER NOT NULL REFERENCES khu_vuc(id_khu_vuc) ON DELETE CASCADE,
-    PRIMARY KEY (id_maid, id_khu_vuc)
-);
-
-CREATE TABLE danh_muc_dich_vu (
-    id_danh_muc INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    ten_danh_muc VARCHAR(100) NOT NULL UNIQUE
-);
-
-CREATE TABLE dich_vu (
-    id_dich_vu INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_danh_muc INTEGER NOT NULL REFERENCES danh_muc_dich_vu(id_danh_muc),
-    ten_dich_vu VARCHAR(255) NOT NULL,
-    mo_ta TEXT,
-    gia_co_ban VARCHAR(100) NOT NULL
-);
-
-CREATE TABLE dich_vu_yeu_thich (
-    id_khach_hang INTEGER NOT NULL REFERENCES khach_hang(id_khach_hang) ON DELETE CASCADE,
-    id_dich_vu INTEGER NOT NULL REFERENCES dich_vu(id_dich_vu) ON DELETE CASCADE,
-    PRIMARY KEY (id_khach_hang, id_dich_vu)
-);
-
-CREATE TABLE khuyen_mai (
-    id_khuyen_mai INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    ma_code VARCHAR(50) UNIQUE NOT NULL,
-    mo_ta TEXT,
-    so_luong INT,
-    gia_tri_giam NUMERIC(10,2) NOT NULL,
-    ngay_bat_dau TIMESTAMP,
-    ngay_ket_thuc TIMESTAMP,
-    trang_thai VARCHAR(10) DEFAULT 'active'
-        CHECK (trang_thai IN ('active', 'inactive'))
-);
-
-CREATE TABLE thanh_toan (
-    id_thanh_toan INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    phuong_thuc VARCHAR(50),
-    so_tien NUMERIC(10,2) NOT NULL,
-    ngay_thanh_toan TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    trang_thai VARCHAR(15)
-        CHECK (trang_thai IN ('pending', 'successful', 'failed'))
-);
-
-CREATE TABLE lich_dat (
-    id_lich_dat INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_khach_hang INTEGER NOT NULL REFERENCES khach_hang(id_khach_hang),
-    id_dich_vu INTEGER NOT NULL REFERENCES dich_vu(id_dich_vu),
-    id_maid INTEGER REFERENCES maid(id_maid),
-    id_dia_chi INTEGER NOT NULL REFERENCES dia_chi_da_luu(id_dia_chi),
-    id_thanh_toan INTEGER REFERENCES thanh_toan(id_thanh_toan),
-    id_khuyen_mai INTEGER REFERENCES khuyen_mai(id_khuyen_mai),
-    thoi_gian_dat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ngay_lam_viec DATE NOT NULL,
-    gio_lam_viec TIME NOT NULL,
-    ghi_chu TEXT,
-    tong_tien NUMERIC(10,2) NOT NULL,
-    trang_thai VARCHAR(30) DEFAULT 'pending'
-        CHECK (trang_thai IN ('pending', 'confirmed', 'in_progress', 'completed', 'cancelled'))
-);
-
-CREATE TABLE danh_gia (
-    id_danh_gia INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    id_lich_dat INTEGER UNIQUE NOT NULL REFERENCES lich_dat(id_lich_dat),
-    id_khach_hang INTEGER NOT NULL REFERENCES khach_hang(id_khach_hang),
-    id_maid INTEGER NOT NULL REFERENCES maid(id_maid),
-    so_sao INTEGER CHECK (so_sao BETWEEN 1 AND 5),
-    binh_luan TEXT,
-    ngay_danh_gia TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
--- Bảng lưu maid yêu thích của khách hàng
-CREATE TABLE maid_yeu_thich (
-    id_khach_hang INTEGER NOT NULL REFERENCES khach_hang(id_khach_hang) ON DELETE CASCADE,
-    id_maid INTEGER NOT NULL REFERENCES maid(id_maid) ON DELETE CASCADE,
-    PRIMARY KEY (id_khach_hang, id_maid)
-);
-
-
-CREATE TABLE phan_loai_dich_vu (
-    id_phan_loai SERIAL PRIMARY KEY,
-    ten_phan_loai VARCHAR(255) NOT NULL UNIQUE,
-    anh_minh_hoa TEXT,
-    mo_ta TEXT
-);
-
-
-
-
-ALTER TABLE khach_hang
-  ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT false,
-  ADD COLUMN IF NOT EXISTS otp_code VARCHAR(10),
-  ADD COLUMN IF NOT EXISTS otp_expires TIMESTAMP;
-
-
+DROP TABLE IF EXISTS maid_yeu_thich;
+DROP TABLE IF EXISTS dich_vu_yeu_thich;
+DROP TABLE IF EXISTS khu_vuc_hoat_dong;
 DROP TABLE IF EXISTS danh_gia;
 DROP TABLE IF EXISTS lich_dat;
-DROP TABLE IF EXISTS dich_vu_yeu_thich;
-DROP TABLE IF EXISTS dia_chi_da_luu;
-DROP TABLE IF EXISTS khach_hang;
-DROP TABLE IF EXISTS thanh_toan;
-DROP TABLE IF EXISTS khuyen_mai;
 DROP TABLE IF EXISTS lich_lam_viec;
-DROP TABLE IF EXISTS khu_vuc_hoat_dong;
-DROP TABLE IF EXISTS khu_vuc;
-DROP TABLE IF EXISTS maid;
-DROP TABLE IF EXISTS admin;
+DROP TABLE IF EXISTS dia_chi_da_luu;
 DROP TABLE IF EXISTS dich_vu;
 DROP TABLE IF EXISTS danh_muc_dich_vu;
-DROP TABLE IF EXISTS maid_yeu_thich;
+DROP TABLE IF EXISTS thanh_toan;
+DROP TABLE IF EXISTS khuyen_mai;
+DROP TABLE IF EXISTS khu_vuc;
+DROP TABLE IF EXISTS khach_hang;
+DROP TABLE IF EXISTS maid;
+DROP TABLE IF EXISTS admin;
+DROP TABLE IF EXISTS phan_loai_dich_vu;
+
+COMMIT;
 
 
+
+-- 0) Extensions (nếu cần)
+-- CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+-- =========================
+-- 1) PHÂN LOẠI / DANH MỤC / DỊCH VỤ
+-- =========================
+CREATE TABLE IF NOT EXISTS phan_loai_dich_vu (
+  id_phan_loai SERIAL PRIMARY KEY,
+  ten_phan_loai VARCHAR(255) NOT NULL,
+  anh_minh_hoa  TEXT,
+  mo_ta         TEXT
+);
+
+CREATE TABLE IF NOT EXISTS danh_muc_dich_vu (
+  id_danh_muc  INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ten_danh_muc VARCHAR(100) NOT NULL,
+  anh_minh_hoa TEXT,
+  mo_ta        TEXT,
+  id_phan_loai INT NOT NULL REFERENCES phan_loai_dich_vu(id_phan_loai)
+);
+
+CREATE TABLE IF NOT EXISTS dich_vu (
+  id_dich_vu   INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id_danh_muc  INT NOT NULL REFERENCES danh_muc_dich_vu(id_danh_muc),
+  ten_dich_vu  VARCHAR(255) NOT NULL,
+  mo_ta        TEXT,
+  gia_co_ban   VARCHAR(100) NOT NULL
+);
+
+-- =========================
+-- 2) TÀI KHOẢN NGƯỜI DÙNG
+-- =========================
+CREATE TABLE IF NOT EXISTS admin (
+  id_admin       INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ho_ten         VARCHAR(100) NOT NULL,
+  email          VARCHAR(100) NOT NULL,
+  mat_khau       VARCHAR(255) NOT NULL,
+  so_dien_thoai  VARCHAR(15),
+  ngay_sinh      DATE,
+  vai_tro        VARCHAR(10),                 -- theo ảnh chụp
+  trang_thai     VARCHAR(20) DEFAULT 'active',
+  anh_ho_so_url  TEXT,
+  ngay_tao       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  email_verified BOOLEAN DEFAULT FALSE,
+  otp_code       VARCHAR(10),
+  otp_expires    TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS khach_hang (
+  id_khach_hang  INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ho_ten         VARCHAR(100) NOT NULL,
+  email          VARCHAR(100) NOT NULL,
+  mat_khau       VARCHAR(255) NOT NULL,
+  so_dien_thoai  VARCHAR(15),
+  ngay_sinh      DATE,
+  anh_ho_so_url  TEXT,
+  ngay_tao       TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  email_verified BOOLEAN DEFAULT FALSE,
+  otp_code       VARCHAR(10),
+  otp_expires    TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS maid (
+  id_maid         INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ho_ten          VARCHAR(100) NOT NULL,
+  email           VARCHAR(100) NOT NULL,
+  mat_khau        VARCHAR(255) NOT NULL,
+  so_dien_thoai   VARCHAR(15),
+  ngay_sinh       DATE,
+  vai_tro         VARCHAR(10),
+  trang_thai      VARCHAR(20) DEFAULT 'active',
+  tieu_su         TEXT,
+  diem_danh_gia_tb NUMERIC(3,2) DEFAULT 5.00,
+  anh_ho_so_url   TEXT,
+  ngay_tao        TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- =========================
+-- 3) KHU VỰC & ĐỊA CHỈ
+-- =========================
+CREATE TABLE IF NOT EXISTS khu_vuc (
+  id_khu_vuc  INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ten_khu_vuc VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS khu_vuc_hoat_dong (
+  id_maid    INT NOT NULL REFERENCES maid(id_maid),
+  id_khu_vuc INT NOT NULL REFERENCES khu_vuc(id_khu_vuc),
+  PRIMARY KEY (id_maid, id_khu_vuc)
+);
+
+CREATE TABLE IF NOT EXISTS dia_chi_da_luu (
+  id_dia_chi     INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id_khach_hang  INT NOT NULL REFERENCES khach_hang(id_khach_hang) ON DELETE CASCADE,
+  ten_goi_nho    VARCHAR(100),
+  dia_chi_day_du VARCHAR(255) NOT NULL
+);
+
+-- =========================
+-- 4) KHUYẾN MÃI & THANH TOÁN
+-- =========================
+CREATE TABLE IF NOT EXISTS khuyen_mai (
+  id_khuyen_mai INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ma_code       VARCHAR(50) NOT NULL,
+  mo_ta         TEXT,
+  so_luong      INT,
+  gia_tri_giam  NUMERIC(10,2) NOT NULL,
+  ngay_bat_dau  TIMESTAMP,
+  ngay_ket_thuc TIMESTAMP,
+  trang_thai    VARCHAR(10) DEFAULT 'active'
+);
+
+CREATE TABLE IF NOT EXISTS thanh_toan (
+  id_thanh_toan  INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  phuong_thuc    VARCHAR(50),
+  so_tien        NUMERIC(10,2) NOT NULL,
+  ngay_thanh_toan TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  trang_thai     VARCHAR(15)
+);
+
+-- =========================
+-- 5) LỊCH ĐẶT & LỊCH LÀM
+-- =========================
+CREATE TABLE IF NOT EXISTS lich_dat (
+  id_lich_dat   INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id_khach_hang INT NOT NULL REFERENCES khach_hang(id_khach_hang),
+  id_dich_vu    INT NOT NULL REFERENCES dich_vu(id_dich_vu),         -- đúng như ảnh chụp hiện tại
+  id_maid       INT REFERENCES maid(id_maid),
+  id_dia_chi    INT NOT NULL REFERENCES dia_chi_da_luu(id_dia_chi),
+  id_thanh_toan INT REFERENCES thanh_toan(id_thanh_toan),
+  id_khuyen_mai INT REFERENCES khuyen_mai(id_khuyen_mai),
+  thoi_gian_dat TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  ngay_lam_viec DATE NOT NULL,
+  gio_lam_viec  TIME NOT NULL,
+  ghi_chu       TEXT,
+  tong_tien     NUMERIC(10,2) NOT NULL,
+  trang_thai    VARCHAR(30) DEFAULT 'pending'
+);
+
+CREATE TABLE IF NOT EXISTS lich_lam_viec (
+  id_lich_lam_viec INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id_maid          INT NOT NULL REFERENCES maid(id_maid),
+  ngay_lam         DATE NOT NULL,
+  gio_bat_dau      TIME NOT NULL,
+  gio_ket_thuc     TIME NOT NULL,
+  trang_thai       VARCHAR(15) DEFAULT 'available' NOT NULL
+);
+
+-- =========================
+-- 6) TƯƠNG TÁC: YÊU THÍCH & ĐÁNH GIÁ
+-- =========================
+CREATE TABLE IF NOT EXISTS dich_vu_yeu_thich (
+  id_khach_hang INT NOT NULL REFERENCES khach_hang(id_khach_hang) ON DELETE CASCADE,
+  id_dich_vu    INT NOT NULL REFERENCES dich_vu(id_dich_vu) ON DELETE CASCADE,
+  PRIMARY KEY (id_khach_hang, id_dich_vu)
+);
+
+CREATE TABLE IF NOT EXISTS maid_yeu_thich (
+  id_khach_hang INT NOT NULL REFERENCES khach_hang(id_khach_hang) ON DELETE CASCADE,
+  id_maid       INT NOT NULL REFERENCES maid(id_maid) ON DELETE CASCADE,
+  PRIMARY KEY (id_khach_hang, id_maid)
+);
+
+CREATE TABLE IF NOT EXISTS danh_gia (
+  id_danh_gia   INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  id_lich_dat   INT NOT NULL REFERENCES lich_dat(id_lich_dat) ON DELETE CASCADE,
+  id_khach_hang INT NOT NULL REFERENCES khach_hang(id_khach_hang),
+  id_maid       INT NOT NULL REFERENCES maid(id_maid),
+  so_sao        INT NOT NULL,
+  binh_luan     TEXT,
+  ngay_danh_gia TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS tin_nhan (
+  id_tin_nhan INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  ho_ten       VARCHAR(120)  NOT NULL,
+  email        VARCHAR(150)  NOT NULL,
+  loai_dich_vu VARCHAR(150)  NOT NULL,
+  ghi_chu      TEXT          NULL,
+  created_at   TIMESTAMP     NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 
 
@@ -308,18 +338,47 @@ INSERT INTO khu_vuc_hoat_dong (id_maid, id_khu_vuc) VALUES
 
 
 
--- Insert data into danh_muc_dich_vu (service categories)
-INSERT INTO danh_muc_dich_vu (ten_danh_muc) VALUES
-('Tổng vệ sinh'),
-('Vệ sinh nhà cửa'),
-('Giặt sofa'),
-('Vệ sinh ghế văn phòng'),
-('Giặt nệm'),
-('Vệ sinh thảm '),
-('Vệ sinh thiết bị'),
-('Vệ sinh cửa kính'),
-('Khử trùng'),
-('Giúp việc nhà');
+-- Insert 10 service categories with descriptions + mapping to id_phan_loai
+-- Columns: (ten_danh_muc, mo_ta, id_phan_loai)
+INSERT INTO danh_muc_dich_vu (ten_danh_muc, mo_ta, id_phan_loai) VALUES
+-- id_phan_loai = 1
+('Tổng vệ sinh',
+ 'Làm sạch toàn bộ không gian sống - từ trần đến sàn, từ phòng khách đến phòng ngủ.',
+ 1),
+('Vệ sinh nhà cửa',
+ 'Giữ ngôi nhà luôn gọn gàng, sạch sẽ với các gói định kỳ linh hoạt.',
+ 1),
+
+-- id_phan_loai = 2
+('Giặt sofa',
+ 'Khôi phục vẻ đẹp & sự sạch sẽ cho bộ sofa yêu quý của bạn.',
+ 2),
+('Vệ sinh ghế văn phòng',
+ 'Vệ sinh kỹ lưỡng ghế văn phòng – đảm bảo thẩm mỹ và sức khỏe.',
+ 2),
+('Giặt nệm',
+ 'Loại bỏ bụi bẩn, vi khuẩn và mùi hôi từ nệm của bạn.',
+ 2),
+('Vệ sinh thảm',
+ 'Thảm sạch như mới với công nghệ giặt chuyên sâu.',
+ 2),
+
+-- id_phan_loai = 3
+('Vệ sinh thiết bị',
+ 'Vệ sinh máy lạnh, quạt, tủ lạnh, máy giặt… đảm bảo hiệu năng và tuổi thọ.',
+ 3),
+('Vệ sinh cửa kính',
+ 'Kính sáng bóng, không vệt bẩn – không gian tràn ngập ánh sáng.',
+ 3),
+
+-- id_phan_loai = 4
+('Khử trùng',
+ 'Khử trùng toàn diện, an toàn cho gia đình & môi trường sống.',
+ 4),
+('Giúp việc nhà',
+ 'Hỗ trợ các công việc nội trợ thường ngày, linh hoạt theo nhu cầu.',
+ 4);
+
 
 
 
@@ -527,56 +586,8 @@ WHERE email IN (
     'admin4@example.com',
     'superadmin@example.com'
 );
--- Bắt buộc email không null
-ALTER TABLE khach_hang
-  ALTER COLUMN email SET NOT NULL;
 
--- Xoá unique partial index (nếu có), trả lại unique constraint chuẩn
-DROP INDEX IF EXISTS uq_khach_hang_email_notnull;
-ALTER TABLE khach_hang
-  ADD CONSTRAINT khach_hang_email_key UNIQUE (email);
 
--- Nếu đã tạo unique index có điều kiện cho phone thì bỏ (không còn dùng cho OTP)
-DROP INDEX IF EXISTS uq_khach_hang_phone_notnull;
-
--- Xoá các cột phụ trợ cho SMS nếu đã thêm trước đó (tùy bạn có thêm hay không)
-ALTER TABLE khach_hang
-  DROP COLUMN IF EXISTS email_otp_code,
-  DROP COLUMN IF EXISTS email_otp_expires;
-
-ALTER TABLE khach_hang
-  ADD COLUMN IF NOT EXISTS otp_code       VARCHAR(10),
-  ADD COLUMN IF NOT EXISTS otp_expires    TIMESTAMPTZ;  -- hoặc TIMESTAMP cũng được
-  
-  
-ALTER TABLE danh_muc_dich_vu
-ADD COLUMN phan_loai VARCHAR(50);
-
--- 1. Vệ sinh tổng quát
-UPDATE danh_muc_dich_vu
-SET phan_loai = 'Vệ sinh tổng quát'
-WHERE id_danh_muc IN (1, 2);
-
--- 2. Vệ sinh nội thất
-UPDATE danh_muc_dich_vu
-SET phan_loai = 'Vệ sinh nội thất'
-WHERE id_danh_muc IN (3, 4, 5, 6);
-
--- 3. Vệ sinh thiết bị & bề mặt
-UPDATE danh_muc_dich_vu
-SET phan_loai = 'Vệ sinh thiết bị & bề mặt'
-WHERE id_danh_muc IN (7, 8);
-
--- 4. Dịch vụ chuyên sâu
-UPDATE danh_muc_dich_vu
-SET phan_loai = 'Dịch vụ chuyên sâu'
-WHERE id_danh_muc IN (9, 10);
- 
-  
--- Thêm 2 cột mới
-ALTER TABLE danh_muc_dich_vu
-ADD COLUMN anh_minh_hoa TEXT,     -- URL ảnh (Supabase)
-ADD COLUMN mo_ta TEXT;            -- Mô tả ngắn
 
 -- Gán mô tả cho 10 danh mục (có thể chỉnh câu chữ tuỳ ý)
 UPDATE danh_muc_dich_vu SET mo_ta = 'Làm sạch toàn bộ không gian sống - từ trần đến sàn, từ phòng khách đến phòng ngủ.' WHERE id_danh_muc = 1;
@@ -599,27 +610,6 @@ VALUES
   ('Dịch vụ chuyên sâu', 'https://edktkciruhfltbdugwte.supabase.co/storage/v1/object/public/avatars/danh_muc_dich_vu/phan_loai/giupviecnha.png', 'Các dịch vụ nâng cao như khử trùng, giặt nệm, sofa…');
 
   
-ALTER TABLE danh_muc_dich_vu
-ADD COLUMN IF NOT EXISTS id_phan_loai INT;
-
-
-UPDATE danh_muc_dich_vu d
-SET id_phan_loai = p.id_phan_loai
-FROM phan_loai_dich_vu p
-WHERE d.phan_loai = p.ten_phan_loai
-  AND d.id_phan_loai IS NULL;
-
-ALTER TABLE danh_muc_dich_vu
-  ALTER COLUMN id_phan_loai SET NOT NULL;
-
-ALTER TABLE danh_muc_dich_vu
-  ADD CONSTRAINT fk_dmdv_phan_loai
-  FOREIGN KEY (id_phan_loai)
-  REFERENCES phan_loai_dich_vu(id_phan_loai)
-  ON DELETE CASCADE;
-
-ALTER TABLE danh_muc_dich_vu
-DROP COLUMN IF EXISTS phan_loai;
 
   
   

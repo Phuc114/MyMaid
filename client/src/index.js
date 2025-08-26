@@ -13,34 +13,34 @@ import { LoginProvider } from './context/LoginContext';
 import { VerifyEmailProvider } from './context/VerifyEmailContext';
 import { RegisterProvider } from './context/RegisterContext';
 import { OnboardingProvider } from './context/OnboardingContext';
-
 import { ProfileProvider } from './context/ProfileContext';
 import { ChangePasswordProvider } from './context/ChangePasswordContext';
 import { OrderHistoryProvider } from './context/OrderHistoryContext';
 import { ForgotPasswordProvider } from './context/ForgotPasswordContext';
+import { ServiceProvider } from './context/ServiceContext';
 
 // NEW
-import { ServiceProvider } from './context/ServiceContext';
+import { HomeProvider } from './context/HomeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* QUAN TRỌNG: UserProvider phải bọc ngoài LoginProvider */}
       <UserProvider>
         <LoginProvider>
           <VerifyEmailProvider>
             <RegisterProvider>
-              {/* Onboarding có dùng useUser => phải nằm trong UserProvider */}
               <OnboardingProvider>
-                {/* Các context còn lại có thể dùng token/user nên để bên trong */}
                 <ProfileProvider>
                   <ChangePasswordProvider>
                     <OrderHistoryProvider>
                       <ForgotPasswordProvider>
                         <ServiceProvider>
-                          <App />
+                          {/* NEW: dữ liệu trang chủ */}
+                          <HomeProvider>
+                            <App />
+                          </HomeProvider>
                         </ServiceProvider>
                       </ForgotPasswordProvider>
                     </OrderHistoryProvider>

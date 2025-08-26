@@ -157,3 +157,71 @@
 .service-box:hover img {
   transform: translateY(-5px);
 }
+
+/* giữ lại phần cũ của bạn … */
+
+/* --- dịch vụ thịnh hành (clickable như Home) --- */
+.service-box--clickable {
+  cursor: pointer;
+  border-radius: 20px;
+  border: 1px solid #eef2ff;
+  box-shadow: 0 10px 30px rgba(2,6,23,.06);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease, border-color .15s ease;
+}
+
+.service-box--clickable:hover {
+  background: #f5f8ff;
+  border-color: #c7d2fe;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px rgba(2,6,23,.12);
+}
+
+.service-box--clickable img {
+  width: 52px;
+  height: 52px;
+  margin-bottom: 14px;
+  transition: transform .2s ease;
+}
+.service-box--clickable:hover img {
+  transform: translateY(-3px);
+}
+
+/* ===== Hover giống Home: gradient + chữ trắng + icon nổi ===== */
+.service-box:hover,
+.service-box--clickable:hover {
+  background: linear-gradient(180deg,#4f6fff 0%, #3559ff 100%);
+  border-color: transparent;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 50px rgba(2,6,23,.14);
+  color: #fff;
+}
+
+.service-box:hover h3,
+.service-box:hover p,
+.service-box--clickable:hover h3,
+.service-box--clickable:hover p {
+  color: #fff;
+}
+
+/* icon nâng nhẹ + đổi nền trong suốt khi hover */
+.service-box:hover img,
+.service-box--clickable:hover img {
+  transform: translateY(-3px) scale(1.03);
+  background: rgba(255,255,255,.18);
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.15));
+}
+
+/* trạng thái focus cho điều hướng bằng keyboard */
+.service-box:focus-visible,
+.service-box--clickable:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59,130,246,.35), 0 12px 30px rgba(2,6,23,.12);
+  transform: translateY(-1px);
+}
+
+/* nếu người dùng giảm chuyển động */
+@media (prefers-reduced-motion: reduce) {
+  .service-box,
+  .about-button { transition: none; }
+  .service-box img { transition: none; }
+}
