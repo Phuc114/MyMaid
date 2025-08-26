@@ -4,6 +4,8 @@ import './Checkout.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PaymentModal from '../components/PaymentModal';
+import { useLocation } from 'react-router-dom';
+
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
 
@@ -18,6 +20,24 @@ const Checkout = () => {
 
   // Tổng tiền demo (sau này thay bằng tính theo dịch vụ/m2/giờ...)
   const amountVnd = 150000; // 150,000 VND
+  // Lấy id từ state (Link), query (?danh_muc= / ?id_dich_vu=) hoặc sessionStorage
+  const location = useLocation();
+  const state = location.state || {};
+  const urlParams = new URLSearchParams(location.search);
+
+  const selectedDanhMucId =
+    state.danhMucId ||
+    state.id_danh_muc ||
+    Number(urlParams.get('danh_muc')) ||
+    Number(sessionStorage.getItem('danhMucId')) ||
+    null;
+
+  const selectedDichVuId =
+    state.id_dich_vu ||
+    Number(urlParams.get('id_dich_vu')) ||
+    Number(sessionStorage.getItem('dichVuId')) ||
+    null;
+
 
   // Lấy token từ localStorage (tùy dự án của em đang lưu key nào)
   const getAuthHeaders = () => {
@@ -30,42 +50,52 @@ const Checkout = () => {
 
     // Gọi API tạo đơn 'pending' trước khi mở modal thanh toán
   const handleConfirm = async () => {
-    try {
-      if (!selectedDate || !startTime) {
-        alert('Vui lòng chọn ngày và giờ bắt đầu.');
-        return;
-      }
-
-      const body = {
-        id_dich_vu: 1,    // TODO: thay bằng id dịch vụ user chọn
-        id_dia_chi: 1,    // TODO: thay bằng id địa chỉ user chọn
-        ngay_lam_viec: selectedDate, // 'YYYY-MM-DD'
-        gio_bat_dau: startTime,      // 'HH:mm'
-        ghi_chu: note,
-        tong_tien: amountVnd,
-      };
-
-      const res = await fetch(`${API_BASE}/api/orders/create-pending`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          ...getAuthHeaders(),
-        },
-        body: JSON.stringify(body),
-      });
-
-      const data = await res.json();
-      if (!res.ok || !data?.id_lich_dat) {
-        throw new Error(data?.message || 'Tạo đơn pending thất bại');
-      }
-
-      sessionStorage.setItem('currentOrderId', String(data.id_lich_dat));
-      setShowPay(true);
-    } catch (err) {
-      console.error('handleConfirm error:', err);
-      alert(err.message || 'Có lỗi khi tạo đơn pending');
+  try {
+    if (!selectedDate || !startTime) {
+      alert('Vui lòng chọn ngày và giờ bắt đầu.');
+      return;
     }
-  };
+
+    // BẮT BUỘC: phải có ít nhất id_dich_vu hoặc id_danh_muc
+    if (!selectedDichVuId && !selectedDanhMucId) {
+      alert('Bạn chưa chọn dịch vụ. Vui lòng quay lại mục Dịch vụ và chọn danh mục/dịch vụ.');
+      return;
+    }
+
+    const body = {
+      // Ưu tiên id_dich_vu; nếu không có thì gửi id_danh_muc
+      ...(selectedDichVuId ? { id_dich_vu: selectedDichVuId } : {}),
+      ...(selectedDanhMucId ? { id_danh_muc: selectedDanhMucId } : {}),
+
+      id_dia_chi: 1, // tạm thời giữ nguyên placeholder (FE sẽ bổ sung UI chọn địa chỉ sau)
+      ngay_lam_viec: selectedDate, // 'YYYY-MM-DD'
+      gio_bat_dau: startTime,      // 'HH:mm'
+      ghi_chu: note,
+      tong_tien: amountVnd,
+    };
+
+    const res = await fetch(`${API_BASE}/api/orders/create-pending`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...getAuthHeaders(),
+      },
+      body: JSON.stringify(body),
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data?.id_lich_dat) {
+      throw new Error(data?.message || 'Tạo đơn pending thất bại');
+    }
+
+    sessionStorage.setItem('currentOrderId', String(data.id_lich_dat));
+    setShowPay(true);
+  } catch (err) {
+    console.error('handleConfirm error:', err);
+    alert(err.message || 'Có lỗi khi tạo đơn pending');
+  }
+};
+
 
 
   return (

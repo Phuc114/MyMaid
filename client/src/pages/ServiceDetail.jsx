@@ -1,4 +1,4 @@
-// src/pages/ServiceDetail.jsx
+// client/src/pages/ServiceDetail.jsx
 import React, { useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import Header from '../components/Header';
@@ -9,7 +9,8 @@ import { useServices } from '../context/ServiceContext';
 
 const slugify = (s='') =>
   s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-   .toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
+   .toLowerCase().replace(/[^a-z0-9]+/g,'-')
+   .replace(/^-+|-+$/g,'');
 
 const ServiceDetail = () => {
   const { category: catSlug, service: svcSlug } = useParams();
@@ -32,31 +33,30 @@ const ServiceDetail = () => {
       <Header />
       <PageBanner title="Dịch vụ" path="Trang chủ > Dịch vụ" />
 
-      <div className="service-main-content" style={{maxWidth: 900, margin: '0 auto', padding: 20}}>
-        <div style={{textAlign:'center', marginBottom: 20}}>
-          <h3 className="category-title" style={{marginBottom: 6}}>
-            {serviceItem ? serviceItem.ten_danh_muc : 'Không tìm thấy dịch vụ'}
-          </h3>
-          {serviceItem && (
-            <p className="category-subtitle">{serviceItem.mo_ta || 'Mô tả đang cập nhật.'}</p>
-          )}
-        </div>
-
-        {serviceItem && (
-          <div className="service-card" style={{cursor:'default'}}>
+      <div className="service-main-content">
+        {serviceItem ? (
+          <div className="service-detail-card">
             {serviceItem.anh_minh_hoa && (
               <img src={serviceItem.anh_minh_hoa} alt={serviceItem.ten_danh_muc} />
             )}
-            <h4>Thông tin dịch vụ</h4>
-            <ul>
-              <li>Mã danh mục: {serviceItem.id_danh_muc}</li>
-              <li>Thuộc phân loại: {categoryName}</li>
-            </ul>
+            <h2>{serviceItem.ten_danh_muc}</h2>
+            <p>{serviceItem.mo_ta || 'Mô tả đang cập nhật.'}</p>
 
-            <Link to="/checkout" className="see-more-button" style={{display:'inline-block', marginTop:16}}>
+            {/* Truyền id_danh_muc sang Checkout qua state; đồng thời lưu sessionStorage đề phòng refresh */}
+            <Link
+              to="/checkout"
+              state={{ danhMucId: serviceItem.id_danh_muc }}
+              onClick={() => {
+                sessionStorage.setItem('danhMucId', String(serviceItem.id_danh_muc));
+              }}
+              className="see-more-button"
+              style={{ display: 'inline-block', marginTop: 16 }}
+            >
               Đặt lịch ngay
             </Link>
           </div>
+        ) : (
+          <div className="loading">Không tìm thấy dịch vụ.</div>
         )}
       </div>
 

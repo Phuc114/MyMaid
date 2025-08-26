@@ -6,36 +6,69 @@ const db = require('../config/db');
 
 exports.markPaid = async (req, res) => {
   try {
-    const { orderId, method, amount, transactionId } = req.body || {};
-    if (!orderId || !method) {
-      return res.status(400).json({ message: 'orderId & method required' });
+    // Có thể được truyền qua query (payment-result redirect) hoặc body (fetch từ FE)
+    const q = req.query || {};
+    const b = req.body || {};
+    const idKh = req.user?.id_khach_hang || null;
+
+    const id_lich_dat_in = Number(b.id_lich_dat || q.id_lich_dat) || null;
+    const amount = b.amount || q.amount || null;
+    const provider = b.method || q.method || 'MoMo'; // mặc định MoMo
+
+    // 1) Xác định đơn cần đánh dấu đã thanh toán
+    let targetId = id_lich_dat_in;
+
+    if (!targetId) {
+      if (!idKh) {
+        return res.status(400).json({
+          message: 'Thiếu id_lich_dat và không có user để suy ra đơn pending',
+        });
+      }
+      const r = await db.query(
+        `SELECT id_lich_dat
+           FROM lich_dat
+          WHERE id_khach_hang = $1
+            AND trang_thai = 'pending'
+            AND id_thanh_toan IS NOT NULL
+          ORDER BY id_lich_dat DESC
+          LIMIT 1`,
+        [idKh]
+      );
+      if (!r.rows.length) {
+        return res.status(404).json({
+          message: 'Không tìm thấy đơn pending đã gắn thanh toán để xác nhận',
+        });
+      }
+      targetId = r.rows[0].id_lich_dat;
     }
 
-    // 1) Tìm lịch đặt theo ma_don_hang
-    const { rows } = await db.query(
-      'SELECT id_lich_dat FROM lich_dat WHERE ma_don_hang = $1 LIMIT 1',
-      [orderId]
+    // 2) Lấy id_thanh_toan của đơn
+    const g = await db.query(
+      `SELECT id_thanh_toan FROM lich_dat WHERE id_lich_dat = $1`,
+      [targetId]
     );
-    if (!rows.length) return res.status(404).json({ message: 'Order not found' });
+    if (!g.rows.length || !g.rows[0].id_thanh_toan) {
+      return res.status(400).json({ message: 'Đơn chưa gắn thanh toán' });
+    }
+    const paymentId = g.rows[0].id_thanh_toan;
 
-    const idLichDat = rows[0].id_lich_dat;
-
-    // 2) Tạo/ghi bản thanh toán
-    const payIns = await db.query(
-      `INSERT INTO thanh_toan (phuong_thuc, so_tien, trang_thai, ma_giao_dich, ngay_thanh_toan)
-       VALUES ($1,$2,'successful',$3, NOW())
-       RETURNING id_thanh_toan`,
-      [method, amount || 0, transactionId || null]
-    );
-    const idThanhToan = payIns.rows[0].id_thanh_toan;
-
-    // 3) Gắn vào lịch đặt + đổi trạng thái đơn
+    // 3) Cập nhật bảng thanh_toan
     await db.query(
-      'UPDATE lich_dat SET id_thanh_toan=$1, trang_thai=$2 WHERE id_lich_dat=$3',
-      [idThanhToan, 'confirmed', idLichDat]
+      `UPDATE thanh_toan
+          SET trang_thai = 'paid',
+              so_tien    = COALESCE($1, so_tien),
+              phuong_thuc= COALESCE($2, phuong_thuc)
+        WHERE id_thanh_toan = $3`,
+      [amount ?? null, provider, paymentId]
     );
 
-    return res.json({ ok: true, id_lich_dat: idLichDat, id_thanh_toan: idThanhToan });
+    // 4) Cập nhật trạng thái đơn
+    await db.query(
+      `UPDATE lich_dat SET trang_thai = 'paid' WHERE id_lich_dat = $1`,
+      [targetId]
+    );
+
+    return res.json({ ok: true, id_lich_dat: targetId, id_thanh_toan: paymentId });
   } catch (e) {
     console.error('markPaid error:', e);
     return res.status(500).json({ message: 'Server error' });

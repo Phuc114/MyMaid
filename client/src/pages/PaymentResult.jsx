@@ -18,6 +18,9 @@ export default function PaymentResult() {
           setMsg('Không tìm thấy orderId để xác nhận.');
           return;
         }
+        const idFromQuery   = params.get('id_lich_dat');
+        const idFromSession = sessionStorage.getItem('currentOrderId');
+        const id_lich_dat   = Number(idFromQuery || idFromSession) || null;
 
         // Thành công (MoMo: resultCode===0; Stripe: status==='success' hoặc không có tham số nhưng đã confirm client)
         const isSuccess = (resultCode === '0') || (status === 'success') || !params.size;
@@ -30,7 +33,8 @@ export default function PaymentResult() {
               orderId,
               method,
               amount: Number(sessionStorage.getItem('amount')) || 0,
-              transactionId: params.get('payment_intent') || params.get('transId') || null
+              transactionId: params.get('payment_intent') || params.get('transId') || null,
+              id_lich_dat   // ✅ truyền cho BE để cập nhật đúng đơn
             })
           }).then(r=>r.json());
 

@@ -135,11 +135,12 @@ export default function PaymentModal({ amount, onClose }) {
       sessionStorage.setItem('amount', String(amount));
 
       await attachOrderId(orderId); // quan trọng
+      const id_lich_dat = Number(sessionStorage.getItem('currentOrderId')) || null;
 
       const res = await fetch(`${API_BASE}/api/pay/momo/mock-success`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderId, amount })
+        body: JSON.stringify({ orderId, amount, id_lich_dat }) // ✅ gửi kèm id_lich_dat
       }).then(r => r.json());
 
       if (res?.redirectUrl) window.location.href = res.redirectUrl;

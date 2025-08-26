@@ -68,27 +68,43 @@ exports.getOrderHistory = async (req, res) => {
   }
 };
 
-// Tạo một đơn pending và trả về id_lich_dat
+// Tạo đơn pending và trả về id_lich_dat
 exports.createPending = async (req, res) => {
   try {
     const idKh = req.user?.id_khach_hang;
     if (!idKh) return res.status(401).json({ message: 'Thiếu id_khach_hang trong token' });
 
-    const {
-      id_dich_vu,
+    let {
+      id_dich_vu,       // có thể truyền trực tiếp
+      id_danh_muc,      // hoặc chỉ có id_danh_muc -> sẽ map sang id_dich_vu
       id_dia_chi,
-      ngay_lam_viec, // 'YYYY-MM-DD'
-      gio_bat_dau,   // 'HH:mm'
+      ngay_lam_viec,    // 'YYYY-MM-DD'
+      gio_bat_dau,      // 'HH:mm' (tên biến FE), DB là cột 'gio_lam_viec'
       ghi_chu,
       tong_tien
     } = req.body || {};
 
+    // Nếu chưa có id_dich_vu mà có id_danh_muc -> map sang id_dich_vu (lấy dịch vụ đầu tiên)
+    if (!id_dich_vu && id_danh_muc) {
+      const map = await db.query(
+        `SELECT id_dich_vu
+           FROM dich_vu
+          WHERE id_danh_muc = $1
+          ORDER BY id_dich_vu ASC
+          LIMIT 1`,
+        [id_danh_muc]
+      );
+      if (map.rows.length) id_dich_vu = map.rows[0].id_dich_vu;
+    }
+
+    // Validate tối thiểu
     if (!id_dich_vu || !id_dia_chi || !ngay_lam_viec || !gio_bat_dau || !tong_tien) {
       return res.status(400).json({
-        message: 'Thiếu dữ liệu: id_dich_vu, id_dia_chi, ngay_lam_viec, gio_bat_dau, tong_tien'
+        message: 'Thiếu dữ liệu: id_dich_vu (hoặc id_danh_muc), id_dia_chi, ngay_lam_viec, gio_bat_dau, tong_tien',
       });
     }
 
+    // CHỖ LỖI TRƯỚC ĐÂY: phải chèn vào cột 'gio_lam_viec' (không phải gio_bat_dau)
     const q = `
       INSERT INTO lich_dat (
         id_khach_hang, id_dich_vu, id_dia_chi,
@@ -98,12 +114,17 @@ exports.createPending = async (req, res) => {
       VALUES ($1,$2,$3,NOW(),$4,$5,$6,$7,'pending')
       RETURNING id_lich_dat
     `;
-    const { rows } = await db.query(q, [
-      idKh, id_dich_vu, id_dia_chi,
-      ngay_lam_viec, gio_bat_dau,
-      ghi_chu ?? null, tong_tien
-    ]);
+    const params = [
+      idKh,
+      id_dich_vu,
+      id_dia_chi,
+      ngay_lam_viec,
+      gio_bat_dau,          // biến FE -> ghi vào cột DB 'gio_lam_viec'
+      ghi_chu ?? null,
+      tong_tien,
+    ];
 
+    const { rows } = await db.query(q, params);
     return res.json({ ok: true, id_lich_dat: rows[0].id_lich_dat });
   } catch (e) {
     console.error('createPending error:', e);
@@ -112,19 +133,19 @@ exports.createPending = async (req, res) => {
 };
 
 
-// ===== Gắn orderId (ma_don_hang) cho đơn pending =====
-// Body: { orderId: string, amount?: number, id_lich_dat?: number }
+
+
+// Gắn payment cho đơn pending (giữ API cũ: vẫn nhận orderId nhưng chỉ dùng nội bộ)
 exports.attachOrderIdToPending = async (req, res) => {
   try {
     const idKh = req.user?.id_khach_hang;
     if (!idKh) return res.status(401).json({ message: 'Thiếu id_khach_hang trong token' });
 
-    const { orderId, amount, id_lich_dat } = req.body || {};
-    if (!orderId) return res.status(400).json({ message: 'orderId required' });
+    const { orderId, amount, id_lich_dat, method = 'MoMo' } = req.body || {};
+    // orderId có thể là mã từ cổng thanh toán; DB không có cột lưu, nên chỉ dùng để log/trace
 
+    // 1) Xác định đơn pending cần gắn
     let targetId = id_lich_dat;
-
-    // Nếu client không gửi id_lich_dat thì lấy đơn pending mới nhất
     if (!targetId) {
       const pending = await db.query(
         `SELECT id_lich_dat
@@ -135,43 +156,41 @@ exports.attachOrderIdToPending = async (req, res) => {
         [idKh]
       );
       if (!pending.rows.length) {
-        return res.status(404).json({ message: 'Không tìm thấy đơn pending để gắn orderId' });
+        return res.status(404).json({ message: 'Không tìm thấy đơn pending để gắn thanh toán' });
       }
       targetId = pending.rows[0].id_lich_dat;
-    } else {
-      // Bảo vệ: kiểm tra id_lich_dat có thuộc user & còn hợp lệ
-      const chk = await db.query(
-        `SELECT 1 FROM lich_dat
-          WHERE id_lich_dat = $1 AND id_khach_hang = $2
-            AND trang_thai IN ('pending','created','draft')`,
-        [targetId, idKh]
-      );
-      if (!chk.rows.length) {
-        return res.status(404).json({ message: 'Đơn không hợp lệ để gắn orderId' });
-      }
     }
 
-    try {
-      const upd = await db.query(
-        `UPDATE lich_dat
-            SET ma_don_hang = $1,
-                tong_tien   = COALESCE($2, tong_tien)
-          WHERE id_lich_dat = $3
-          RETURNING id_lich_dat, ma_don_hang`,
-        [orderId, amount ?? null, targetId]
-      );
-      return res.json({ ok: true, id_lich_dat: upd.rows[0].id_lich_dat, orderId });
-    } catch (uerr) {
-      // Nếu DB chưa có cột ma_don_hang thì báo lỗi "thiếu cột"
-      if (uerr?.code === '42703') {
-        return res.status(409).json({
-          message: "Thiếu cột 'ma_don_hang' trong bảng lich_dat. Hãy chạy lệnh SQL để thêm cột trước khi gắn orderId."
-        });
-      }
-      throw uerr;
-    }
+    // 2) Tạo bản ghi trong bảng thanh_toan
+    const payIns = await db.query(
+      `INSERT INTO thanh_toan (phuong_thuc, so_tien, trang_thai)
+       VALUES ($1, $2, 'pending')
+       RETURNING id_thanh_toan`,
+      [method, amount ?? 0]
+    );
+    const newPaymentId = payIns.rows[0].id_thanh_toan;
+
+    // 3) Gắn payment vào lich_dat (và có thể cập nhật tong_tien)
+    const upd = await db.query(
+      `UPDATE lich_dat
+          SET id_thanh_toan = $1,
+              tong_tien     = COALESCE($2, tong_tien)
+        WHERE id_lich_dat = $3
+        RETURNING id_lich_dat, id_thanh_toan`,
+      [newPaymentId, amount ?? null, targetId]
+    );
+
+    // 4) Trả về cho FE; nếu cần lưu orderId, FE tự lưu local hoặc log server
+    return res.json({
+      ok: true,
+      id_lich_dat: upd.rows[0].id_lich_dat,
+      id_thanh_toan: newPaymentId,
+      // echo lại để FE hiển thị nếu muốn
+      orderId
+    });
   } catch (e) {
     console.error('attachOrderIdToPending error:', e);
     return res.status(500).json({ message: 'Server error' });
   }
 };
+
