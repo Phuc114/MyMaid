@@ -88,3 +88,22 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.label-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+}
+
+.heart-btn{
+  border:none;
+  background:transparent;
+  font-size:20px;
+  line-height:1;
+  cursor:pointer;
+  opacity:.6;
+  transition:transform .12s ease, opacity .15s ease;
+}
+.heart-btn:hover{ opacity:1; transform:scale(1.06); }
+.heart-btn.is-fav{ color:#ef4444; opacity:1; }

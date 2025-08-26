@@ -68,60 +68,52 @@ exports.getOrderHistory = async (req, res) => {
   }
 };
 
-// Tạo đơn pending và trả về id_lich_dat
+// Tạo đơn pending và trả về id_lich_dat (có lưu id_maid)
 exports.createPending = async (req, res) => {
   try {
     const idKh = req.user?.id_khach_hang;
-    if (!idKh) return res.status(401).json({ message: 'Thiếu id_khach_hang trong token' });
+    if (!idKh) {
+      return res.status(401).json({ message: 'Thiếu id_khach_hang trong token' });
+    }
 
-    let {
-      id_dich_vu,       // có thể truyền trực tiếp
-      id_danh_muc,      // hoặc chỉ có id_danh_muc -> sẽ map sang id_dich_vu
-      id_dia_chi,
-      ngay_lam_viec,    // 'YYYY-MM-DD'
-      gio_bat_dau,      // 'HH:mm' (tên biến FE), DB là cột 'gio_lam_viec'
+    const {
+      id_dich_vu,     // BẮT BUỘC
+      id_maid,        // BẮT BUỘC theo yêu cầu (nếu muốn OPTIONAL thì bỏ check ở dưới)
+      id_dia_chi,     // BẮT BUỘC
+      ngay_lam_viec,  // 'YYYY-MM-DD'  BẮT BUỘC
+      gio_bat_dau,    // 'HH:mm'       BẮT BUỘC -> lưu vào cột gio_lam_viec
       ghi_chu,
-      tong_tien
+      tong_tien       // BẮT BUỘC (FE tính = giá * số lượng)
     } = req.body || {};
 
-    // Nếu chưa có id_dich_vu mà có id_danh_muc -> map sang id_dich_vu (lấy dịch vụ đầu tiên)
-    if (!id_dich_vu && id_danh_muc) {
-      const map = await db.query(
-        `SELECT id_dich_vu
-           FROM dich_vu
-          WHERE id_danh_muc = $1
-          ORDER BY id_dich_vu ASC
-          LIMIT 1`,
-        [id_danh_muc]
-      );
-      if (map.rows.length) id_dich_vu = map.rows[0].id_dich_vu;
+    // Validate bắt buộc
+    if (!id_dich_vu || !id_maid || !id_dia_chi || !ngay_lam_viec || !gio_bat_dau || !tong_tien) {
+      return res.status(400).json({ message: 'Thiếu tham số bắt buộc' });
     }
+    // Nếu muốn cho phép không chọn maid:
+    // if (!id_dich_vu || !id_dia_chi || !ngay_lam_viec || !gio_bat_dau || !tong_tien) {
+    //   return res.status(400).json({ message: 'Thiếu tham số bắt buộc' });
+    // }
 
-    // Validate tối thiểu
-    if (!id_dich_vu || !id_dia_chi || !ngay_lam_viec || !gio_bat_dau || !tong_tien) {
-      return res.status(400).json({
-        message: 'Thiếu dữ liệu: id_dich_vu (hoặc id_danh_muc), id_dia_chi, ngay_lam_viec, gio_bat_dau, tong_tien',
-      });
-    }
-
-    // CHỖ LỖI TRƯỚC ĐÂY: phải chèn vào cột 'gio_lam_viec' (không phải gio_bat_dau)
     const q = `
       INSERT INTO lich_dat (
-        id_khach_hang, id_dich_vu, id_dia_chi,
+        id_khach_hang, id_dich_vu, id_maid, id_dia_chi,
         thoi_gian_dat, ngay_lam_viec, gio_lam_viec,
         ghi_chu, tong_tien, trang_thai
       )
-      VALUES ($1,$2,$3,NOW(),$4,$5,$6,$7,'pending')
+      VALUES ($1,$2,$3,$4,NOW(),$5,$6,$7,$8,'pending')
       RETURNING id_lich_dat
     `;
+
     const params = [
       idKh,
-      id_dich_vu,
-      id_dia_chi,
+      Number(id_dich_vu),
+      Number(id_maid) || null,      // nếu chuyển sang OPTIONAL thì cho phép null ở đây
+      Number(id_dia_chi),
       ngay_lam_viec,
-      gio_bat_dau,          // biến FE -> ghi vào cột DB 'gio_lam_viec'
+      gio_bat_dau,
       ghi_chu ?? null,
-      tong_tien,
+      Number(tong_tien),
     ];
 
     const { rows } = await db.query(q, params);
@@ -131,8 +123,6 @@ exports.createPending = async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 };
-
-
 
 
 // Gắn payment cho đơn pending (giữ API cũ: vẫn nhận orderId nhưng chỉ dùng nội bộ)

@@ -69,3 +69,22 @@ exports.getCategoriesGrouped = async (req, res) => {
     res.status(500).json({ error: 'Lỗi server khi nhóm danh mục' });
   }
 };
+
+exports.getServicesByCategory = async (req, res) => {
+  try {
+    const idDanhMuc = Number(req.params.id);
+    if (!idDanhMuc) return res.status(400).json({ message: 'Thiếu id danh mục' });
+
+    const q = `
+      SELECT id_dich_vu, ten_dich_vu, mo_ta AS don_vi, gia_co_ban
+      FROM dich_vu
+      WHERE id_danh_muc = $1
+      ORDER BY ten_dich_vu ASC
+    `;
+    const { rows } = await db.query(q, [idDanhMuc]);
+    return res.json(rows);
+  } catch (e) {
+    console.error('getServicesByCategory error:', e);
+    return res.status(500).json({ message: 'Server error' });
+  }
+};

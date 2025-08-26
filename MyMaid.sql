@@ -390,74 +390,94 @@ INSERT INTO danh_muc_dich_vu (ten_danh_muc, mo_ta, id_phan_loai) VALUES
 
 
 
--- Insert data into dich_vu (services)
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Tổng vệ sinh nhà ở, nhà sau thi công', 'm2', '15.000 – 20.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Tổng vệ sinh căn hộ chung cư, văn phòng', 'm2', '18.000 – 30.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Vệ sinh kho xưởng, bệnh viện, nhà hàng, khách sạn', 'm2', '8.000 – 25.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Tổng vệ sinh công trình sau xây dựng, sửa chữa', 'm2', '14.000 – 26.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Tổng vệ sinh công trình định kỳ', 'm2', '10.000 – 18.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Đu dây lau kính mặt ngoài', 'm2', '12.000 – 25.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Lau kính mặt trong', 'm2', '10.000 – 22.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Dịch vụ chà sàn', 'm2', '6.000 – 14.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Dịch vụ mài sàn bê tông', 'm2', '20.000 – 70.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Dịch vụ đánh bóng sàn đá mài Terrazzo', 'm2', '50.000 – 120.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Dịch vụ đánh bóng sàn đá Granite', 'm2', '170.000 – 300.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Dịch vụ giặt thảm trải sàn, thảm văn phòng', 'm2', '6.000 – 25.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Dịch vụ giặt thảm trang trí', 'Tấm', '250.000 – 350.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Vệ sinh, giặt ghế sofa', 'Bộ', '300.000 – 500.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Vệ sinh, giặt rèm cửa', 'Kg', '35.000 – 50.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('1', 'Vệ sinh, giặt ghế văn phòng', 'Cái', '15.000 – 35.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Vệ sinh căn hộ có diện tích dưới 50m2', 'Trọn gói', '1.800.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Vệ sinh chung cư có diện tích 51m2 – 70m2', 'Trọn gói', '2.100.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Căn hộ, chung cư diện tích 71m2 – 100m2', 'Trọn gói', '2.600.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Chung cư có diện tích 101m2 – 130m2', 'Trọn gói', '3.200.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Căn hộ có diện tích 131m2 – 160m2', 'Trọn gói', '3.700.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Căn hộ, chung cư diện tích 161m2 – 200m2', 'Trọn gói', '4.200.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Căn hộ, chung cư diện tích lớn hơn 200m2', 'Trọn gói', 'Liên hệ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Giặt ghế sofa', 'Bộ', '300.000đ – 500.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Giặt nệm', 'Tấm', '250.000đ – 350.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Giặt rèm dưới 17kg', 'Trọn gói', '600.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Giặt rèm trên 17kg', 'Kg', '35.000đ/kg');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Vệ sinh máy lạnh treo tường', 'Cái', '200.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Vệ sinh máy giặt cửa trên', 'Cái', '450.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Vệ sinh máy giặt (hãng Panasonic)', 'Cái', '600.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('2', 'Vệ sinh máy giặt cửa ngang', 'Cái', '650.000đ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('3', 'Giặt bộ ghế sofa 2 chỗ ngồi (1.0m -> 1.5m)', 'Bộ', '250,000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('3', 'Giặt bộ ghế sofa 3 chỗ ngồi (1,6m ->2.0m)', 'Bộ', '300.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('3', 'Vệ sinh bộ sofa góc L (2.0m -> 4.0m)', 'Bộ', '350,000 – 500.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('3', 'Giặt ghế sofa bộ lớn tại nhà', 'Bộ', 'Liên hệ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('3', 'Vệ sinh ghế sofa tại quán cafe, karaoke, nhà hàng, khách sạn,…', 'Chiếc, Bộ', 'Liên hệ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('3', 'Vệ sinh sofa và thảm trang trí', 'Bộ, Tấm', 'Liên hệ');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('4', 'Vệ sinh ghế văn phòng, vải, nỉ lưới', '< 50 Cái', '35.000 -> 40.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('4', 'Vệ sinh ghế văn phòng, vải, nỉ lưới', '50 -> 100 Cái', '25.000 -> 35.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('4', 'Giặt và vệ sinh ghế văn phòng, vải, nỉ lưới', '≥ 100 Cái', '20.000 -> 25.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('5', 'Dịch vụ giặt nệm tại nhà (nệm nhỏ 1,0m – 1,2m)', 'Tấm', '250.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('5', 'Dịch vụ giặt nệm tại nhà (nệm trung 1,4m – 1,8m)', 'Tấm', '300.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('5', 'Vệ sinh nệm tại nhà (nệm lớn 2,0m – 2,4m)', 'Tấm', '350.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('6', 'Thảm văn phòng', 'Dưới 50m2', '600.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('6', 'Thảm trang trí', '', '100.000đ/m2');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('6', 'Thảm cầu thang', '', '45.000đ/m2');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('7', 'Vệ sinh máy lạnh treo tường', '1HP – 2.5 HP', '200.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('7', 'Vệ sinh máy lạnh tủ đứng', '3HP – 5HP', '500.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('7', 'Vệ sinh điều hòa âm trần', '3HP – 5HP', '600.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('7', 'Vệ sinh điều hòa giấu trần', '>8HP', '900.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Dịch vụ vệ sinh kính tòa nhà cao tầng mặt ngoài', 'm2', '10.000 – 30.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Dịch vụ lau kính tòa nhà cao tầng mặt trong', 'm2', '8.000 – 15.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Vệ sinh kính tòa nhà cao tầng mặt ngoài (mới lắp đặt)', 'm2', '15.000 – 25.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Lau kính tòa nhà cao tầng mặt trong (mới lắp đặt)', 'm2', '10.000 – 15.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Xử lý các vết ố ở trên cao', 'm2', 'Khảo sát');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Xử lý các vết ố ở tầm thấp', 'm2', 'Khảo sát');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Bắn silicon cho kính', 'm2', 'Khảo sát');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Vệ sinh Alu', 'm2', '20.000 – 300.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('8', 'Vệ sinh bảng hiệu', 'm2', '300.000 – 600.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('9', 'Phun khử trùng Cloramin B', '>50 m2', '400,000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('10', 'Dọn dẹp nhà cửa, nấu ăn', 'Bao ăn 24 giờ', '7.000.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('10', 'Giúp việc nhà và phụ chăm sóc trẻ sơ sinh', 'Bao ăn 24 giờ', '8.000.000 – 10.000.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('10', 'Giúp việc nhà và phụ chăm sóc trẻ nhỏ', 'Bao ăn 24 giờ', '7.000.000 – 9.000.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('10', 'Giúp việc nhà và phụ nuôi đẻ', 'Bao ăn 24 giờ', '7.000.000 – 10.000.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('10', 'Giúp việc nhà và phụ chăm sóc người già', 'Bao ăn 24 giờ', '7.000.000 – 9.000.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('10', 'Giúp việc nhà và phụ nuôi người bệnh', 'Bao ăn 24 giờ', '8.000.000 – 10.000.000');
-INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES ('10', 'Giúp việc cho người nước ngoài (domestic help for foreigners)', 'Bao ăn (meals included) 24 giờ (24 hours)', 'Thỏa thuận (The deal)');
+-- INSERT chuẩn hóa cho bảng dich_vu (mo_ta = đơn vị tính, gia_co_ban = integer VND)
+
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Tổng vệ sinh nhà ở, nhà sau thi công', 'm2', 12000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Tổng vệ sinh căn hộ chung cư, văn phòng', 'm2', 13000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Vệ sinh kho xưởng, bệnh viện, nhà hàng, khách sạn', 'm2', 9000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Tổng vệ sinh công trình sau xây dựng, sửa chữa', 'm2', 13000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Tổng vệ sinh công trình định kỳ', 'm2', 11000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Đu dây lau kính mặt ngoài', 'm2', 20000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Lau kính mặt trong', 'm2', 12000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Dịch vụ chà sàn', 'm2', 10000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Dịch vụ mài sàn bê tông', 'm2', 60000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Dịch vụ đánh bóng sàn đá mài Terrazzo', 'm2', 150000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Dịch vụ đánh bóng sàn đá Granite', 'm2', 200000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Dịch vụ giặt thảm trải sàn, thảm văn phòng', 'm2', 12000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Dịch vụ giặt thảm trang trí', 'Tấm', 350000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Vệ sinh, giặt ghế sofa', 'Bộ', 400000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Vệ sinh, giặt rèm cửa', 'Kg', 50000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (1, 'Vệ sinh, giặt ghế văn phòng', 'Cái', 20000);
+
+-- Gói vệ sinh căn hộ (trọn gói theo diện tích)
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Vệ sinh căn hộ có diện tích dưới 50m2', 'Trọn gói', 1500000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Vệ sinh chung cư có diện tích 51m2 – 70m2', 'Trọn gói', 1800000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Căn hộ, chung cư diện tích 71m2 – 100m2', 'Trọn gói', 2400000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Chung cư có diện tích 101m2 – 130m2', 'Trọn gói', 3000000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Căn hộ có diện tích 131m2 – 160m2', 'Trọn gói', 3500000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Căn hộ, chung cư diện tích 161m2 – 200m2', 'Trọn gói', 4000000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Căn hộ, chung cư diện tích lớn hơn 200m2', 'Trọn gói', 5000000);
+-- Phát sinh theo hạng mục trong danh mục 2
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Giặt ghế sofa', 'Bộ', 400000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Giặt nệm', 'Tấm', 300000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Giặt rèm dưới 17kg', 'Trọn gói', 700000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Giặt rèm trên 17kg', 'Kg', 50000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Vệ sinh máy lạnh treo tường', 'Cái', 250000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Vệ sinh máy giặt cửa trên', 'Cái', 350000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Vệ sinh máy giặt (hãng Panasonic)', 'Cái', 400000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (2, 'Vệ sinh máy giặt cửa ngang', 'Cái', 450000);
+
+-- Dịch vụ sofa chi tiết
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (3, 'Giặt bộ ghế sofa 2 chỗ ngồi (1.0m -> 1.5m)', 'Bộ', 300000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (3, 'Giặt bộ ghế sofa 3 chỗ ngồi (1,6m ->2.0m)', 'Bộ', 350000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (3, 'Vệ sinh bộ sofa góc L (2.0m -> 4.0m)', 'Bộ', 450000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (3, 'Giặt ghế sofa bộ lớn tại nhà', 'Bộ', 600000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (3, 'Vệ sinh ghế sofa tại quán cafe, karaoke, nhà hàng, khách sạn,…', 'Chiếc', 50000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (3, 'Vệ sinh sofa và thảm trang trí', 'Bộ', 600000);
+
+-- Ghế văn phòng theo số lượng
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (4, 'Vệ sinh ghế văn phòng, vải, nỉ lưới (< 50 cái)', 'Cái', 40000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (4, 'Vệ sinh ghế văn phòng, vải, nỉ lưới (50 -> 100 cái)', 'Cái', 30000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (4, 'Giặt và vệ sinh ghế văn phòng, vải, nỉ lưới (≥ 100 cái)', 'Cái', 22000);
+
+-- Giặt nệm
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (5, 'Dịch vụ giặt nệm tại nhà (nệm nhỏ 1,0m – 1,2m)', 'Tấm', 250000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (5, 'Dịch vụ giặt nệm tại nhà (nệm trung 1,4m – 1,8m)', 'Tấm', 300000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (5, 'Vệ sinh nệm tại nhà (nệm lớn 2,0m – 2,4m)', 'Tấm', 350000);
+
+-- Thảm
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (6, 'Thảm văn phòng', 'm2', 12000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (6, 'Thảm trang trí', 'm2', 15000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (6, 'Thảm cầu thang', 'm2', 30000);
+
+-- Máy lạnh
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (7, 'Vệ sinh máy lạnh treo tường', 'Cái', 250000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (7, 'Vệ sinh máy lạnh tủ đứng', 'Cái', 500000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (7, 'Vệ sinh điều hòa âm trần', 'Cái', 600000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (7, 'Vệ sinh điều hòa giấu trần', 'Cái', 900000);
+
+-- Lau kính tòa nhà
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Dịch vụ vệ sinh kính tòa nhà cao tầng mặt ngoài', 'm2', 30000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Dịch vụ lau kính tòa nhà cao tầng mặt trong', 'm2', 12000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Vệ sinh kính tòa nhà cao tầng mặt ngoài (mới lắp đặt)', 'm2', 20000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Lau kính tòa nhà cao tầng mặt trong (mới lắp đặt)', 'm2', 12000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Xử lý các vết ố ở trên cao', 'm2', 40000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Xử lý các vết ố ở tầm thấp', 'm2', 20000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Bắn silicon cho kính', 'm2', 40000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Vệ sinh Alu', 'm2', 60000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (8, 'Vệ sinh bảng hiệu', 'm2', 150000);
+
+-- Khử trùng
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (9, 'Phun khử trùng Cloramin B', 'm2', 8000);
+
+-- Giúp việc nhà ở lại 24 giờ
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (10, 'Dọn dẹp nhà cửa, nấu ăn', 'Bao ăn 24 giờ', 7000000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (10, 'Giúp việc nhà và phụ chăm sóc trẻ sơ sinh', 'Bao ăn 24 giờ', 9000000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (10, 'Giúp việc nhà và phụ chăm sóc trẻ nhỏ', 'Bao ăn 24 giờ', 8000000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (10, 'Giúp việc nhà và phụ nuôi đẻ', 'Bao ăn 24 giờ', 9000000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (10, 'Giúp việc nhà và phụ chăm sóc người già', 'Bao ăn 24 giờ', 8000000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (10, 'Giúp việc nhà và phụ nuôi người bệnh', 'Bao ăn 24 giờ', 9000000);
+INSERT INTO dich_vu (id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban) VALUES (10, 'Giúp việc cho người nước ngoài (domestic help for foreigners)', 'Bao ăn 24 giờ', 12000000);
 
 
 

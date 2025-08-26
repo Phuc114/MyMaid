@@ -104,8 +104,8 @@ const Header = () => {
                 <div onClick={() => { navigate("/change-password"); closeMenu(); }}>
                   Đổi mật khẩu
                 </div>
-                <div onClick={() => { navigate("/become-maid"); closeMenu(); }}>
-                  Trở thành maid
+                <div onClick={() => { navigate("/favorites"); closeMenu(); }}>
+                  Yêu thích
                 </div>
                 <div onClick={handleLogout}>Đăng xuất</div>
               </div>

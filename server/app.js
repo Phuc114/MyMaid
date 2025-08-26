@@ -16,6 +16,8 @@ const userRoutes = require('./routes/userRoutes');
 const adminServiceRoutes = require('./routes/adminServiceRoutes'); // Route cho admin quản lý dịch vụ
 const categoryAdminRoutes = require('./routes/categoryAdminRoutes'); // ✅ Import route mới
 const payRoutes = require('./routes/payRoutes');
+const favoriteRoutes = require('./routes/favoriteRoutes');
+const maidRoutes = require('./routes/maidRoutes');
 
 const app = express();
 
@@ -54,6 +56,9 @@ app.use("/api/admin", adminRoutes);
 app.use('/api/admin/services', adminServiceRoutes);
 app.use('/api/admin/categories', categoryAdminRoutes); // Thêm route mới
 app.use('/api/pay', payRoutes);
+app.use('/api/favorites', favoriteRoutes);
+app.use('/api/maids', maidRoutes);
+
 // Health check
 app.get('/', (req, res) => {
   res.send('Hello from Node.js backend!');

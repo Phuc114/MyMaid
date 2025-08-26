@@ -27,6 +27,7 @@ import ServiceManager from './pages/ServiceManager';
 import AdminServiceDetail from './pages/AdminServiceDetail';
 import CategoryManager from './pages/CategoryManager'; // ✅ Import mới
 import CategoryServiceList from './pages/CategoryServiceList'; // ✅ Import mới
+import Favorites from './pages/Favorites';
 
 // NEW: pages for forgot-password flow
 import ForgotVerifyOtp from './pages/ForgotVerifyOtp';
@@ -41,7 +42,7 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
       <Route path="/service" element={<Service />} />
-	  <Route path="/service/:category" element={<ServiceCategory />} />
+	    <Route path="/service/:category" element={<ServiceCategory />} />
       <Route path="/service/:category/:service" element={<ServiceDetail />} />
       <Route path="/contact" element={<Contact />} />
 
@@ -62,6 +63,7 @@ function App() {
       <Route path="/favorite-maids" element={<FavoriteMaids />} />
       <Route path="/checkout" element={<Checkout />} />
       <Route path="/payment-result" element={<PaymentResult />} />
+      <Route path="/favorites" element={<Favorites />} />
 
       {/* Lịch sử đơn: giữ cả 2 đường dẫn để không phá vỡ liên kết cũ */}
       <Route path="/order-history" element={<OrderHistory />} />
@@ -71,7 +73,7 @@ function App() {
       <Route path="/admin" element={<DashboardAdmin />} />
       <Route path="/admin/customers" element={<CustomerManagement />} />
       <Route path="/admin/statistics" element={<Statistics />} />
-	  <Route path="/admin/services" element={<ServiceManager />} />
+	    <Route path="/admin/services" element={<ServiceManager />} />
       <Route path="/admin/services/:id" element={<AdminServiceDetail />} />
       <Route path="/admin/categories" element={<CategoryManager />} />
       <Route path="/admin/categories/:categoryId/services" element={<CategoryServiceList />} />

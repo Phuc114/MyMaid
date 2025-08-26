@@ -1,0 +1,14 @@
+.fav-wrap { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+.fav-tabs { display: flex; gap: 10px; margin: 12px 0 20px; }
+.fav-tabs button { padding: 8px 14px; border: 1px solid #e5e7eb; border-radius: 10px; background: #fff; cursor: pointer; }
+.fav-tabs button.active { border-color: #2563eb; color: #2563eb; background: #eff6ff; }
+
+.fav-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 14px; }
+.fav-card { border: 1px solid #e5e7eb; border-radius: 14px; background: #fff; padding: 14px; display: flex; justify-content: space-between; align-items: center; }
+.fav-card__title { font-weight: 700; }
+.fav-card__sub { font-size: 13px; color: #64748b; margin-top: 4px; }
+.fav-card__actions .btn-outline { border: 1px solid #e5e7eb; background: #fff; padding: 6px 12px; border-radius: 8px; cursor: pointer; }
+.fav-maid { display: flex; gap: 10px; align-items: center; }
+.fav-ava { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; }
+.maid-row{display:flex;gap:12px;align-items:center}
+.maid-avatar{width:56px;height:56px;border-radius:9999px;object-fit:cover}
