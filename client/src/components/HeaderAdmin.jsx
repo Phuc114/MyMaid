@@ -33,7 +33,7 @@ const AdminHeader = () => {
   const navLinks = isLoggedIn
     ? [
         { to: "/admin", label: "Trang chủ", end: true },
-		{ to: "/admin/services", label: "Dịch vụ" },
+		{ to: "/admin/categories", label: "Dịch vụ" },
 		{ to: "/admin/customers", label: "Khách hàng" },
 		{ to: "/admin/employees", label: "Nhân viên" },
 		{ to: "/admin/orders", label: "Đơn hàng" },
