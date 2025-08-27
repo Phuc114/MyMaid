@@ -193,8 +193,10 @@
     padding: 2rem;
     border-radius: 12px;
     width: 90%;
-    max-width: 500px; /* Đã thu nhỏ từ 500px xuống 450px */
+    max-width: 500px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    max-height: 80vh;
+    overflow-y: auto;
 }
 
 .modal-content h2 {
@@ -218,7 +220,7 @@
 .modal-form input[type="text"],
 .modal-form input[type="number"],
 .modal-form textarea,
-.modal-form select { /* Thêm select vào đây */
+.modal-form select {
     width: 100%;
     padding: 0.75rem;
     border: 1px solid #ccc;
@@ -229,7 +231,6 @@
     background-color: white;
 }
 
-/* Style riêng cho select để có mũi tên */
 .modal-form select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -238,12 +239,12 @@
     background-repeat: no-repeat;
     background-position: right .9rem center;
     background-size: .65em auto;
-    padding-right: 2.5rem; /* Chừa chỗ cho mũi tên */
+    padding-right: 2.5rem;
 }
 
 .modal-form input:focus,
 .modal-form textarea:focus,
-.modal-form select:focus { /* Thêm select vào đây */
+.modal-form select:focus {
     outline: none;
     border-color: #007bff;
 }
@@ -294,9 +295,59 @@
     background-color: #0056b3;
 }
 
-.modal-content {
-    max-height: 80vh;   /* cao tối đa 80% màn hình */
-    overflow-y: auto;   /* nếu nội dung nhiều thì cuộn */
+/* === CSS CHO SWITCH TOGGLE MỚI === */
+.status-item {
+    justify-content: space-between;
 }
 
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+    margin-left: auto;
+}
 
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #28a745;
+}
+
+input:checked + .slider:before {
+    transform: translateX(22px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}

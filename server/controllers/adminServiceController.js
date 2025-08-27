@@ -41,11 +41,19 @@ const updateService = async (req, res) => {
         return res.status(400).json({ message: 'Tên dịch vụ, giá và danh mục là bắt buộc' });
     }
     try {
+        // --- BƯỚC SỬA LỖI: CHUYỂN ĐỔI GIÁ TIỀN ---
+        // Xóa các dấu chấm và chuyển chuỗi thành số nguyên
+        const numericPrice = parseInt(gia_co_ban.toString().replace(/\./g, ''), 10);
+        // ------------------------------------------
+
         const query = `
             UPDATE dich_vu 
             SET id_danh_muc = $1, ten_dich_vu = $2, mo_ta = $3, gia_co_ban = $4, anh_minh_hoa = $5 
             WHERE id_dich_vu = $6`;
-        const values = [id_danh_muc, ten_dich_vu, mo_ta, gia_co_ban, anh_minh_hoa, id];
+            
+        // Sử dụng giá tiền đã được chuyển đổi (numericPrice)
+        const values = [id_danh_muc, ten_dich_vu, mo_ta, numericPrice, anh_minh_hoa, id];
+        
         const { rowCount } = await db.query(query, values);
         if (rowCount === 0) {
             return res.status(404).json({ message: 'Không tìm thấy dịch vụ để cập nhật' });
@@ -59,20 +67,40 @@ const updateService = async (req, res) => {
 
 // 4. CẬP NHẬT TRẠNG THÁI DỊCH VỤ
 const updateServiceStatus = async (req, res) => {
+    // --- BƯỚC 1: KIỂM TRA DỮ LIỆU ĐẦU VÀO ---
+    console.log('--- BẮT ĐẦU CẬP NHẬT TRẠNG THÁI DỊCH VỤ ---');
+    
     const { id } = req.params;
     const { status } = req.body;
+    
+    console.log(`ID nhận từ URL (req.params.id): ${id} (Kiểu: ${typeof id})`);
+    console.log(`Trạng thái nhận từ Body (req.body.status): ${status}`);
+
     if (!status || !['active', 'inactive'].includes(status)) {
+        console.log('[LỖI] Trạng thái không hợp lệ.');
         return res.status(400).json({ message: 'Trạng thái không hợp lệ' });
     }
+
     try {
+        // --- BƯỚC 2: THỰC THI CÂU LỆNH UPDATE ---
         const query = 'UPDATE dich_vu SET trang_thai = $1 WHERE id_dich_vu = $2';
-        const { rowCount } = await db.query(query, [status, id]);
-        if (rowCount === 0) {
+        
+        console.log(`Đang thực thi: UPDATE dich_vu SET trang_thai = '${status}' WHERE id_dich_vu = ${id}`);
+        const result = await db.query(query, [status, id]);
+
+        // --- BƯỚC 3: KIỂM TRA KẾT QUẢ ---
+        console.log('Số dòng đã được cập nhật (result.rowCount):', result.rowCount);
+
+        if (result.rowCount === 0) {
+            console.log(`[CẢNH BÁO] Không tìm thấy dịch vụ nào có ID = ${id} để cập nhật trạng thái.`);
             return res.status(404).json({ message: 'Không tìm thấy dịch vụ' });
         }
+        
+        console.log('--- CẬP NHẬT TRẠNG THÁI THÀNH CÔNG ---');
         res.json({ message: 'Cập nhật trạng thái thành công' });
+
     } catch (error) {
-        console.error(`Lỗi khi cập nhật trạng thái dịch vụ ID ${id}:`, error);
+        console.error(`[LỖI NGHIÊM TRỌNG] Lỗi khi cập nhật trạng thái cho ID ${id}:`, error);
         res.status(500).json({ message: 'Lỗi máy chủ nội bộ' });
     }
 };

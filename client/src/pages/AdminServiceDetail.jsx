@@ -5,7 +5,7 @@ import './AdminServiceDetail.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
 
-// --- Component Modal ---
+// --- Component Modal (Không thay đổi) ---
 const ServiceModal = ({ service, onClose, onSave }) => {
     const [formData, setFormData] = useState({
         ten_dich_vu: '', mo_ta: '', gia_co_ban: '',
@@ -149,7 +149,6 @@ const AdminServiceDetail = () => {
                     throw new Error(errorData.message || 'Xóa thất bại');
                 }
                 alert('Xóa dịch vụ thành công!');
-                // Điều hướng về trang danh sách dịch vụ của danh mục đó
                 navigate(`/admin/categories/${service.id_danh_muc}/services`);
             } catch (err) {
                 alert(`Lỗi: ${err.message}`);
@@ -195,6 +194,37 @@ const AdminServiceDetail = () => {
         }
     };
 
+    const handleStatusChange = async () => {
+        if (!service) return;
+
+        const newStatus = service.trang_thai === 'active' ? 'inactive' : 'active';
+        
+        // Bỏ qua hộp thoại confirm để trải nghiệm switch mượt hơn
+        // const confirmMessage = `Bạn có chắc muốn đổi trạng thái dịch vụ thành "${newStatus === 'active' ? 'Đang hoạt động' : 'Ngưng hoạt động'}" không?`;
+        // if (window.confirm(confirmMessage)) { ... }
+        
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/admin/services/${id}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ status: newStatus }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Cập nhật trạng thái thất bại');
+            }
+
+            // Cập nhật lại state để giao diện thay đổi ngay lập tức
+            setService(prevService => ({ ...prevService, trang_thai: newStatus }));
+
+        } catch (err) {
+            alert(`Lỗi: ${err.message}`);
+            // Nếu có lỗi, trả lại trạng thái cũ trên UI
+            setService(prevService => ({ ...prevService, trang_thai: service.trang_thai }));
+        }
+    };
+
     if (loading) return <div className="loading-state">Đang tải...</div>;
     if (error) return <div className="error-state">Lỗi: {error}</div>;
 
@@ -206,7 +236,6 @@ const AdminServiceDetail = () => {
                     {service && (
                         <>
                             <div className="detail-header">
-                                {/* --- SỬA LẠI BREADCRUMBS TẠI ĐÂY --- */}
                                 <div className="breadcrumbs">
                                     <Link to="/admin/dashboard">Trang chủ</Link>
                                     <span>&gt;</span>
@@ -245,7 +274,9 @@ const AdminServiceDetail = () => {
                                                 <span>{categoryName || service.ten_danh_muc || 'Chưa phân loại'}</span>
                                             </div>
                                         </div>
-                                        <div className="link-item">
+                                        
+                                        {/* === THAY ĐỔI TỪ NÚT BẤM SANG SWITCH TOGGLE === */}
+                                        <div className="link-item status-item">
                                             <i className="fas fa-toggle-on"></i>
                                             <div>
                                                 <p>Trạng thái</p>
@@ -253,7 +284,16 @@ const AdminServiceDetail = () => {
                                                     {service.trang_thai === 'active' ? 'Đang hoạt động' : 'Ngưng hoạt động'}
                                                 </span>
                                             </div>
+                                            <label className="switch">
+                                                <input 
+                                                    type="checkbox" 
+                                                    checked={service.trang_thai === 'active'}
+                                                    onChange={handleStatusChange} 
+                                                />
+                                                <span className="slider round"></span>
+                                            </label>
                                         </div>
+
                                     </div>
                                 </div>
                                 <div className="service-description-card">
