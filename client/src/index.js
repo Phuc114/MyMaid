@@ -21,6 +21,8 @@ import { ForgotPasswordProvider } from './context/ForgotPasswordContext';
 // NEW: Service context (lấy danh mục/phân loại từ server)
 import { ServiceProvider } from './context/ServiceContext';
 
+import { HomeProvider } from './context/HomeContext';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
@@ -35,9 +37,10 @@ root.render(
                   <RegisterProvider>
                     <OnboardingProvider>
                       <ForgotPasswordProvider>
-                        {/* Bọc toàn bộ app bằng ServiceProvider */}
                         <ServiceProvider>
-                          <App />
+                          <HomeProvider>
+                            <App />
+                          </HomeProvider>
                         </ServiceProvider>
                       </ForgotPasswordProvider>
                     </OnboardingProvider>

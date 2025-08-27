@@ -19,16 +19,12 @@ const payRoutes = require('./routes/payRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const maidRoutes = require('./routes/maidRoutes');
 const voucherRoutes = require('./routes/voucherRoutes');
-
+const homeRoutes = require('./routes/home.routes');
+const messageRoutes = require('./routes/messageRoutes');
 
 
 const app = express();
 
-/**
- * ===================== CORS (thủ công, không tạo route) =====================
- * - Không dùng app.options(...). Trả preflight trực tiếp trong middleware.
- * - Hợp với credentials và Express 5 (path-to-regexp v6).
- */
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:3000';
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', CLIENT_ORIGIN);
@@ -57,11 +53,13 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/customers', customers);
 app.use("/api/admin", adminRoutes);
 app.use('/api/admin/services', adminServiceRoutes);
-app.use('/api/admin/categories', categoryAdminRoutes); // Thêm route mới
+app.use('/api/admin/categories', categoryAdminRoutes);
 app.use('/api/pay', payRoutes);
 app.use('/api/maids', maidRoutes);
 app.use('/api/vouchers', voucherRoutes);
 app.use('/api/favorites', favoriteRoutes);
+app.use('/api/home', homeRoutes);
+app.use('/api/messages', messageRoutes);
 
 
 // Health check
