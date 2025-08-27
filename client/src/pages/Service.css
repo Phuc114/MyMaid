@@ -234,3 +234,128 @@
   color: #666;
   margin-top: 6px;
 }
+
+/* === SEARCH (NEW) === */
+.service-search-wrap {
+  position: relative;
+  max-width: 760px;
+  margin: 18px auto 8px;
+}
+
+.service-search-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 44px 0 14px;
+  border: 1px solid #e1e7f5;
+  border-radius: 12px;
+  font-size: 15px;
+  outline: none;
+  box-shadow: 0 8px 20px rgba(2,6,23,.06);
+}
+
+.service-search-input:focus {
+  border-color: #4977E5;
+  box-shadow: 0 10px 24px rgba(73,119,229,.12);
+}
+
+.service-search-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 6px;
+  opacity: .7;
+}
+
+.service-search-result {
+  max-width: 1100px;
+  margin: 8px auto 0;
+  padding: 0 20px;
+}
+
+.search-hint {
+  color: #64748b;
+  text-align: left;
+  font-size: 14px;
+  padding: 6px 2px;
+}
+
+.search-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 10px;
+}
+
+@media (max-width: 1024px) {
+  .search-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 640px) {
+  .search-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.service-item-card {
+  border: 1px solid #e9eef8;
+  border-radius: 16px;
+  background: #fff;
+  padding: 14px;
+  box-shadow: 0 12px 26px rgba(2,6,23,.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.service-item-card .svc-title {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.service-item-card .svc-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #475569;
+  font-size: 13px;
+}
+
+.service-item-card .badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #eef2ff;
+  font-size: 12px;
+  color: #3f63ff;
+  border: 1px solid #dbe3ff;
+}
+
+.service-item-card .dot { opacity: .5; }
+
+.service-item-card .svc-price {
+  margin-top: 2px;
+  font-weight: 600;
+  color: #0b69e3;
+}
+
+.service-item-card .svc-book-btn {
+  margin-top: 8px;
+  align-self: flex-start;
+  background: #4977E5;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.service-item-card .svc-book-btn:hover {
+  background: #3b63c4;
+}
+

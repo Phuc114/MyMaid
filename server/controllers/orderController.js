@@ -68,56 +68,77 @@ exports.getOrderHistory = async (req, res) => {
   }
 };
 
+function applyVoucherAmount(base, v) {
+  if (!v || v <= 0) return base;
+  // Hỗ trợ cả 3 kiểu: 0–1 (tỷ lệ), 1–100 (phần trăm), >100 (giảm trực tiếp VND)
+  if (v > 0 && v <= 1) return Math.max(0, base * (1 - v));        // 0.1 = giảm 10%
+  if (v > 1 && v <= 100) return Math.max(0, base * (1 - v / 100)); // 10 = giảm 10%
+  return Math.max(0, base - v);                                    // 50000 = giảm 50k
+}
+
 // Tạo đơn pending và trả về id_lich_dat (có lưu id_maid)
 exports.createPending = async (req, res) => {
   try {
     const idKh = req.user?.id_khach_hang;
-    if (!idKh) {
-      return res.status(401).json({ message: 'Thiếu id_khach_hang trong token' });
-    }
+    if (!idKh) return res.status(401).json({ message: 'Thiếu id_khach_hang trong token' });
 
     const {
       id_dich_vu,     // BẮT BUỘC
-      id_maid,        // BẮT BUỘC theo yêu cầu (nếu muốn OPTIONAL thì bỏ check ở dưới)
+      id_maid,        // BẮT BUỘC (theo yêu cầu)
       id_dia_chi,     // BẮT BUỘC
-      ngay_lam_viec,  // 'YYYY-MM-DD'  BẮT BUỘC
-      gio_bat_dau,    // 'HH:mm'       BẮT BUỘC -> lưu vào cột gio_lam_viec
-      ghi_chu,
-      tong_tien       // BẮT BUỘC (FE tính = giá * số lượng)
-    } = req.body || {};
+      ngay_lam_viec,  // 'YYYY-MM-DD' BẮT BUỘC
+      gio_bat_dau,    // 'HH:mm'      BẮT BUỘC -> lưu vào cột gio_lam_viec
+      ghi_chu,        // optional
+      tong_tien,      // base total từ FE (giá * số lượng)
+      id_khuyen_mai   // optional
+    } = req.body;
 
-    // Validate bắt buộc
     if (!id_dich_vu || !id_maid || !id_dia_chi || !ngay_lam_viec || !gio_bat_dau || !tong_tien) {
-      return res.status(400).json({ message: 'Thiếu tham số bắt buộc' });
+      return res.status(400).json({ message: 'Thiếu dữ liệu bắt buộc' });
     }
-    // Nếu muốn cho phép không chọn maid:
-    // if (!id_dich_vu || !id_dia_chi || !ngay_lam_viec || !gio_bat_dau || !tong_tien) {
-    //   return res.status(400).json({ message: 'Thiếu tham số bắt buộc' });
-    // }
 
-    const q = `
-      INSERT INTO lich_dat (
-        id_khach_hang, id_dich_vu, id_maid, id_dia_chi,
-        thoi_gian_dat, ngay_lam_viec, gio_lam_viec,
-        ghi_chu, tong_tien, trang_thai
-      )
-      VALUES ($1,$2,$3,$4,NOW(),$5,$6,$7,$8,'pending')
+    let finalTotal = Number(tong_tien);
+    let voucherIdToSave = null;
+
+    // ✅ Nếu có voucher gửi lên thì kiểm tra hiệu lực ở server và áp dụng
+    if (id_khuyen_mai) {
+      const vq = `
+        SELECT id_khuyen_mai, gia_tri_giam
+        FROM khuyen_mai
+        WHERE id_khuyen_mai = $1
+          AND LOWER(trang_thai) = 'active'
+          AND (ngay_bat_dau IS NULL OR NOW() >= ngay_bat_dau)
+          AND (ngay_ket_thuc IS NULL OR NOW() <= ngay_ket_thuc)
+          AND (so_luong IS NULL OR so_luong > 0)
+      `;
+      const { rows: vrows } = await db.query(vq, [Number(id_khuyen_mai)]);
+      if (vrows.length) {
+        finalTotal = applyVoucherAmount(finalTotal, Number(vrows[0].gia_tri_giam));
+        voucherIdToSave = Number(id_khuyen_mai);
+      }
+    }
+
+    const insertSql = `
+      INSERT INTO lich_dat
+        (id_khach_hang, id_dich_vu, id_maid, id_dia_chi, id_khuyen_mai,
+         ngay_lam_viec, gio_lam_viec, ghi_chu, tong_tien, trang_thai)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,'pending')
       RETURNING id_lich_dat
     `;
-
     const params = [
       idKh,
       Number(id_dich_vu),
-      Number(id_maid) || null,      // nếu chuyển sang OPTIONAL thì cho phép null ở đây
+      Number(id_maid),
       Number(id_dia_chi),
+      voucherIdToSave,
       ngay_lam_viec,
       gio_bat_dau,
       ghi_chu ?? null,
-      Number(tong_tien),
+      finalTotal,
     ];
+    const { rows } = await db.query(insertSql, params);
 
-    const { rows } = await db.query(q, params);
-    return res.json({ ok: true, id_lich_dat: rows[0].id_lich_dat });
+    return res.json({ ok: true, id_lich_dat: rows[0].id_lich_dat, tong_tien: finalTotal });
   } catch (e) {
     console.error('createPending error:', e);
     return res.status(500).json({ message: 'Server error' });

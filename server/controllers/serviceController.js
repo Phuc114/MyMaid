@@ -88,3 +88,41 @@ exports.getServicesByCategory = async (req, res) => {
     return res.status(500).json({ message: 'Server error' });
   }
 };
+
+// GET /api/services/search?q=...
+exports.searchServices = async (req, res) => {
+  try {
+    const q = (req.query.q || '').trim();
+    if (!q) return res.json([]); // không nhập gì thì trả rỗng
+
+    // Mẫu tìm kiếm: cho phép khoảng trắng khớp linh hoạt
+    const pattern = `%${q.replace(/\s+/g, '%')}%`;
+
+    const sql = `
+      SELECT 
+        dv.id_dich_vu,
+        dv.ten_dich_vu,
+        dv.mo_ta,
+        dv.gia_co_ban,
+        dm.id_danh_muc,
+        dm.ten_danh_muc,
+        pl.id_phan_loai,
+        pl.ten_phan_loai
+      FROM dich_vu dv
+      JOIN danh_muc_dich_vu dm ON dm.id_danh_muc = dv.id_danh_muc
+      JOIN phan_loai_dich_vu pl ON pl.id_phan_loai = dm.id_phan_loai
+      WHERE 
+        dv.ten_dich_vu ILIKE $1
+        OR dm.ten_danh_muc ILIKE $1
+        OR pl.ten_phan_loai ILIKE $1
+      ORDER BY dv.ten_dich_vu ASC
+      LIMIT 30
+    `;
+
+    const { rows } = await db.query(sql, [pattern]);
+    return res.json(rows);
+  } catch (err) {
+    console.error('searchServices error:', err);
+    return res.status(500).json({ error: 'Lỗi server khi tìm kiếm dịch vụ' });
+  }
+};

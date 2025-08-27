@@ -8,4 +8,6 @@ router.get('/', svc.getAllCategories);          // GET /api/services
 router.get('/grouped', svc.getCategoriesGrouped); // GET /api/services/grouped
 router.get('/by-category/:id', svc.getServicesByCategory);
 
+router.get('/search', svc.searchServices);
+
 module.exports = router;

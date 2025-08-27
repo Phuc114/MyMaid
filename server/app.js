@@ -18,6 +18,9 @@ const categoryAdminRoutes = require('./routes/categoryAdminRoutes'); // ✅ Impo
 const payRoutes = require('./routes/payRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const maidRoutes = require('./routes/maidRoutes');
+const voucherRoutes = require('./routes/voucherRoutes');
+
+
 
 const app = express();
 
@@ -56,8 +59,10 @@ app.use("/api/admin", adminRoutes);
 app.use('/api/admin/services', adminServiceRoutes);
 app.use('/api/admin/categories', categoryAdminRoutes); // Thêm route mới
 app.use('/api/pay', payRoutes);
-app.use('/api/favorites', favoriteRoutes);
 app.use('/api/maids', maidRoutes);
+app.use('/api/vouchers', voucherRoutes);
+app.use('/api/favorites', favoriteRoutes);
+
 
 // Health check
 app.get('/', (req, res) => {

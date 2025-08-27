@@ -5,18 +5,9 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import PaymentModal from '../components/PaymentModal';
 import { useLocation } from 'react-router-dom';
-import { MdFavorite, MdFavoriteBorder } from "react-icons/md"; // ở đầu file
+import { MdFavorite, MdFavoriteBorder } from "react-icons/md";
 
 const API_BASE = process.env.REACT_APP_API_BASE || 'http://localhost:5000';
-
-const LS_FAV_SERVICES = "favServices";
-function readFavServices() {
-  try { return JSON.parse(localStorage.getItem(LS_FAV_SERVICES)) || []; }
-  catch { return []; }
-}
-function writeFavServices(list) {
-  localStorage.setItem(LS_FAV_SERVICES, JSON.stringify(list || []));
-}
 
 const Checkout = () => {
   // === Modal thanh toán ===
@@ -43,37 +34,37 @@ const Checkout = () => {
   const [selectedServiceId, setSelectedServiceId] = useState(null);
   const [qty, setQty] = useState(1);
 
-  // === Yêu thích (localStorage) ===
-  const [favServices, setFavServices] = useState(readFavServices());
-  const isSelectedFav = useMemo(
-    () => !!favServices.find(s => s.id_dich_vu === Number(selectedServiceId)),
-    [favServices, selectedServiceId]
-  );
-  function toggleFavSelected() {
-    if (!selectedServiceId) return;
-    const found = services.find(s => s.id_dich_vu === Number(selectedServiceId));
-    if (!found) return;
-    const exists = favServices.find(s => s.id_dich_vu === Number(selectedServiceId));
-    const next = exists
-      ? favServices.filter(s => s.id_dich_vu !== Number(selectedServiceId))
-      : [...favServices, {
-          id_dich_vu: found.id_dich_vu,
-          ten_dich_vu: found.ten_dich_vu,
-          gia_co_ban: found.gia_co_ban,
-          don_vi: found.don_vi
-        }];
-    setFavServices(next);
-    writeFavServices(next);
-  }
+  // === Maid & voucher ===
+  const [maids, setMaids] = useState([]);
+  const [vouchers, setVouchers] = useState([]);
+  const [selectedMaidId, setSelectedMaidId] = useState('');
+  const [selectedVoucherId, setSelectedVoucherId] = useState('');
 
-  // Lấy token từ localStorage (giữ logic sẵn có của em)
-  const getAuthHeaders = () => {
+  // === Yêu thích lưu DB ===
+  const [favService, setFavService] = useState(false);
+  const [favMaid, setFavMaid] = useState(false);
+
+  const authHeaders = () => {
     const t =
       localStorage.getItem('token') ||
       localStorage.getItem('accessToken') ||
       '';
     return t ? { Authorization: `Bearer ${t}` } : {};
   };
+
+  // Lấy maid active + voucher còn hiệu lực
+  useEffect(() => {
+    const headers = authHeaders();
+    fetch(`${API_BASE}/api/maids/active`, { headers, credentials: 'include' })
+      .then(r => r.json())
+      .then(data => setMaids(Array.isArray(data) ? data : []))
+      .catch(() => setMaids([]));
+
+    fetch(`${API_BASE}/api/vouchers/available`, { headers, credentials: 'include' })
+      .then(r => r.json())
+      .then(data => setVouchers(Array.isArray(data) ? data : []))
+      .catch(() => setVouchers([]));
+  }, []);
 
   // === Tải list dịch vụ theo danh mục ===
   useEffect(() => {
@@ -92,18 +83,95 @@ const Checkout = () => {
     })();
   }, [danhMucId]);
 
+  // Đối tượng dịch vụ đang chọn
   const selectedService = useMemo(
     () => services.find(s => s.id_dich_vu === Number(selectedServiceId)) || null,
     [services, selectedServiceId]
   );
 
-  const unit = selectedService?.don_vi || '';
-  const price = selectedService?.gia_co_ban ?? null; // INTEGER (VND/đơn vị)
-  const total = useMemo(() => {
+  const unit  = selectedService?.don_vi || '';
+  const price = useMemo(() => {
+    const v = selectedService?.gia_co_ban;
+    return v == null ? null : Number(v);
+  }, [selectedService]);
+
+  // Tổng gốc = giá * số lượng
+  const baseTotal = useMemo(() => {
     const q = Number(qty) || 0;
     if (!price || q < 1) return 0;
     return price * q;
   }, [price, qty]);
+
+  // Áp dụng voucher theo 3 kiểu: 0–1 (tỉ lệ), 1–100 (phần trăm), >100 (giảm VND)
+  const applyVoucherAmount = (base, v) => {
+    if (!v || v <= 0) return base;
+    if (v > 0 && v <= 1)   return Math.max(0, base * (1 - v));        // 0.1 = -10%
+    if (v > 1 && v <= 100) return Math.max(0, base * (1 - v / 100));  // 10  = -10%
+    return Math.max(0, base - v);                                      // 50000 = -50k
+  };
+
+  const selectedVoucher = useMemo(
+    () => vouchers.find(v => String(v.id_khuyen_mai) === String(selectedVoucherId)),
+    [vouchers, selectedVoucherId]
+  );
+
+  const totalAfterVoucher = useMemo(() => {
+    if (!selectedVoucher) return baseTotal;
+    const v = Number(selectedVoucher.gia_tri_giam);
+    return applyVoucherAmount(baseTotal, v);
+  }, [baseTotal, selectedVoucher]);
+
+  // ==== Yêu thích: đọc trạng thái từ DB mỗi khi đổi chọn ====
+  useEffect(() => {
+    if (!selectedServiceId) { setFavService(false); return; }
+    fetch(`${API_BASE}/api/favorites/services/${selectedServiceId}/status`, {
+      headers: { ...authHeaders() }
+    })
+      .then(r => r.json())
+      .then(d => setFavService(!!d.favorite))
+      .catch(() => setFavService(false));
+  }, [selectedServiceId]);
+
+  useEffect(() => {
+    if (!selectedMaidId) { setFavMaid(false); return; }
+    fetch(`${API_BASE}/api/favorites/maids/${selectedMaidId}/status`, {
+      headers: { ...authHeaders() }
+    })
+      .then(r => r.json())
+      .then(d => setFavMaid(!!d.favorite))
+      .catch(() => setFavMaid(false));
+  }, [selectedMaidId]);
+
+  // ==== Toggle yêu thích ====
+  const toggleFavService = async () => {
+    if (!selectedServiceId) return;
+    try {
+      const r = await fetch(`${API_BASE}/api/favorites/services/${selectedServiceId}/toggle`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeaders() }
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d?.message || 'Toggle thất bại');
+      setFavService(!!d.favorite);
+    } catch (e) {
+      alert(e.message);
+    }
+  };
+
+  const toggleFavMaid = async () => {
+    if (!selectedMaidId) return;
+    try {
+      const r = await fetch(`${API_BASE}/api/favorites/maids/${selectedMaidId}/toggle`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', ...authHeaders() }
+      });
+      const d = await r.json();
+      if (!r.ok) throw new Error(d?.message || 'Toggle thất bại');
+      setFavMaid(!!d.favorite);
+    } catch (e) {
+      alert(e.message);
+    }
+  };
 
   // === Gọi API tạo đơn 'pending' trước khi mở modal thanh toán ===
   const handleConfirm = async () => {
@@ -124,19 +192,25 @@ const Checkout = () => {
         alert('Số lượng phải >= 1');
         return;
       }
+      if (!selectedMaidId) {
+        alert('Vui lòng chọn maid.');
+        return;
+      }
 
       const body = {
         id_dich_vu: Number(selectedServiceId),
-        id_dia_chi: 1,              // TODO: thay bằng id địa chỉ thật khi có UI
+        id_maid: Number(selectedMaidId),
+        id_dia_chi: 1,              // TODO: thay bằng id địa chỉ thật khi có UI chọn địa chỉ
         ngay_lam_viec: selectedDate,
         gio_bat_dau: startTime,     // BE map qua cột giờ làm việc
         ghi_chu: note,
-        tong_tien: total,
+        tong_tien: Number(totalAfterVoucher),
+        id_khuyen_mai: selectedVoucher ? Number(selectedVoucher.id_khuyen_mai) : null
       };
 
       const res = await fetch(`${API_BASE}/api/orders/create-pending`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() },
+        headers: { 'Content-Type': 'application/json', ...authHeaders() },
         body: JSON.stringify(body),
       });
 
@@ -199,17 +273,18 @@ const Checkout = () => {
           <div className="order-box">
             <h3>Thông tin đơn hàng</h3>
 
-            {/* Chọn dịch vụ + trái tim yêu thích */}
+            {/* Chọn dịch vụ + trái tim yêu thích (DB) */}
             <div className="label-row">
               <label>Chọn dịch vụ:</label>
               <button
                 type="button"
-                className={`heart-btn ${isSelectedFav ? 'is-fav' : ''}`}
-                onClick={toggleFavSelected}
-                title={isSelectedFav ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích'}
+                className={`heart-btn ${favService ? 'is-fav' : ''}`}
+                onClick={toggleFavService}
+                title={favService ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích'}
                 aria-label="Yêu thích dịch vụ"
+                disabled={!selectedServiceId}
               >
-                ♥
+                {favService ? <MdFavorite /> : <MdFavoriteBorder />}
               </button>
             </div>
 
@@ -220,6 +295,49 @@ const Checkout = () => {
               {services.map(s => (
                 <option key={s.id_dich_vu} value={s.id_dich_vu}>
                   {s.ten_dich_vu} {s.gia_co_ban ? `— ${Number(s.gia_co_ban).toLocaleString('vi-VN')} đ/${s.don_vi || ''}` : '— Liên hệ'}
+                </option>
+              ))}
+            </select>
+
+            {/* Chọn maid + trái tim yêu thích (DB) */}
+            <div className="label-row" style={{ marginTop: 10 }}>
+              <label>Chọn maid:</label>
+              <button
+                type="button"
+                className={`heart-btn ${favMaid ? 'is-fav' : ''}`}
+                onClick={toggleFavMaid}
+                title={favMaid ? 'Bỏ khỏi yêu thích' : 'Thêm vào yêu thích'}
+                aria-label="Yêu thích maid"
+                disabled={!selectedMaidId}
+              >
+                {favMaid ? <MdFavorite /> : <MdFavoriteBorder />}
+              </button>
+            </div>
+            <select
+              value={selectedMaidId}
+              onChange={(e) => setSelectedMaidId(e.target.value)}
+            >
+              <option value="">-- Chọn maid --</option>
+              {maids.map(m => (
+                <option key={m.id_maid} value={m.id_maid}>
+                  {m.ho_ten}
+                </option>
+              ))}
+            </select>
+
+            {/* Chọn voucher */}
+            <label>Chọn voucher:</label>
+            <select
+              value={selectedVoucherId}
+              onChange={(e) => setSelectedVoucherId(e.target.value)}
+            >
+              <option value="">-- Không dùng voucher --</option>
+              {vouchers.map(v => (
+                <option key={v.id_khuyen_mai} value={v.id_khuyen_mai}>
+                  {v.ma_code} — giảm {Number(v.gia_tri_giam)}
+                  {Number(v.gia_tri_giam) > 0 && Number(v.gia_tri_giam) <= 1
+                    ? ' (tỉ lệ)'
+                    : (Number(v.gia_tri_giam) <= 100 ? '%' : ' đ')}
                 </option>
               ))}
             </select>
@@ -257,11 +375,24 @@ const Checkout = () => {
 
             {/* Tổng tiền */}
             <div style={{ marginTop: 8, opacity: 0.9, fontWeight: 700 }}>
-              Tổng tiền tạm tính: {price ? `${total.toLocaleString('vi-VN')} đ` : 'Liên hệ'}
+              {selectedVoucher
+                ? (
+                  <>
+                    <div>Tiền gốc: {baseTotal.toLocaleString('vi-VN')} đ</div>
+                    <div>Tạm tính sau voucher: {totalAfterVoucher.toLocaleString('vi-VN')} đ</div>
+                  </>
+                )
+                : (
+                  <div>Tổng tiền tạm tính: {price ? `${baseTotal.toLocaleString('vi-VN')} đ` : 'Liên hệ'}</div>
+                )
+              }
             </div>
 
             {/* Bấm để tạo đơn pending + mở modal thanh toán */}
-            <button onClick={handleConfirm} disabled={!selectedServiceId || !price}>
+            <button
+              onClick={handleConfirm}
+              disabled={!selectedServiceId || !price || !selectedMaidId}
+            >
               Xác nhận đặt lịch
             </button>
           </div>
@@ -273,7 +404,7 @@ const Checkout = () => {
       {/* Modal thanh toán */}
       {showPay && (
         <PaymentModal
-          amount={total}
+          amount={totalAfterVoucher}
           onClose={() => setShowPay(false)}
         />
       )}
